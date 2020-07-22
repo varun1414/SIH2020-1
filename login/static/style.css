@@ -1,0 +1,82 @@
+body {
+  font-family: 'Open Sans',sans-serif;
+  font-weight: 500;
+  color:#fff;
+  overflow: hidden;
+
+}
+.container {
+  display: absolute;
+  position: relative;
+  height: 679px;
+  overflow:hidden;
+}
+
+.bg-img {
+  background-size: cover;
+  position: absolute;
+  height:100%;
+  width: 100%;
+  opacity: 0.7;
+}
+
+.connexion {
+    position: absolute;
+    padding: 0% 13%;
+    left:0px;
+    transition: all 0.7s;
+}
+
+.card{
+  margin-top: 30%;
+  height: 400px;
+  width: 400px;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.contact-form{
+  margin: 90px 10px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    padding-left: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family:"Arial", sans-serif;
+    color: #fff;
+}
+
+input {
+    display: block;
+    width: 93%;
+    margin: auto;
+    padding: 3%;
+    border: 0;
+    border-radius: 20px;
+    font-family: "Roboto",sans-serif;
+    background-color: rgba(255,255,255,0.5);
+    color: #000;
+}
+
+input:hover{
+  background-color: rgba(255,255,255,0.8);
+}
+
+input:focus{
+  background-color: rgba(255,255,255,0.8);
+}
+
+.submit {
+  margin-top: 20px;
+    width: 50%;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background-color:rgba(93,89,77,0.8);
+}
+
+.submit:hover{
+  background-color: rgba(93,89,77,1);
+}

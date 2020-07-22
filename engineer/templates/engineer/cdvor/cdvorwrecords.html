@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weekly CDVOR Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar sticky-top">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a href='#' onclick="window.location.href='/routebackcd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+          </li>
+        </ul>
+      <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+    </nav>
+    <br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+
+<!--<button onclick="window.location.href='/logout/{{ id }}'"> Logout</button></td>  -->  
+  
+                    
+                  <th>Date-Time</th>
+                  <th style="width: 150px;">Status</th>
+                  <th>PS 5V</th>
+                  <th>PS 12V</th>
+                  <th>PS 28V</th>
+                  <th>Outside Temperature</th>
+                  <th>Sideband Frequency</th>
+                <th>Test</th> 
+                  <th>Approval Status</th>
+                  <th>Approval Date</th>
+                  <th>Approval time</th>
+                  
+             
+              <!--   <th>datetime_of_servers_wrt_GPS_CLK</th>
+                  <th>status_of_Disk_array</th>
+                  <th>VHFTX_ATIS_status</th>
+                 <th>VHFRX_ATIS_status</th>
+                  <th>DATIS_update</th>
+                  <th>Audio_quality</th>
+                  <th>REMARKS</th>
+                  <th>Unit_incharge_approval</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                    {% for cdvorw in cdvor_w %}
+                <tr>
+                  <td>{{ cdvorw.time }}<br>{{ cdvorw.date }}</td>
+                  <td>{{ cdvorw.status }}</td>
+                 <td>{{ cdvorw.ps_5v }}</td>
+                  <td>{{ cdvorw.ps_12v }}</td>
+                  <td>{{ cdvorw.ps_28v }}</td>
+                  <td>{{ cdvorw.outside_temp }}</td>
+                  <td>{{ cdvorw.sideband_frequency }}</td>
+                  {% if cdvorw.ps_5v >= 4.75 and cdvorw.ps_5v <= 5.25 and cdvorw.ps_12v >= 11.5 and cdvorw.ps_12v <= 12.5 and cdvorw.ps_28v >= 27 and cdvorw.ps_28v <= 29 and cdvorw.outside_temp >= -25 and cdvorw.outside_temp <= 70 and cdvorw.sideband_frequency == 10001 %}
+                  <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                  <td>{{ cdvorw.unit_incharge_approval }}</td>
+                  <td>{{ cdvorw.approval_date }}</td>
+                  <td>{{ cdvorw.approval_time }}</td>
+                  
+             </tr>
+               {% endfor %}
+             </tbody>
+             </table>
+             </div>
+          <!--<button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+             
+</body>
+</html>
+

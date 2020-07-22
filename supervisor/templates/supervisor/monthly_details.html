@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h3>{{name}}</h3>
+<table>
+{% for i in context %}
+<tr>
+<td> <a href="/schoice/{{i.p_id}}/{{name}}">{{i.p_id}}</a></td>
+
+<td >{{i.date}}</td>    
+<td >{{i.emp_id}}</td>
+{% endfor %}
+</tr>
+</table>

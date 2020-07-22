@@ -1,0 +1,28 @@
+<!-- <html>
+{% for i in cdvormonthly %}
+    {% for name, value in i.items %}
+        
+           <td> {{ name }} => {{ value }}</td>
+
+        
+    {% endfor %}
+{% endfor %}
+<br><br>
+{% for i in datismonthly %}
+    {% for name, value in i.items %}
+        
+            {{ name }} => {{ value }}
+        
+    {% endfor %}
+{% endfor %}
+</html> -->
+<html>
+    <a href="{% url 'supervisor:cdvormonthly' %}">cdvormonthly</a><br>
+   
+    <a href="{% url 'supervisor:dmemonthly' %}">dmemonthly</a><br>
+    <a href="{% url 'supervisor:dscnmonthly' %}">dscnrmonthly</a><br>
+    <a href="{% url 'supervisor:ndbmonthly' %}">ndbmonthly</a><br>
+    <a href="{% url 'supervisor:scctvmonthly' %}">scctvmonthly</a><br>
+    <a href="{% url 'supervisor:vhfmonthly' %}">vhfmonthly</a><br>
+
+</html>

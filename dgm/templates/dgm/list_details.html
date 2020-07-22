@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Reports</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" type="text/css" href="{% static 'supervisor/home.css' %}">
+	  <!-- <link rel="stylesheet" type="text/css" href="home.css"> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+		<style>
+		.active a 
+		{
+		  background-color: #1E72FA !important; 
+		  color: white !important; 
+		}
+		.todays
+{
+	color:#1E72FA; 
+}
+.faculty
+{
+	color:#1E72FA;
+}
+.fac 
+{
+	max-height: 34rem!important;
+}
+.tod
+{
+	max-height: 34rem!important;
+}
+.container {
+  text-align: center;
+  display: absolute;
+  position: relative;
+  height: auto;
+  margin: auto;
+  box-shadow: 1px 5px 10px 1px #333;
+ /* overflow: hidden;*/
+}
+.taskbut img{
+	height:40px;
+	margin-top:20px;
+}
+.title-header
+{
+	padding-left:30px;font-size: 30px; background-color: #1E27FA ; color: white; font-family: 'Righteous', cursive; text-align: right;
+}
+.title-header img
+{
+	height:80px; margin-top: 7px; margin-left:0rem; 
+}
+
+	</style>
+</head>
+<body>
+    <div class="container" >	
+	    		
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item" style="list-style-type:none;">
+	      			<a href='/' onclick="window.location.href='/'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG <img src="{% static '/images/aai.jpg' %}"></div>
+			
+		</nav>
+		<div class="row">
+			<div class="card" style="width:40%; height: 7rem; margin-left:30%; text-align: center;">
+				<div class="card-body" style="font-family: 'Times New Roman', Times, serif; font-weight: bold; color:white;font-size: 20px; background-color: #1E27FA">
+					        <h2 class="title" style="padding:10px; font-weight: bold;">{{ name }}</h2>
+					<!-- Enter the maintainence type details here -->
+			 	</div>
+			</div>
+
+			<div class="data-tab" style="margin-top: 2rem;">
+				<div class="col-md-2"> 
+				</div>
+				<div class="col-md-3" >
+					<div class="row"> 
+					</div>
+					<div class="card tabcard" style="height:35rem !important; background-color: #ffffff!important">
+						<ul class="nav nav-pills nav-stacked">
+						    <li style="background-color:#DBDBDB; font-size:16px"><a class="todays" data-toggle="pill" href="#pending" >Unverified</a></li>
+						    <li style="background-color:#DBDBDB;font-size:16px"><a class="todays" data-toggle="pill" href="#approved" >Approved</a></li>
+						    <li style="background-color:#DBDBDB;font-size:16px"><a class="todays" data-toggle="pill" href="#declined" >Declined</a></li>
+						    
+						 </ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 card tabcol" style="height:35rem!important;">
+				<div class="tab-content">
+					<div id="default" class="tab-pane fade in active tod ">		  
+				       <h5 style="margin:7rem; font-weight: bold; font-family: 'Times New Roman', Times, serif; ">On left, choose the section of report to be viewed.</h5>
+				    </div>
+
+		    		<div id="pending" class="tab-pane fade fac">		  
+				        <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				            <thead>
+				                <tr>
+				                	<th>Date</th>
+				                  	<th>Time</th>
+				                  	<th>EmployeeID</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				            	<h1> Unverified </h1>
+				                {% for i in context %}
+				                {% if i.unit_incharge_approval == None and i.status != "PENDING"  %}
+				                <tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+				                	<td>{{i.date}}</td>
+				                	<td>{{i.time}}</td>
+				                	<td>{{i.emp_id}}</td>
+						            <td>{{i.status}}</td>
+				                </tr>
+				                {% endif %}
+				                {% endfor %}
+				             </tbody>
+				        </table>
+				    </div>
+
+				    <div id="approved" class="tab-pane fade fac">
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+						   <h1> Approved</h1>
+						   <thead>
+				                <tr>
+				                	<th>Date</th>
+				                  	<th>Time</th>
+				                  	<th>EmployeeID</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+							{% for i in context %}
+							{% if i.unit_incharge_approval == "YES" %}
+							<tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+			                	<td>{{i.date}}</td>
+			                	<td>{{i.time}}</td>
+			                	<td >{{i.emp_id}}</td>
+					            <td>{{i.status}}</td>
+				            </tr>
+							{% endif %}
+							{% endfor %}   
+						</table>
+					</div>
+					<div id="declined" class="tab-pane fade fac">
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+						   <h1> Declined </h1>
+						   <thead>
+				                <tr>
+				                	<th>Date</th>
+				                  	<th>Time</th>
+				                  	<th>EmployeeID</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+							{% for i in context %}
+							{% if i.unit_incharge_approval == "NO" %}
+							<tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+			                	<td>{{i.date}}</td>
+			                	<td>{{i.time}}</td>
+			                	<td >{{i.emp_id}}</td>
+					            <td>{{i.status}}</td>
+				            </tr>
+							{% endif %}
+							{% endfor %}   
+						</table>
+					</div>	
+				</div>
+			</div>
+
+
+
+			    
+		</div>		
+	</div>
+	<script type="text/javascript">
+
+		$(function(){
+	    $('.table tr[data-href]').each(function(){
+	        $(this).css('cursor','pointer').hover(
+	            function(){ 
+	                $(this).addClass('active'); 
+	            },  
+	            function(){ 
+	                $(this).removeClass('active'); 
+	            }).click( function(){ 
+	                document.location = $(this).attr('data-href'); 
+	            }
+	        );
+	    });
+	});
+	</script>             
+</body>
+</html>

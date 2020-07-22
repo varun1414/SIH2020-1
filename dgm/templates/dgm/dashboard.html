@@ -1,0 +1,600 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Communication Facility Maintenance</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static '/dgm/dashboard.css' %}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+
+</head>
+<body> 
+	<div class="container">
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+	      				
+	    		</li>
+	    	</ul>
+			<div class="title-header">COMMUNICATION FACILITY MAINTENANCE<img src="{% static '/images/aai.jpg' %}"></div>			
+		</nav>
+		<br>
+		<div class="row" style="padding-left:1rem;">
+			<div class="col-sm-8"><iframe src="{% url 'calendar' %}" class="iframe-css"></iframe></div>
+			<div class="col-sm-4">
+				<div class="card mb-3" style="width: 20rem; height:7rem; cursor:pointer" >
+		            <div class="card-body" data-toggle="modal" data-target="#searchrec" href='#'>
+		            	<b>SEARCH FOR RECORDS</b>
+		            	<img src="{% static '/images/search.png' %}" style="width:4rem; height:4rem;">
+		            </div>
+		            <br>
+		            <div class="modal fade" id="searchrec">
+					    <div class="modal-dialog">
+						    <div class="modal-content">
+						        <div class="modal-header">
+						          <h3 class="modal-title">SEARCH FOR RECORDS</h3>
+						        </div>
+						        <div class="modal-body" >
+									<div class="bootstrap-iso">
+									    <form method="post">
+									    	<div class="form-group ">
+									      		<label class="control-label " for="select">
+											    	CATEGORY
+											    </label>
+										      	<select class="select form-control" id="select" name="select" required="required">
+										      		<option value="Choose" selected="selected" disabled="disabled">Choose a Category</option>
+										       		<option value="Datis Daily">DATIS DAILY</option>
+										       		<option value="Datis Weekly">DATIS WEEKLY</option>
+										       		<option value="DSCN Daily">DSCN DAILY</option>
+										       		<option value="DSCN Monthly">DSCN MONTHLY</option>
+										      	</select>
+									     	</div>
+									    	<div class="form-group">
+									      		<label class="control-label " name="date" id="date">FROM</label>
+									      		<input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="text" required="required">
+									     	</div>
+									     	<div class="form-group ">
+									      		<label class="control-label " name="date1" id="date1">TO</label>
+									      		<input class="form-control" id="date1" name="date1" placeholder="MM/DD/YYYY" type="text" required="required">
+									     	</div>
+									     	<div class="form-group">
+									      		<div>
+									       			<button class="btn btn-primary " name="submit" type="submit"data-toggle="modal" data-target="#searchsuccess" href="#">Submit</button>
+									      		</div>
+									     	</div>
+									    </form>
+									</div>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						        </div>  
+						    </div>
+					    </div>
+					</div>
+
+					<div class="modal fade" id="searchsuccess">
+					    <div class="modal-dialog">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <h3 class="modal-title">SEARCH RESULTS</h3>
+					          
+					        </div>
+					        <div class="modal-body" > 
+					        	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								<tr>
+									<th></th>
+				      				<th>Latest Report Status</th>
+				      				<th>Check Standards</th>
+							 		<th>Maintenance Reports</th>
+							    </tr>
+							    <tr>
+							    	<td>DATIS</td>
+							    	<td>Pending</td>
+							    	<td>STANDARDS</td>
+							    	<td>REPORTS</td>
+							    </tr>
+							    <tr>
+							    	<td>DSCN</td>
+							    	<td>Completed</td>
+							    	<td>STANDARDS</td>
+							    	<td>REPORTS</td>
+							    </tr>
+							</table>   	
+					        </div>
+					        
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					        </div>  
+					      </div>
+					    </div>
+					</div>
+		  	    </div>
+		  	    <div class="card mb-3 sidecard1" style="width: 20rem;" >
+		            <div class="card-body">
+		            	<div class="row" style="padding-left: 0px;">
+		            		<div class="col-sm-3"><img src="{% static '/images/email.png' %}" style="width:4rem; height:4rem;"></div>
+							<div class="col-sm-9">
+								<b style="text-align: left;">INCHARGE: SURAJ SHAH</b>
+			                	<button class="btn submitbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button>
+			            	</div>
+		            	</div>
+		            	<hr>
+		            	<div class="row" style="padding-left: 0px;">
+							<div class="col-sm-8" style=" padding-right: 0px">
+								<b style="text-align: left;">ENGINEER STATISTICS</b>
+			                	<button class="btn submitbut" data-toggle="modal" data-target="#leaderboard" href='#'>Leaderboard</button>
+			            	</div>
+			            	<div class="col-sm-4" ><img src="{% static '/images/podium.png' %}" style="width:4rem; height:4rem;"></div>
+		            	</div>
+					</div>
+		  	    </div>
+		  	    <div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h3 class="modal-title">SUPERVISOR</h3>
+				          
+				        </div>
+				        <div class="modal-body" >
+				        	{% for supdetails1 in supdetails %}
+				          <h4>Name:{{supdetails1.name}}</h4>
+				          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{ supdetails1.email }}</a></h5>
+				          <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+				          <h5>Phone: {{ supdetails1.contact }}</h5>
+							{% endfor %}
+				        </div>
+				        
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+			</div>
+	    </div>
+	    <br><br><br>
+
+	    <!-- <div class="row" style="padding-left:0rem;">
+	    	<div class="col lg-4">
+		  	    
+
+		  	   
+
+		  	    
+		  	</div>
+		  	<div class="col-lg-8">
+		  	    <div class="tab" style="width:45.6rem;" >
+				  <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">DAILY</button>
+				  <button class="tablinks" onclick="openCity(event, 'Paris')">WEEKLY</button>
+				  <button class="tablinks" onclick="openCity(event, 'Tokyo')">MONTHLY</button>
+				</div>
+		      <div class="tabcol">
+		      	<div id="London" class="tabcontent">
+					    <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+							<tr>
+								<th></th>
+			      				<th>Latest Report Status</th>
+			      				<th>Check Standards</th>
+						 		<th>Maintenance Reports</th>
+						    </tr>
+						    <tr>
+						    	<td>DATIS</td>
+						    	<td><button class="btn pendbut" onclick="window.location.href='#'">PENDING</button></td>
+						    	<td><button class="btn standards" data-toggle="modal" data-target="#datisdaily">STANDARDS</button></td>
+						    	<td><button class="btn standards" onclick="window.location.href='#'">REPORTS</button></td>
+						    </tr>
+						    <tr>
+						    	<td>DSCN</td>
+						    	<td><button class="btn completebut" onclick="window.location.href='#'">UP-TO-DATE</button></td>
+						    	<td><button class="btn standards" data-toggle="modal" data-target="#dscndaily">STANDARDS</button></td>
+						    	<td><button class="btn standards" onclick="window.location.href='#'">REPORTS</button></td>
+						    </tr>
+						</table>   	
+				</div>		
+				<div id="Paris" class="tabcontent">
+					    <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+							<tr>
+								<th></th>
+			      				<th>Latest Report Status</th>
+			      				<th>Check Standards</th>
+						 		<th>Maintenance Reports</th>
+						    </tr>
+						    <tr>
+						    	<td>DATIS</td>
+						    	<td><button class="btn pendbut">PENDING</button></td>
+						    	<td><button class="btn standards" data-toggle="modal" data-target="#datisweekly">STANDARDS</button></td>
+						    	<td><button class="btn standards" onclick="window.location.href='#'">REPORTS</button></td>
+						    </tr>
+						</table>   	
+				</div>
+
+				<div id="Tokyo" class="tabcontent">
+					    <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+							<tr>
+								<th></th>
+			      				<th>Latest Report Status</th>
+			      				<th>Check Standards</th>
+						 		<th>Maintenance Reports</th>
+						    </tr>
+						    
+						    <tr>
+						    	<td>DSCN</td>
+						    	<td><button class="btn completebut" onclick="window.location.href='#'">UP-TO-DATE</button></td>
+						    	<td><button class="btn standards" data-toggle="modal" data-target="#dscnmonthly">STANDARDS</button></td>
+						    	<td><button class="btn standards" onclick="window.location.href='#'">REPORTS</button></td>
+						    </tr>
+						</table>   	
+				</div>
+				</div>
+				<div class="modal fade" id="datisdaily">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - Datis Daily</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          <table  class="table table-bordered standtab table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+				          		<td>Room Temperature</td>
+				          		<td>24 C</td>
+				          	</tr>
+				          	
+								<tr>
+				          		<td>Status of AC</td>
+				          		<td>SVCBL</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status OF UPS</td>
+				          		<td>NORMAL</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of Server A</td>
+				          		<td>MAINS/STANDBY</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of Server B</td>
+				          		<td>MAINS/STANDBY</td>
+				          	</tr>
+				          
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="datisweekly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - Datis Weekly</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>				          
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+				          		<td>UPS Input</td>
+				          		<td>200-230V</td>
+				          	</tr>
+				          	
+								<tr>
+				          		<td>UPS Output</td>
+				          		<td>230V</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Dust Free</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>LAN Status</td>
+				          		<td>OK</td>
+				          	</tr>
+				         
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+				<div class="modal fade" id="dscndaily">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - DSCN Daily</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+				          		<td>SAT LED</td>
+				          		<td>Steady ON</td>
+				          	</tr>
+				          	
+								<tr>
+				          		<td>ODU LED</td>
+				          		<td>Steady ON</td>
+				          	</tr>
+				          		<tr>
+				          		<td>I/O LED</td>
+				          		<td>Steady ON</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Alarm LED</td>
+				          		<td>OFF</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Power LED</td>
+				          		<td>Steady ON</td>
+				          	</tr>
+				          		<tr>
+				          		<td>V.35 LED</td>
+				          		<td>Rx/Tx- Blinking, When data is being Xmitted/R'cvd</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Input Voltage</td>
+				          		<td>230-10%, 230+10%</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Output Voltage</td>
+				          		<td>Refer Airtel/UPS service manual</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Battery Voltage</td>
+				          		<td>Refer Airtel/UPS service manual</td>
+							</tr>
+				          		<tr>
+				          		<td>C/O Function</td>
+				          		<td>OK</td>
+				          	</tr>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+
+				<div class="modal fade" id="dscnmonthly">
+					    <div class="modal-dialog">
+	      				    <div class="modal-content">
+	      				      	<div class="modal-header">
+	      				          	<h4 class="modal-title">Standards - DSCN Monthly</h4>
+	      				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      				      	</div>
+	    				        <div class="modal-body">
+	    				          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+		    				          	<tr>
+											<th>VALUE LABEL</th>
+											<th>NORMAL VALUE</th>
+										</tr>
+										<tr>
+											<td>CLEANING DSCN ASSOCIATED EQUIPMENT</td>
+											<td>(Check if completed)</td>
+										</tr>
+										
+										  <tr>
+											<td>BATTERY BACKUP TIME OF UPS1 AND UPS2</td>
+											<td>(Check if enough)</td>
+										</tr>
+											<tr>
+											<td>UPS BATTERY VOLTAGE ON LOAD</td>
+											<td>(Check if proper)</td>
+										</tr>
+											<tr>
+											<td>ANTENNA AND CABLE CHECK</td>
+											<td>(Check if okay)</td>
+										</tr>
+											<tr>
+											<td>EARTH RESISTANCE</td>
+											<td>(Check if okay)</td>
+										</tr>
+											<tr>
+											<td>E OR N VOLTAGE</td>
+											<td>(Check value)</td>
+										</tr>
+											<tr>
+											<td>EQUIPMENT STATUS AFTER CHECK</td>
+											<td>(Check if okay)</td>
+											</tr>   		          
+	    				          </table>
+	    				        </div>
+	    				        <div class="modal-footer">
+	    				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    				        </div>  
+	      				    </div>
+	  				  	</div>
+	  				</div>
+	
+
+
+			</div>
+		</div> -->
+	</div>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+$('#date').css('border-color', '#ced4da');
+$('#date1').css('border-color', '#ced4da');
+
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+$(document).ready(function(){
+      var date_input=$('input[name="date"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'mm/dd/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+
+$(document).ready(function(){
+ var date1_input=$('input[name="date1"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'mm/dd/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date1_input.datepicker(options);
+  })
+
+
+
+
+
+
+</script>
+
+<script>
+var overviewCanvasdatisd = document.getElementById("overviewchartreq");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+var overviewDatadatisd = {
+    labels: [
+        "Maintenance Required", "Others"
+    ],
+    datasets: [
+        {
+            data: [54, 46],
+            backgroundColor: [
+                "red",
+                "#DBDBDB"
+            ],
+            borderColor: "#1e72fa",
+            borderWidth: 3
+        }]
+};
+
+var chartOptionsdatisd = {
+  rotation: -Math.PI,
+  cutoutPercentage:50,
+  circumference: 2*Math.PI,
+  legend: {
+    display:false
+  },
+  title: {
+  	display:true,
+  	text: "MAINTENANCE REQUIRED",
+  	position:'bottom',
+  	fontColor: 'white',
+  	fontSize: 12
+  },
+  animation: {
+    animateRotate: false,
+    animateScale: true
+  }
+};
+
+var pieChartdatisd = new Chart(overviewCanvasdatisd, {
+  type: 'doughnut',
+  data: overviewDatadatisd,
+  options: chartOptionsdatisd
+});
+</script>
+
+<script>
+var overviewCanvasdatisw = document.getElementById("overviewchartnotreq");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+var overviewDatadatisw = {
+    labels: [
+        "Maintenance Not Required", "Others"
+    ],
+    datasets: [
+        {
+            data: [17, 83],
+            backgroundColor: [
+                "red",
+                "#DBDBDB"
+            ],
+            borderColor: "#1e72fa",
+            borderWidth: 3
+        }]
+};
+
+var chartOptionsdatisw = {
+  rotation: -Math.PI,
+  cutoutPercentage:50,
+  circumference: 2*Math.PI,
+  legend: {
+    display:false
+  },
+  title: {
+  	display:true,
+  	text: "MAINTENANCE NOT REQUIRED",
+  	position:'bottom',
+  	fontColor: 'white',
+  	fontSize: 12
+  },
+  animation: {
+    animateRotate: false,
+    animateScale: true
+  }
+};
+
+var pieChartdatisw = new Chart(overviewCanvasdatisw, {
+  type: 'doughnut',
+  data: overviewDatadatisw,
+  options: chartOptionsdatisw
+});
+</script>
+
+
+</body>
+
+</html>

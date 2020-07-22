@@ -1,0 +1,321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" type="text/css" href="{% static 'supervisor/home.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+		<style>
+		.jumbotron {
+		  background-image: url("{% static '/images/sky1.jpg' %}"); 
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+		  background-size: cover;
+		}
+		</style>
+</head>
+<body>
+	<div class="container" >
+		<div class="title-header"><img src="{% static '/images/aai.jpg' %}">PREVENTIVE MAINTENANCE LOG</div>
+	<div class="jumbotron">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card cardlogo" >
+					  <img class="card-img-top" src="{% static '/images/man1.jpg' %}" alt="FACE">
+					  <div class="card-body">
+					  	<br>
+					  	
+					    <h5 class="card-title">{{sup.name}}</h5>
+						<div class="data-emp">
+							<h6 class="card-subsubtitle">{{sup.designation}}</h6>
+							
+							<h6 class="card-subsubtitle">{{air.name}} Airport</h6>
+							
+							<br>
+							<br>
+						</div>
+					  </div>
+					</div>
+				<div class="card cardcontact">	
+					<div class="card-body headcard">
+							<b>DGM: {{dgm.name}} </b>
+							<br>
+						   <button class="btn btn-primary contactbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button>
+							<br>
+
+					</div>
+
+				</div>
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h3 class="modal-title">SUPERVISOR
+				          <button type="button" class="close" data-dismiss="modal">&times;</button></h3>
+				        </div>
+				        <div class="modal-body">
+				          <h4>Name: {{dgm.name}} </h4>
+				          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{dgm.email}}</a></h5>
+				          <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+				          <h5>Phone: {{dgm.contact}}</h5>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="report">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h4 class="modal-title">SEND REPORT TO SUPERVISOR<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+							</div>
+							<div class="modal-body" style="margin-left:30px; margin-right:30px">
+								 <div class="helloform" style="padding:0">
+									<form method='post' action="/sent/" >
+										{% csrf_token %}
+						         		<br>
+										<div class="form-group row has-warning">
+											<label for="to" class="col-sm-6 col-form-label">TO: {{ dgm.name }}</label>
+										</div>
+										<div class="form-group row has-warning">
+											<label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+											<div>
+											  <input  type='text' required></input>
+											</div> 
+										</div>
+										<hr>
+										<div class="form-group row has-warning">
+											<label for="body" class="col-sm-6 col-form-label">BODY:</label>
+											<div>
+											  <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue." required style="width:16rem;"></textarea> 
+											</div>
+										</div>
+										<hr>                                                  
+										<input type="submit" value="SEND">
+										
+									</form>
+						  		 </div>
+							</div>
+					      </div>
+					    </div>
+				    </div>    
+			</div>	
+			<div class="col-md-2">
+			</div>
+			<div class="data-table">
+				<div class="col-md-3" >
+					<div class="card tabcard">
+						<ul class="nav nav-pills nav-stacked">
+						    <li class="active"><a class="todays" data-toggle="pill" href="#today" >Pending Approvals</a></li>
+						    <li><a class="todays" data-toggle="pill" href="#pending" >Pending Submissions</a></li>
+						    <li><a class="faculty" data-toggle="pill" href="#employ" >Engineers</a></li>
+						    <li><a class="faculty" data-toggle="pill" href="#facilities" >Facilities</a></li>
+						    
+						 </ul>
+						 <button class="btn btn-primary logout" onclick="window.location.href='/logout/{{ sup.supervisor_id }}'" style="margin-top:70px"> Logout</button>
+					</div>
+				</div>
+
+				<div class="col-md-4 card tabcol">
+					<div class="tab-content">
+			    		<div id="today" class="tab-pane fade in active tod">
+								<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+									<tr>
+							      		<th>Submitted on</th>
+							      		<th>Task Name</th>
+							      		<th>Submission Type</th>
+							      		<th>Approval Status</th>
+						      		</tr>
+						      		{% for i in datis %}
+						      		{% if i.status != "PENDING" and i.unit_incharge_approval != "YES" %}
+								    <tr data-href="{% url 'supervisor:details' id=i.token name=i.type%}">								    	
+								        <td>{{i.date}}</td>
+								        <td>{{i.type}}</td>
+								        <td>{{i.status}}</td>
+								        <td>{{i.unit_incharge_approval}}</td>								       
+								    </tr>
+								    {% endif %}
+								    {% endfor %}
+						      		
+								</table>
+						</div>		
+						<div id="pending" class="tab-pane fade in tod">
+								<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+									<tr>
+										<th>Deadline</th>
+							      		<th>Attempted on</th>
+							      		<th>Task Name</th>
+							      		<th>Employee ID</th>
+						      		</tr>
+						      		{% for i in datis %}
+						      		{% if i.status == "PENDING" %}
+								    <tr data-href="{% url 'supervisor:details' id=i.token name=i.type%}">
+								    	
+								    	<td>{{i.repdead}}</td>
+								    	{% if i.remarks == "---Report not submitted---" %}
+								    	<td>--</td>
+								    	{% else %}
+								        <td>{{i.date}}</td>
+								        {% endif %}
+								        <td>{{i.type}}</td>
+								        <td>{{i.emp_id}}</td>
+								            
+								    </tr>
+								    {% endif %}
+								    {% endfor %}
+								</table>
+						</div>							
+						<div id="employ" class="tab-pane fade tod">
+							<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+							    <tr >
+							    	<th>Employee ID</th>
+							    	<th>Employee Name</th>
+							    	<th>Employee Designation</th>
+							    </tr>
+							    {% for i in eng %}
+							    <tr data-href="{% url 'supervisor:empdetails' i.token%}">
+									<td>{{i.emp_id}}</td>
+									<td>{{i.name}}</td>
+									<td>{{i.designation}}</td>
+
+							    </tr>
+							    {% endfor %}
+							</table>
+						</div>
+						
+						<div id="facilities" class="tab-pane fade fac">
+							 	 
+							<div id="facfix"> 
+					  			<button class="tablink" onclick="openCity('Daily', this, 'blue')" id="defaultOpen">Daily</button>
+								<button class="tablink" onclick="openCity('Weekly', this, 'blue')">Weekly</button>
+								<button class="tablink" onclick="openCity('Monthly', this, 'blue')">Monthly</button>
+							</div>
+							<div id="Daily" class="tabcontent">
+								<h3 class="dateset">Daily</h3>
+								
+								<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								{% if sup.dept == 'C' %}
+									<tr data-href="{% url 'supervisor:datisdaily' %}">
+										<td>DATIS</td>
+									</tr>
+									<tr data-href="{% url 'supervisor:dscndaily' %}">
+										<td>DSCN</td>
+								{% endif %}
+								{% if sup.dept == 'N' %}
+									</tr>
+									<tr data-href="{% url 'supervisor:cdvordaily' %}">
+										<td>CDVOR</td>
+									</tr>
+								{% endif %}
+								{% if sup.dept == 'S' %}
+									
+									<tr data-href="{% url 'supervisor:scctvdaily' %}">
+										<td>SCCTV</td>
+									</tr>
+									{% endif %}
+								</table>
+							</div>
+							<div id="Weekly" class="tabcontent">
+								<h3 class="dateset">Weekly</h3>
+								<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								
+								{% if sup.dept == 'C' %}
+									<tr data-href="{% url 'supervisor:datisweekly' %}">
+										<td>DATIS</td>
+									</tr>
+									<tr data-href="{% url 'supervisor:dscnweekly' %}">
+										<td>DSCN</td>
+									{% endif %}
+
+									{% if sup.dept == 'N' %}
+									
+									<tr data-href="{% url 'supervisor:cdvorweekly' %}">
+										<td>CDVOR</td>
+									</tr>
+									{% endif %}
+
+									{% if sup.dept == 'S' %}
+									
+									<tr data-href="{% url 'supervisor:scctvdaily' %}">
+										<td>SCCTV</td>
+									</tr>
+									{% endif %}
+							</table>
+							</div>
+							<div id="Monthly" class="tabcontent">
+								<h3 class="dateset">Monthly</h3>
+								<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								{% if sup.dept == 'C' %}
+									<tr data-href="{% url 'supervisor:datisdaily' %}">
+										<td>DATIS</td>
+									</tr>
+									<tr data-href="{% url 'supervisor:dscndaily' %}">
+										<td>DSCN</td>
+									{% endif %}
+
+									{% if sup.dept == 'N' %}
+									</tr>
+									<tr data-href="{% url 'supervisor:cdvormonthly' %}">
+										<td>CDVOR</td>
+									</tr>
+									{% endif %}
+
+									{% if sup.dept == 'S' %}
+									
+									<tr data-href="{% url 'supervisor:scctvdaily' %}">
+										<td>SCCTV</td>
+									</tr>
+									{% endif %}
+								</table>
+							</div>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    function openCity(cityName,elmnt,color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(cityName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+    
+    }
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    
+    $(function(){
+        $('.table tr[data-href]').each(function(){
+            $(this).css('cursor','pointer').hover(
+                function(){ 
+                    $(this).addClass('active'); 
+                },  
+                function(){ 
+                    $(this).removeClass('active'); 
+                }).click( function(){ 
+                    document.location = $(this).attr('data-href'); 
+                }
+            );
+        });
+    });
+    </script>
+    </body>
+    </html>

@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily CDVOR Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackcd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+		</nav>
+		<br>
+		
+
+			<div class="row">
+				<div class="col-sm-7">
+					{% for cdvord in cdvor_d %}
+					{% if f != 1 %}
+					{% if cdvord.azimuth_angle < 25 and cdvord.number_30hz_modulation >= 28 and cdvord.number_30hz_modulation < 31 and cdvord.number_9960hz_modulation >= 28 and cdvord.number_9960hz_modulation < 31 and cdvord.number_9960hz_deviation >= 15 and cdvord.number_9960hz_deviation < 18 and cdvord.field_intensity >= -1 and cdvord.field_intensity < 2 %}
+					<div class="alert alert-success">
+						<strong>Maintenance succesful!</strong> 
+							All entries matched with standard values.
+										
+					{% else %}					
+					<div class="alert alert-danger">
+						<strong>Maintenance failed!!!</strong> 
+							Please try again.
+					
+					{% endif %}
+					{% endif %}
+					{% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong> 
+					
+				   {% endif %}
+					<div class="card" style="text-align: center;">				    
+						<form id="form-v">					   
+					      <div class="card-body">
+					        <h2 class="card-title">CDVOR DAILY MAINTENANCE ENTRY</h2>
+					      
+					      	
+							 	<div class="alert alert-light" style="height: 40px; padding-top: 0px">
+								    Recorded on:  DATE: {{ cdvord.date }}  |  TIME: {{ cdvord.time }}<br>
+                                    <strong>STATUS: {{ cdvord.status }} </strong>
+								</div>
+						
+	     					 <hr>
+							<div class="form-group row has-warning">
+							  <label for="azimuth_angle" class=col-sm-6 col-form-label">Azimuth angle*</label>
+							  <div>
+							   	<input type="text" class="form-control form-control-sm" id="azimuth_angle" name="Azimuth angle" readonly="true" value="{{ cdvord.azimuth_angle }}">
+							  </div>
+							</div>
+
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="number_30hz_modulation" class="col-sm-6 col-form-label">30Hz modulation*</label>
+							  <div>
+							     <input type="text" class="form-control form-control-sm" id="number_30hz_modulation" name="30Hz modulation" readonly="true" value="{{ cdvord.number_30hz_modulation }}">
+							  </div>
+							</div>
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="number_9960hz_modulation" class="col-sm-6 col-form-label">9960Hz modulation*</label>
+							  <div>
+							    <input type="text" class="form-control form-control-sm" id="number_9960hz_modulation" name="9960Hz modulation" readonly="true" value="{{ cdvord.number_9960hz_modulation }}"/><br>
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							    <label for="number_9960hz_deviation" class="col-sm-6 col-form-label">9960Hz deviation*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="number_9960hz_deviation" name="9960Hz deviation" readonly="true" value="{{ cdvord.number_9960hz_deviation }}"/><br>
+							    </div>
+							  </div>
+
+							  
+							  	<hr>  
+							  <div class="form-group row has-warning">
+							    <label for="field_intensity" class="col-sm-6 col-form-label">Field Intensity*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="field_intensity" name="Field Intensity" readonly="true" value="{{ cdvord.field_intensity }}">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+						 <!-- 
+							  <div class="form-group row">
+							    <label for="datetime_of_servers_wrt_GPS_CLK" class="col-sm-6 col-form-label">Date and time of servers wrt GPS CLK</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="datetime_of_servers_wrt_GPS_CLK">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="status_of_Disk_array" class="col-sm-6 col-form-label">Status of Disk Array</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="status_of_Disk_array">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFTX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF TX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFTX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFRX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF RX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFRX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="DATIS_update" class="col-sm-6 col-form-label">DATIS Update</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="DATIS_update">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Audio_quality" class="col-sm-6 col-form-label">Audio Quality</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Audio_quality">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="REMARKS" class="col-sm-6 col-form-label">Remarks</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="REMARKS">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Unit_incharge_approval" class="col-sm-6 col-form-label">Unit Incharge Approval</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Unit_incharge_approval">
+							    </div>
+							  </div>
+							    <hr> 
+							-->
+							
+				      		</div>				      
+				  		</form>
+					  	<div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
+							
+							{% if cdvord.azimuth_angle < 25 and cdvord.number_30hz_modulation >= 28 and cdvord.number_30hz_modulation < 31 and cdvord.number_9960hz_modulation >= 28 and cdvord.number_9960hz_modulation < 31 and cdvord.number_9960hz_deviation >= 15 and cdvord.number_9960hz_deviation < 18 and cdvord.field_intensity >= -1 and cdvord.field_intensity < 2 %}
+
+									<p></p>
+								{% elif f != 1  %}
+								   
+								    <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editcdvord/{{ cdvord.p_id }}'">EDIT</button>
+
+								   <button class="btn submitbut" onclick="window.location.href='/repsubcderrors/{{ cdvord.p_id}}/{{ id }}'">SUBMIT WITH ERRORS</button>						
+							{% endif %}
+							
+					  	</div>
+				  		
+					</div>				  		
+				</div>
+				  {% endfor %}
+				</div>
+	
+				 <div class="col-sm-5" >
+	            	<div class="sidebar s" >
+		                <div class="col-sm-12">
+		                  <div class="card mb-3 sidecard" style="width: 22rem; " >
+		                      <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+		                          <h6>MAINTENANCE HISTORY</h6>
+		                      </div>
+	                  	  </div>    
+	                	</div>
+	                	<div class="row rows">
+		                    <div class="col">
+		                      	<div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+		                          	<div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+		                              	<h6>CHECK STANDARDS</h6>
+		                          	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col">
+		                      <div class="card sidecard" style="width:10rem;" >
+		                            <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+		                                <h6>CONTACT SUPERVISOR</h6>
+		                            </div>
+		                        </div>     
+		                    </div>
+	                	</div>    
+	              	</div>
+
+	                <div> 
+	                  	<div class="logr">                       
+	                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+	                        <div class="tablogr">
+		                        <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+			                        <thead >
+			                            <tr>
+			                              <th>Log_ID</th>
+			                              <th>Remarks</th>
+			                              <th>Value</th>
+			                              <th>Date-Time</th>  
+			                            </tr>
+			                        </thead>
+		                          	<tbody>
+		                            {% for log in cdvordlogs %}
+			                            <tr>
+			                                <td>{{ log.log_id }}</td>
+			                                <td>{{ log.remarks }}</td>
+			                                <td>{{ log.value }}</td>
+			                                <td>{{ log.time }}<br>{{ log.date }}</td>
+			                             </tr>
+		                            {% endfor %}
+		                          </tbody>                           
+		                        </table>
+	                    	</div>
+	                  	</div>
+	                </div>   
+	              
+	          		<div class="modal fade" id="standardcheck">
+					    <div class="modal-dialog">
+	      				    <div class="modal-content">
+	      				      	<div class="modal-header">
+	      				          	<h4 class="modal-title">Standards</h4>
+	      				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      				      	</div>
+	    				        <div class="modal-body">
+	    				          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+		    				          	<tr>
+		    				          		<th>VALUE LABEL</th>
+		    				          		<th>NORMAL VALUE</th>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>Azimuth Angle</td>
+		    				          		<td>less than 25</td>
+		    				          	</tr>
+		    				          	
+		    								    <tr>
+		    				          		<td>30Hz Modulation</td>
+		    				          		<td>28 - 30</td>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>9960Hz Modulation</td>
+		    				          		<td>28 - 30</td>
+										  </tr>
+										<tr>
+											<td>9960Hz Deviation</td>
+											<td>15 - 17</td>
+										</tr>
+		    				          	<tr>
+		    				          		<td>Field Intensity</td>
+		    				          		<td>-1 - 1</td>
+		    				          	</tr>
+		    				          	
+		    				          	<!--	<tr>
+		    				          		<td>Date and time of servers wrt GPS CLK</td>
+		    				          		<td>Correct</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of Disk Array</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF TX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF RX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>DATIS update</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Audio Quality of Datis Announcement</td>
+		    				          		<td>Good</td>
+		    				          	</tr>-->
+	    				          </table>
+	    				        </div>
+	    				        <div class="modal-footer">
+	    				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    				        </div>  
+	      				    </div>
+	  				  	</div>
+	  				</div>
+
+	              	<div class="modal fade" id="pastlog">
+		                <div class="modal-dialog modal-lg">
+		                  	<div class="modal-content">
+			                    <div class="modal-header">
+			                      <h4 class="modal-title">Maintenance History</h4>
+			                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                    </div>
+			                    <div class="modal-body">
+				                    <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+				                        <thead>
+				                            <tr>  
+												<th>Date-Time</th>
+				                                <th>Azimuth Angle</th>
+				                                <th>30Hz Modulation</th>
+				                                <th>9960Hz Modulation</th>
+				                                <th>9960Hz Deviation</th>
+				                                <th>Field Intensity</th>
+				                                <th>Remarks</th>
+				                           		<th>Test</th>
+				                            </tr>
+				                        </thead>
+				                        <tbody>
+				                            {% for cdvordd in cdvord %}
+				                            <tr>
+				                             <td>{{ cdvordd.date }}<br>{{ cdvordd.time }}</td>
+				                                <td>{{ cdvordd.azimuth_angle }}</td>
+				                                <td>{{ cdvordd.number_30hz_modulation }}</td>
+				                                <td>{{ cdvordd.number_9960hz_modulation }}</td>
+				                                <td>{{ cdvordd.number_9960hz_deviation }}</td>
+				                                <td>{{ cdvordd.field_intensity }}</td>
+				                                <td>{{ cdvordd.remarks }}</td>
+									{% if cdvordd.azimuth_angle < 25 and cdvordd.number_30hz_modulation >= 28 and cdvordd.number_30hz_modulation < 31 and cdvordd.number_9960hz_modulation >= 28 and cdvordd.number_9960hz_modulation < 31 and cdvordd.number_9960hz_deviation >= 15 and cdvordd.number_9960hz_deviation < 18 and cdvordd.field_intensity >= -1 and cdvordd.field_intensity < 2 %}
+												<td>Pass</td>
+				                            {% else %}
+				                                <td>Fail</td>
+				                            {% endif %}  
+				                            </tr>
+				                            {% endfor %}
+				                         </tbody>
+				                    </table>
+			                    </div>
+			                    <div class="modal-footer">
+			                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				                </div>  
+		                 	</div>
+		                </div>
+	              	</div>
+
+	              	
+
+
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">SUPERVISOR</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+							{% for sup in supdetails %}
+				          <h5>{{ sup.name }}</h5>
+				          <h6>Email: <a data-toggle="modal" data-target="#report" href="#">{{ sup.email }}</a></h6>
+						  <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+						  <h6>Phone: {{ sup.contact }}</h6>
+						  {% endfor %}
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+				<div class="modal fade" id="report">
+					<div class="modal-dialog">
+					  <div class="modal-content">
+						<div class="modal-header">
+						  <h4 class="modal-title">SEND REPORT TO SUPERVISOR</h4>
+						  <button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+						 <div class="helloform" style="padding:0">
+							<form method='post' action="/sent/" >
+								{% csrf_token %}
+								{% for sup in supdetails %}
+				         		<br>
+								<div class="form-group row has-warning">
+									<label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+								</div>
+								<div class="form-group row has-warning">
+									<label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+									<div>
+									  <input class="form-control form-control-sm" type='text'></input>
+									</div>
+								</div>
+								<hr>
+								<div class="form-group row has-warning">
+									<label for="body" class="col-sm-6 col-form-label">BODY:</label>
+									<div>
+									  <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue."></textarea> 
+									</div>
+								</div>
+								<hr>                                                  
+								<input type="submit" value="SEND">
+								{% endfor %} 
+							</form>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>    
+				</div>
+			</div>
+	</div>
+<script>
+	$(function(){
+            if($("#azimuth_angle").val()<"25"){
+            	 $('#azimuth_angle').css('border-color', 'pale-green');
+            }else{
+               $('#azimuth_angle').css('border-color', 'red');
+            }
+
+            if($("#number_30hz_modulation").val()>="28" && $("#number_30hz_modulation").val()<"31"){
+            	 $('#number_30hz_modulation').css('border-color', 'pale-green');
+            }else{
+               $('#number_30hz_modulation').css('border-color', 'red');
+            }
+
+            if($("#number_9960hz_modulation").val()>="28" && $("#number_9960hz_modulation").val()<"31"){
+            	 $('#number_9960hz_modulation').css('border-color', 'pale-green');
+            }else{
+               $('#number_9960hz_modulation').css('border-color', 'red');
+            }
+
+             if($("#number_9960hz_deviation").val()>="15" && $("#number_9960hz_deviation").val()<"18"){
+            	 $('#number_9960hz_deviation').css('border-color', 'pale-green');
+            }else{
+               $('#number_9960hz_deviation').css('border-color', 'red');
+            }
+
+             if($("#field_intensity").val()>= -1 && $("#field_intensity").val()<"2"){
+            	 $('#field_intensity').css('border-color', 'pale-green');
+            }else{
+               $('#field_intensity').css('border-color', 'red');
+            }
+           
+        });
+		
+
+
+	</script>
+</body>
+
+</html>

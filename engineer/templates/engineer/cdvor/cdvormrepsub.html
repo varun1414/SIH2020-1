@@ -1,0 +1,331 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Monthly CDVOR Maintenance Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='/routebackcd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>      
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+            
+        </nav>
+        <br>
+        <div class="row">
+                <div class="col-sm-7">
+                    <form method='POST' action='/cdvormrepsub/{{ id }}' id="form-v">
+                        {% csrf_token %}
+                        <div class="card" style="text-align: center;">
+                          <div class="card-body">
+                            <h2 class="card-title">CDVOR MONTHLY MAINTENANCE ENTRY</h2>
+                            <hr>
+<!--
+    <h1>Submit weekly DATIS report </h1>
+    <form method='POST' action='/datiswrepsub/{{ id }}'>
+        {% csrf_token %}-->
+
+        <div class="form-group row has-warning">
+            <label for="measured_bearing_1" class="col-sm-6 col-form-label">Measured bearing 1</label>
+            <div>
+        <input type=number step="0.01" id="measured_bearing_1" name="Measured bearing 1" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+         <div class="form-group row has-warning">
+            <label for="measured_bearing_2" class="col-sm-6 col-form-label">Measured bearing 2</label>
+            <div>
+        <input type=number step="0.01" name="Measured bearing 2" id="measured_bearing_2" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+        <div class="form-group row has-warning">
+            <label for="measured_bearing_3" class="col-sm-6 col-form-label">Measured bearing 3</label>
+            <div>
+        <input type=number step="0.01" name="Measured bearing 3" id="measured_bearing_3" class="form-control form-control-sm" required></input></div></div>
+<hr>
+        <div class="form-group row has-warning">
+            <label for="measured_bearing_4" class="col-sm-6 col-form-label">Measured bearing 4</label>
+            <div>
+        <input type=number step="0.01" name="Measured bearing 4" id="measured_bearing_4" class="form-control form-control-sm" required></input></div></div>
+<hr>
+        <div class="form-group row has-warning">
+            <label for="measured_bearing_5" class="col-sm-6 col-form-label">Measured bearing 5</label>
+            <div>
+        <input type=number step="0.01" name="Measured bearing 5" id="measured_bearing_5" class="form-control form-control-sm" required></input></div></div>
+
+
+
+        <hr>
+        <button class="btn submitbut"> SUBMIT </button>
+    </div>
+</div>
+    </form>
+</div>
+<div class="col-sm-5" >
+                <div class="sidebar s s_01" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; padding-top:10px; padding-bottom: 10px;" >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                        </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT SUPERVISOR</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                  </div>
+                </div>
+
+   <!-- <td><button class="btn btn-success" onclick="window.open('/datisweeklyrec/{{ id }}','_blank')" >Past Equipment Logs</button></td>
+    <td><button class="btn btn-success" onclick="window.open('/standards','_blank')">Check Standards</button></td>
+    <td><button onclick="window.location.href= '/datisdaily/{{ id }}'"> Contact Supervisor</button></td>
+    <button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+    <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog" >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Standards</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                            <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>Measured Bearing 1</td>
+                                <td> 0</td>
+                            </tr>
+                                <tr>
+                                <td>Measured Bearing 2</td>
+                                <td> 7.5</td>
+                            </tr>
+                                <tr>
+                                <td>Measured Bearing 3</td>
+                                <td> 15</td>
+                            </tr>
+                                <tr>
+                                <td>Measured Bearing 4</td>
+                                <td> 22.5</td>
+                            </tr>
+                                <tr>
+                                <td>Measured Bearing 5</td>
+                                <td> 30</td>
+                            </tr>
+                              <tr>
+                                <td>Error Spread</td>
+                                <td>Minimum as possible, typically 0</td>
+                            </tr>
+                            
+                             <!--     <tr>
+                                <td>Time Sync</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Quality of Audio</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>PTT Off Interval</td>
+                                <td>OK</td>
+                            </tr>-->
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Maintenance History</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                    <th>Date-Time</th>
+                    <th>Measured Bearing </th>
+                    <th>Bearing Deviation</th>
+                    <th>Error Spread</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cdvorm in cdvor_m %}
+                <tr>
+                 <td>{{ cdvorm.date }}<br>{{ cdvorm.time  }}</td>   
+                 <td>1: {{ cdvorm.measured_bearing_1 }}<br>
+                  2:{{ cdvorm.measured_bearing_2 }}<br>
+                  3:{{ cdvorm.measured_bearing_3 }}<br>
+                  4:{{ cdvorm.measured_bearing_4 }}<br>
+                  5:{{ cdvorm.measured_bearing_5 }}</td>
+                  <td>1: {{ cdvorm.bearing_deviation_1 }}<br>
+                  2:{{ cdvorm.bearing_deviation_2 }}<br>
+                  3:{{ cdvorm.bearing_deviation_3 }}<br>
+                  4:{{ cdvorm.bearing_deviation_4 }}<br>
+                  5:{{ cdvorm.bearing_deviation_5 }}</td>
+                  <td>{{ cdvorm.error_spread }}</td>
+                  <td>{{ cdvorm.remarks }}</td>
+                  {% if cdvorm.bearing_deviation_1 < 1 and cdvorm.bearing_deviation_2 < 1 and cdvorm.bearing_deviation_3 < 1 and cdvorm.bearing_deviation_4 < 1 and cdvorm.bearing_deviation_5 < 1 and cdvorm.error_spread < 0.5 %}
+                  <td>Pass</td>
+	              {% else %}
+	              <td>Fail</td>
+               	  {% endif %}
+                </tr>
+               {% endfor %}
+             </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="contactsuper">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">SUPERVISOR</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+    {% for sup in supdetails %}
+        <h5>{{ sup.name }}</h5>
+        <h6>Email: <a data-toggle="modal" data-target="#report" href="/email">{{ sup.email }}</a></h6>
+   
+    <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+    <h6>Phone: {{ sup.contact }}</h6>
+    {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>  
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="report">
+<div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">SEND REPORT TO SUPERVISOR</h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+  </div>
+  <div class="modal-body">
+   <div class="helloform" style="padding:0">
+    <form method='post' action="/sent/" >
+      {% csrf_token %}
+      {% for sup in supdetails %}
+           <br>
+      <div class="form-group row has-warning">
+        <label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+      </div>
+      <div class="form-group row has-warning">
+        <label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+        <div>
+          <input class="form-control form-control-sm" type='text'></input>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group row has-warning">
+        <label for="body" class="col-sm-6 col-form-label">BODY:</label>
+        <div>
+          <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue."></textarea> 
+        </div>
+      </div>
+      <hr>                                                  
+      <input type="submit" value="SEND">
+      {% endfor %} 
+    </form>
+    </div>
+  </div>
+  </div>
+</div>
+</div>    
+
+            </div>
+
+    </div>
+    <!--ADDITION-->
+<script>
+
+$("#measured_bearing_1").on("keyup",function(){
+    if($("#measured_bearing_1").val()==""){
+        $('#measured_bearing_1').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_1').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_2").on("keyup",function(){
+    if($("#measured_bearing_2").val()==""){
+        $('#measured_bearing_2').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_2').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_3").on("keyup",function(){
+    if($("#measured_bearing_3").val()==""){
+        $('#measured_bearing_3').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_3').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_4").on("keyup",function(){
+    if($("#measured_bearing_4").val()==""){
+        $('#measured_bearing_4').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_4').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_5").on("keyup",function(){
+    if($("#measured_bearing_5").val()==""){
+        $('#measured_bearing_5').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_5').css('border-color', '#ced4da');
+    }
+});
+</script>
+</body>

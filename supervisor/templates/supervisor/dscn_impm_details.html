@@ -1,0 +1,357 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Monthly DSCN Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'supervisor/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+       
+</head>
+<body onbeforeunload="return OnBeforeUnLoad ()"> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='{% url redir%}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+        
+
+        <div class="row">
+            <div class="col-sm-7">
+
+                    {% if temp.unit_incharge_approval == NONE %}
+                      {% if temp.dscnm.cleaning_dscn_associated_eqpt == None %}             
+                          <div class="alert alert-danger">
+                            <strong>Report Not Submitted</strong>
+                                  
+                      {% else %}             
+                      <div class="alert alert-primary">
+                          <strong>Maintenance Report.</strong>  
+                         
+                      {% endif %}
+                    {% else %}
+                      {% if temp.unit_incharge_approval == "NO" %}
+                        <div class="alert alert-danger">
+                          <strong>Report Declined; Waiting for update.</strong>
+                   
+                      {% endif %}
+                      {% if temp.unit_incharge_approval == "YES" %}
+                        <div class="alert alert-success">
+                          <strong>Report Approved.</strong> 
+                      
+                      {% endif %}
+
+                    {% endif %}
+                <div class="card" style="text-align: center;">                  
+                   
+                  
+                  
+                  <form id="form-v">                    
+                        <div class="card-body">
+                            <h2 class="card-title">DSCN-TERMA MONTHLY MAINTENANCE Report</h2>
+                          
+                            {% for log in logs|slice:":1" %}
+                            <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                                   Recorded on:  DATE: {{ temp.date }}  |  TIME: {{ temp.time }}<br>
+                                    <strong>STATUS: {{ temp.status }}  |  EmployeeID: {{ log.emp_id }}</strong> 
+                                   
+                            </div>
+                            {% endfor %}
+                             <hr>
+                             <div class="form-group row has-warning">
+                  <label for="Cleaning_DSCN_associated_eqpt" class="col-sm-6 col-form-label">Cleaning DSCN associated eqpt</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Cleaning_DSCN_associated_eqpt" name="cdae" readonly="true" value="{{ temp.cleaning_dscn_associated_eqpt }}" required>
+                  </div>
+               </div>
+                              
+              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Battery_backup_time_of_UPS1nUPS2" class="col-sm-6 col-form-label">Battery backup time of UPS1nUPS2</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Battery_backup_time_of_UPS1nUPS2" name="bbt" readonly="true" value="{{ temp.battery_backup_time_of_ups1nups2 }}" required>
+                  </div>
+                </div>
+   
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="UPS_battery_voltage_on_load" class="col-sm-6 col-form-label">UPS battery voltage on load</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="UPS_battery_voltage_on_load" name="ubvl"  readonly="true" value="{{ temp.ups_battery_voltage_on_load }}" required>
+                  </div>
+                              </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Antenna_n_Cable_check" class="col-sm-6 col-form-label">Antenna and Cable check</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Antenna_n_Cable_check" name="ancc" readonly="true" value="{{ temp.antenna_n_cable_check }}"  required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Earth_resistance" class="col-sm-6 col-form-label">Earth resistance</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Earth_resistance" name="er" readonly="true" value="{{ temp.earth_resistance }}" required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="EorN_voltage" class="col-sm-6 col-form-label">EorN voltage</label>
+                  <div>
+                     <input type="number" class="form-control form-control-sm" id="EorN_voltage" name="ev" readonly="true" value="{{ temp.eorn_voltage }}" required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Eqpt_status_after_check" class="col-sm-6 col-form-label">Eqpt status after check</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Eqpt_status_after_check" name="esac"  readonly="true" value="{{ temp.eqpt_status_after_check }}"  required>
+                  </div>
+                  <hr>
+                </div>
+                                        
+                              
+                                {% if temp.status != "PENDING" and temp.unit_incharge_approval == NONE %}                 
+                                      <button type="button" data-toggle="modal" data-target="#report" style="width: 100px; margin-right: 10%;"class="btn submitbut">DECLINE</button>
+                                      
+                                  
+                                      <a href='/verify/{{names}}/{{temp.p_token}}' class="btn submitbut" >APPROVE</a>      
+                                {% endif %}
+                            </form>
+                        </div>
+                                <div class="modal fade" id="report">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">SEND REPORT FOR RECHECKING</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <div class="helloform" style="padding:0">
+                                              <form method='post' action="{% url 'supervisor:sent' %}" >
+                                                  {% csrf_token %}
+                                                  <br>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="to" class="col-sm-6 col-form-label">TO:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.email}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="name" class="col-sm-6 col-form-label">NAME:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.name}}" ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="des" class="col-sm-6 col-form-label">DESIGNATION:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.designation}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <hr>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="body" class="col-sm-6 col-form-label">BODY:</label>
+                                                      <div>
+                                                        <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {$name}, this is regarding the issue." required="required"></textarea> 
+                                                      </div>
+                                                  </div>
+                                                  <hr>                                                  
+                                                  <button type="submit" class="btn btn-primary" value="SEND">Submit</button>  
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>    
+
+                        </div>
+                                                          
+                </div>                      
+            </div>
+               
+
+            <div class="col-sm-5" >
+                <div class="sidebar s" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; " >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                      </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT ENGINEER</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                </div>
+
+                <div> 
+                    <div class="logr">                       
+                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+                        <div class="tablogr">
+                            <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+                                <thead >
+                                    <tr>
+                                      <th>Log_ID</th>
+                                      <th>Remarks</th>
+                                      <th>Value</th>
+                                      <th>Date-Time</th>  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.log_id }}</td>
+                                        <td>{{ log.remarks }}</td>
+                                        <td>{{ log.value }}</td>
+                                        <td>{{ log.time }}<br>{{ log.date }}</td>
+                                     </tr>
+                                {% endfor %}
+                              </tbody>                           
+                            </table>
+                        </div>
+                    </div>
+                </div>   
+              
+                <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Standards</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                              <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                              </tr>
+                              <tr>
+                                  <td>Placeholder</td>
+                                  <td>Placeholder</td>
+                              </tr>
+                            
+                                
+                          </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Maintenance History</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+                                    <thead>
+                <tr>  
+                    <th>Date</th>
+                    <th>Time</th>
+                   <th>Cleaning_DSCN_associated_eqpt</th>
+                 <th>Battery_backup_time_of_UPS1nUPS2</th>
+                       <th>UPS_battery_voltage_on_load</th>
+                    <th>Antenna_n_cable_check</th>
+                    <th>Earth_resistance</th>
+                    <th>EorN_voltage</th>
+                    <th>Eqpt_status_after_check</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dscnm in mrec %}
+                <tr>
+                 <td>{{ dscnm.date }}</td>
+                  <td>{{ dscnm.time }}</td>
+                  <td>{{ dscnm.cleaning_dscn_associated_eqpt }}</td>
+                  <td>{{ dscnm.battery_backup_time_of_ups1nups2  }}</td>
+                  <td>{{ dscnm.ups_battery_voltage_on_load }}</td>
+                  <td>{{ dscnm.antenna_n_cable_check }}</td>
+                  <td>{{ dscnm.earth_resistance }}</td>
+                  <td>{{ dscnm.eorn_voltage }}</td>
+                  <td>{{ dscnm.eqpt_status_after_check }}</td>
+                  <td>{{ dscnm.remarks }}</td>
+                   <td>Pass</td>
+                </tr>
+               {% endfor %}
+             </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="contactsuper">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">ENGINEER</h4><!-- Need to enter details -->
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>{{eng.name}}</h5>
+                              <h6>Email: <a href="mailto:surajshah@aai.com">{{eng.email}}</a></h6>
+                              <h6>Phone: {{eng.contact}}</h6>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                      </div>
+                    </div>
+                </div>                 
+            </div>
+        </div>
+    </div>   
+    <script>
+      $('#Cleaning_DSCN_associated_eqpt').css('border-color', '#CED4DA');
+      $('#Battery_backup_time_of_UPS1nUPS2').css('border-color', '#CED4DA');
+      $('#UPS_battery_voltage_on_load').css('border-color', '#CED4DA');
+      $('#Antenna_n_Cable_check').css('border-color', '#CED4DA');
+      $('#Earth_resistance').css('border-color', '#CED4DA');
+      $('#EorN_voltage').css('border-color', '#CED4DA');
+      $('#Eqpt_status_after_check').css('border-color', '#CED4DA');
+    </script>
+</body>
+
+</html>
+
+
+
+
+

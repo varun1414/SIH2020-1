@@ -1,0 +1,13 @@
+<html>
+    <h1>login page</h1>
+    <form method='POST' action='/validate/'>
+        {% csrf_token %}
+        <input type=number placeholder="user_id" name="id"></input>
+        <input type=password placeholder="password" name="passw"></input>
+        <button> clickhere </button>
+
+    </form>
+{%if flag %}
+    enter again
+{% endif %}
+</html>

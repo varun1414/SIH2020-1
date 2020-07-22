@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Monthly SCCTV Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  
+                    <a href='#' onclick="window.location.href='/scctvmonthly/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>  <!--check-->
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Please try again.
+    <form method='POST' action='/finalsmrepsub/{{ p_id }}/{{ id }}'>
+        {% csrf_token %}
+        <div class="card" style="text-align: center;">
+                <div class="card-body">
+                  <h2 class="card-title">SCCTV MONTHLY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                    Recorded on:  DATE: {{ scctvm.date }}  |  TIME: {{ scctvm.time }}<br>
+                                    <strong>STATUS: {{ scctvm.status }} </strong>
+                </div>
+                  <hr> 
+     <div class="form-group row has-warning">
+                   <label for="ups_ip_voltage" class="col-sm-6 col-form-label">UPS Input Voltage</label>
+                  <div>
+                      <input type="text" class="form-control form-control-sm" id="ups_ip_voltage" name="ups_ip_voltage" readonly="true" value="{{ scctvm.ups_ip_voltage }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_op_voltage" class="col-sm-6 col-form-label">UPS Output Voltage</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="ups_op_voltage" name="ups_op_voltage" readonly="true" value="{{ scctvm.ups_op_voltage }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_battery_op_voltage_acpwron" class="col-sm-6 col-form-label">UPS Battery output voltage during AC power ON (on both battery banks)</label>
+                    <div>
+                      <input type=number name="ups_battery_op_voltage_ACpwrON" id="ups_battery_op_voltage_acpwron" class="form-control form-control-sm" required readonly="true" value="{{ scctvm.ups_battery_op_voltage_acpwron }}"></input>
+                    </div>
+                  </div>
+
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_battery_op_voltage_acpwroff" class="col-sm-6 col-form-label">UPS Battery output voltage during AC power OFF (on both battery banks)</label>
+                    <div>
+                      <input type=number name="ups_battery_op_voltage_acpwroff" id="ups_battery_op_voltage_acpwroff" class="form-control form-control-sm" required readonly="true" value="{{ scctvm.ups_battery_op_voltage_acpwroff }}"></input>
+                    </div>
+                  </div>
+
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_battery_op_voltage_after15min_acpwroff" class="col-sm-6 col-form-label">UPS Battery output voltage after 15 min of AC main OFF (on both battery banks)</label>
+                    <div>
+                      <input type=number name="ups_battery_op_voltage_after15min_acpwroff" id="ups_battery_op_voltage_after15min_acpwroff" class="form-control form-control-sm" required readonly="true" value="{{ scctvm.ups_battery_op_voltage_after15min_acpwroff }}"></input>
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                
+                  <label for="server_status" class="col-sm-6 col-form-label">Check all the server status</label>
+                  <div>
+                      
+                      <input type="text" class="form-control form-control-sm" id="server_status" name="server_status" readonly="true" value="{{ scctvm.server_status }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                   <label for="cameras_in_vrs_server" class="col-sm-6 col-form-label">Check Camera/NAS status in VRS servers</label>
+                  <div>
+                      <input type="text" class="form-control form-control-sm" id="cameras_in_vrs_server" name="cameras_in_vrs_server" readonly="true" value="{{ scctvm.cameras_in_vrs_server }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="nas_free_capacity" class="col-sm-6 col-form-label">Check NAS free capacity</label>
+                    <div>
+                      <input type="float" class="form-control form-control-sm" id="nas_free_capacity" name="nas_free_capacity" readonly="true" value="{{ scctvm.nas_free_capacity }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="ofclinkto_l2l3_switches" class="col-sm-6 col-form-label">OFC Link in all L2 and L3 switches</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="ofclinkto_l2l3_switches" name="ofclinkto_l2l3_switches" readonly="true" value="{{ scctvm.ofclinkto_l2l3_switches }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="cleaning_camera_eqpt" class="col-sm-6 col-form-label">Cleaning of Cameras and Equipment</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="cleaning_camera_eqpt" name="cleaning_camera_eqpt" readonly="true" value="{{ scctvm.cleaning_camera_eqpt }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="user_rights_check" class="col-sm-6 col-form-label">Check username and passwords of all users</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="user_rights_check" name="user_rights_check" readonly="true" value="{{ scctvm.user_rights_check }}">
+                    </div>
+                  </div>
+
+                <hr>
+                 <div class="alert" style="background-color: #DBDBDB;">
+                        <strong>Remarks</strong>(Final submission)</div>
+    
+           
+                
+                <div class="form-group row has-warning"style="padding-left:0" >
+                  <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief" name='remarks' required="required"></textarea>
+               
+                 
+              </div>
+                    <hr>
+                    <button class="btn submitbut">FINAL SUBMIT</button>
+                  </div>
+                   
+              </div>
+          </div>
+            </form>
+
+    </div>
+<script>
+$(function(){
+     $('#ups_ip_voltage').css('border-color', '#CED4DA');
+     $('#ups_op_voltage').css('border-color', '#CED4DA');
+     $('#nas_free_capacity').css('border-color', '#CED4DA');
+     $('#ups_battery_op_voltage_acpwroff').css('border-color', '#CED4DA');
+     $('#ups_battery_op_voltage_acpwron').css('border-color', '#CED4DA');
+     $('#ups_battery_op_voltage_after15min_acpwroff').css('border-color', '#CED4DA');
+     $('#procedure').css('border-color', '#CED4DA');
+    });
+
+ $("#ups_ip_voltage").on("keyup",function(){
+            if($("#ups_ip_voltage").val()==""){
+                 $('#ups_ip_voltage').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_ip_voltage').css('border-color', '#CED4DA');
+            }
+        });
+ $("#ups_op_voltage").on("keyup",function(){
+            if($("#ups_op_voltage").val()==""){
+                 $('#ups_op_voltage').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_op_voltage').css('border-color', '#CED4DA');
+            }
+        });
+
+ $("#nas_free_capacity").on("keyup",function(){
+            if($("#NAS_free_capacity").val()==""){
+                 $('#NAS_free_capacity').css('border-color', 'red');
+                return false;
+            }else{
+               $('#NAS_free_capacity').css('border-color', '#CED4DA');
+            }
+        });
+
+  $("#ups_battery_op_voltage_acpwroff").on("keyup",function(){
+            if($("#ups_battery_op_voltage_acpwroff").val()==""){
+                 $('#ups_battery_op_voltage_acpwroff').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_battery_op_voltage_acpwroff').css('border-color', '#CED4DA');
+            }
+        });
+
+   $("#ups_battery_op_voltage_acpwron").on("keyup",function(){
+            if($("#ups_battery_op_voltage_acpwron").val()==""){
+                 $('#ups_battery_op_voltage_acpwron').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_battery_op_voltage_acpwron').css('border-color', '#CED4DA');
+            }
+        });
+
+    $("#ups_battery_op_voltage_after15min_acpwroff").on("keyup",function(){
+            if($("#ups_battery_op_voltage_after15min_acpwroff").val()==""){
+                 $('#ups_battery_op_voltage_after15min_acpwroff').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_battery_op_voltage_after15min_acpwroff').css('border-color', '#CED4DA');
+            }
+        });
+ 
+ $("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+               $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>        
+   
+    
+</html>
+
+

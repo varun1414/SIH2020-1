@@ -1,0 +1,460 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DSCN Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+		</nav>
+		<br>
+		
+
+			<div class="row">
+				<div class="col-sm-7">
+					{% for dscnd in dscn_d %}
+					{% if f != 1 %}
+				  {% if dscnd.coro_function == "OK" and dscnd.ip_voltage > 219 and dscnd.ip_voltage < 241 and dscnd.op_voltage > 219 and dscnd.op_voltage < 241 and dscnd.battery_voltage > 180 and dscnd.battery_voltage < 250 and dscnd.power_led == "STEADY ON" and dscnd.sat_led == "STEADY ON" and dscnd.odu_led == "STEADY ON" and dscnd.io_led == "STEADY ON" and dscnd.alarm_led == "OFF" and dscnd.v35_led == "RX/TX BLINKING" %}
+            	<div class="alert alert-success">
+						<strong>Maintenance succesful!</strong> 
+							All entries matched with standard values.
+										
+					{% else %}					
+					<div class="alert alert-danger">
+						<strong>Maintenance failed!!!</strong> 
+							Please try again.
+					
+					{% endif %}
+					{% endif %}
+					{% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong> 
+					
+				   {% endif %}
+					<div class="card" style="text-align: center;">				    
+						<form id="form-v">					   
+					      <div class="card-body">
+					        <h2 class="card-title">DSCN DAILY MAINTENANCE ENTRY</h2>
+					      
+					      	<hr>
+							 	<div class="alert alert-light" style="height: 40px; padding-top: 0px">
+								    Recorded on:  DATE: {{ dscnd.date }}  |  TIME: {{ dscnd.time }}<br>
+                                    <strong>STATUS: {{ dscnd.status }} </strong>
+								</div>
+						
+	     					 <hr>
+							<div class="form-group row has-warning">
+							  <label for="sat_led" class="col-sm-6 col-form-label">SAT LED*</label>
+							  <div>
+							   	<input type="text" class="form-control form-control-sm" id="sat_led" name="sled" readonly="true" value="{{ dscnd.sat_led }}">
+							  </div>
+							</div>
+
+							<hr>
+							<div class="form-group row has-warning">
+							  <label for="io_led" class="col-sm-6 col-form-label">I/O LED*</label>
+							  <div>
+							   	<input type="text" class="form-control form-control-sm" id="io_led" name="ioled" readonly="true" value="{{ dscnd.io_led }}">
+							  </div>
+							</div>
+
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="odu_led" class="col-sm-6 col-form-label">ODU LED*</label>
+							  <div>
+							     <input type="text" class="form-control form-control-sm" id="odu_led" name="ioled" readonly="true" value="{{ dscnd.io_led }}">
+							  </div>
+							</div>
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="alarm_led" class="col-sm-6 col-form-label">Alarm LED*</label>
+							  <div>
+							    <input type="text" class="form-control form-control-sm" id="alarm_led" name="aled" readonly="true" value="{{ dscnd.alarm_led }}"/><br>
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							    <label for="power_led" class="col-sm-6 col-form-label">Power LED*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="power_led" name="pwled" readonly="true" value="{{ dscnd.power_led }}"/><br>
+							    </div>
+							  </div>
+
+							  
+							  	<hr>  
+							  <div class="form-group row has-warning">
+							    <label for="v35_led" class="col-sm-6 col-form-label">V35 LED*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="v35_led" name="v35led" readonly="true" value="{{ dscnd.v35_led }}">
+							    </div>
+							  </div>
+
+							    
+            
+                    
+                  
+                    <hr>  
+                    <div class="form-group row has-warning">
+                      <label for="ip_voltage" class="col-sm-6 col-form-label">I/P Voltage*</label>
+                      <div>
+                        <input type="text" class="form-control form-control-sm" id="ip_voltage" name="ipv" readonly="true" value="{{ dscnd.ip_voltage }}">
+                      </div>
+                    </div>
+    
+                      
+                      
+                      <hr>  
+                      <div class="form-group row has-warning">
+                        <label for="op_voltage" class="col-sm-6 col-form-label">O/P Voltage*</label>
+                        <div>
+                          <input type="text" class="form-control form-control-sm" id="op_voltage" name="opv" readonly="true" value="{{ dscnd.op_voltage }}">
+                        </div>
+                      </div>
+      
+                        
+                        <hr>
+                          <div class="form-group row has-warning">
+                            <label for="battery_voltage" class="col-sm-6 col-form-label">Battery Voltage*</label>
+                            <div>
+                              <input type="text" class="form-control form-control-sm" id="battery_voltage" name="bv" readonly="true" value="{{ dscnd.battery_voltage }}">
+                            </div>
+                          </div>
+          
+                            
+                            <hr>  
+                            <div class="form-group row has-warning">
+                              <label for="coro_function" class="col-sm-6 col-form-label">CorO Function*</label>
+                              <div>
+                                <input type="text" class="form-control form-control-sm" id="cof" name="cof" readonly="true" value="{{ dscnd.coro_function }}">
+                              </div>
+                               <hr>                              
+							 </div>
+							</div>
+  				      
+				  		</form>
+					  	<div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
+                {% if dscnd.coro_function == "OK" and dscnd.ip_voltage > 219 and dscnd.ip_voltage < 241 and dscnd.op_voltage > 219 and dscnd.op_voltage < 241 and dscnd.battery_voltage > 180 and dscnd.battery_voltage < 250 and dscnd.power_led == "STEADY ON" and dscnd.sat_led == "STEADY ON" and dscnd.odu_led == "STEADY ON" and dscnd.io_led == "STEADY ON" and dscnd.alarm_led == "OFF" and dscnd.v35_led == "RX/TX BLINKING" %}
+                <p></p>
+								{% elif f != 1  %}
+								   
+								    <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdscnd/{{ dscnd.p_id }}'">EDIT</button>
+
+								   <button class="btn submitbut" onclick="window.location.href='/repsubdsderrors/{{ dscnd.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>						
+							{% endif %}
+					  	</div>
+					
+					</div>				  		
+				</div>
+				  {% endfor %}
+				</div>
+	
+				 <div class="col-sm-5" >
+	            	<div class="sidebar s" >
+		                <div class="col-sm-12">
+		                  <div class="card mb-3 sidecard" style="width: 22rem; " >
+		                      <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+		                          <h6>MAINTENANCE HISTORY</h6>
+		                      </div>
+	                  	  </div>    
+	                	</div>
+	                	<div class="row rows">
+		                    <div class="col">
+		                      	<div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+		                          	<div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+		                              	<h6>CHECK STANDARDS</h6>
+		                          	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col">
+		                      <div class="card sidecard" style="width:10rem;" >
+		                            <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+		                                <h6>CONTACT SUPERVISOR</h6>
+		                            </div>
+		                        </div>     
+		                    </div>
+	                	</div>    
+	              	</div>
+
+	                <div> 
+	                  	<div class="logr">                       
+	                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+	                        <div class="tablogr">
+		                        <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+			                        <thead >
+			                            <tr>
+			                              <th>Log_ID</th>
+			                              <th>Remarks</th>
+			                              <th>Value</th>
+			                              <th>Date-Time</th>  
+			                            </tr>
+			                        </thead>
+		                          	<tbody>
+		                            {% for log in dscndlogs %}
+			                            <tr>
+			                                <td>{{ log.log_id }}</td>
+			                                <td>{{ log.remarks }}</td>
+			                                <td>{{ log.value }}</td>
+			                                <td>{{ log.time }}<br>{{ log.date }}</td>
+			                             </tr>
+		                            {% endfor %}
+		                          </tbody>                           
+		                        </table>
+	                    	</div>
+	                  	</div>
+	                </div>   
+	              
+	          		<div class="modal fade" id="standardcheck">
+					    <div class="modal-dialog">
+	      				    <div class="modal-content">
+	      				      	<div class="modal-header">
+	      				          	<h4 class="modal-title">Standards</h4>
+	      				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      				      	</div>
+	    				        <div class="modal-body">
+	    				          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+		    				          	<tr>
+                              <th>VALUE LABEL</th>
+                              <th>NORMAL VALUE</th>
+                          </tr>
+                          <tr>
+                              <td>SAT LED</td>
+                              <td>Steady ON</td>
+                          </tr>
+                          
+                            <tr>
+                              <td>ODU LED</td>
+                              <td>Steady ON</td>
+                          </tr>
+                              <tr>
+                              <td>I/O LED</td>
+                              <td>Steady ON</td>
+                          </tr>
+                              <tr>
+                              <td>Alarm LED</td>
+                              <td>OFF</td>
+                          </tr>
+                              <tr>
+                              <td>Power LED</td>
+                              <td>Steady ON</td>
+                          </tr>
+                              <tr>
+                              <td>V.35 LED</td>
+                              <td>Rx/Tx- Blinking, When data is being Xmitted/R'cvd</td>
+                          </tr>
+                              <tr>
+                              <td>Input Voltage</td>
+                              <td>230-10%, 230+10%</td>
+                          </tr>
+                              <tr>
+                              <td>Output Voltage</td>
+                              <td>Refer Airtel/UPS service manual</td>
+                          </tr>
+                              <tr>
+                              <td>Battery Voltage</td>
+                              <td>Refer Airtel/UPS service manual</td>
+                        </tr>
+                              <tr>
+                              <td>C/O Function</td>
+                              <td>OK</td>
+                        </tr>
+		    				          	<!--	<tr>
+		    				          		<td>Date and time of servers wrt GPS CLK</td>
+		    				          		<td>Correct</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of Disk Array</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF TX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF RX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>DATIS update</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Audio Quality of Datis Announcement</td>
+		    				          		<td>Good</td>
+		    				          	</tr>-->
+	    				          </table>
+	    				        </div>
+	    				        <div class="modal-footer">
+	    				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    				        </div>  
+	      				    </div>
+	  				  	</div>
+	  				</div>
+
+	              	<div class="modal fade" id="pastlog">
+		                <div class="modal-dialog modal-lg">
+		                  	<div class="modal-content">
+			                    <div class="modal-header">
+			                      <h4 class="modal-title">Maintenance History</h4>
+			                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                    </div>
+			                    <div class="modal-body">
+				                    <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+				                        <thead>
+				                            <tr>  
+                                      <th>Date-Time</th>
+                                      <th>SAT LED</th>
+                                      <th>ODU LED</th>
+                                      <th>IO LED</th>
+                                      <th>Alarm LED</th>
+                                      <th>Power LED</th>
+                                      <th>V35 LED</th>
+                                      <th>IP Voltage</th>
+                                      <th>OP voltage</th>
+                                      <th>Battery Voltage</th>
+									  <th>CorO function</th>
+									  <th>Remarks</th>
+                                      <th>Test</th>
+                                    </tr>
+                        </thead>
+                        <tbody>
+                              {% for dscndd in dscnd %}
+                              <tr>
+                               
+								<td>{{ dscndd.date }}<br>{{ dscndd.time }}</td> 
+                                <td>{{ dscndd.sat_led }}</td>
+                                <td>{{ dscndd.odu_led }}</td>
+                                <td>{{ dscndd.io_led }}</td>
+                                <td>{{ dscndd.alarm_led }}</td>
+                                <td>{{ dscndd.power_led }}</td>
+                                <td>{{ dscndd.v35_led }}</td>
+                                <td>{{ dscndd.ip_voltage }}</td>
+                                <td>{{ dscndd.op_voltage }}</td>
+                                <td>{{ dscndd.battery_voltage }}</td>
+                                <td>{{ dscndd.coro_function }}</td>
+                                <td>{{ dscndd.remarks }}</td>
+                                {% if dscndd.coro_function == "OK" and dscndd.ip_voltage > 219 and dscndd.ip_voltage < 241 and dscndd.op_voltage > 219 and dscndd.op_voltage < 241 and dscndd.battery_voltage > 180 and dscndd.battery_voltage < 250 and dscndd.power_led == "STEADY ON" and dscndd.sat_led == "STEADY ON" and dscndd.odu_led == "STEADY ON" and dscndd.io_led == "STEADY ON" and dscndd.alarm_led == "OFF" and dscndd.v35_led == "RX/TX BLINKING" %}
+                                <td>Pass</td>
+                                {% else %}
+                               <td>Fail</td>
+                                {% endif %}
+                                           </tr>
+				                            {% endfor %}
+				                         </tbody>
+				                    </table>
+			                    </div>
+			                    <div class="modal-footer">
+			                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				                </div>  
+		                 	</div>
+		                </div>
+	              	</div>
+
+	              	
+
+
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">SUPERVISOR<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+							{% for sup in supdetails %}
+				          <h5>{{ sup.name }}</h5>
+				          <h6>Email: <a href="mailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+						 
+						  <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+						  <h6>Phone: {{ sup.contact }}</h6>
+						  {% endfor %}
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+				
+			</div>
+	</div>
+<script>
+	$(function(){
+		$('#sat_led').css('border-color', '#CED4DA');
+  $('#odu_led').css('border-color', '#CED4DA');
+  $('#alarm_led').css('border-color', '#CED4DA');
+  $('#power_led').css('border-color', '#CED4DA');
+  $('#v35_led').css('border-color', '#CED4DA');
+  $('#ip_voltage').css('border-color', '#CED4DA');
+  $('#op_voltage').css('border-color', '#CED4DA');
+  $('#battery_voltage').css('border-color', '#CED4DA');
+  $('#cof').css('border-color', '#CED4DA');
+
+
+  $('#procedure').css('border-color', '#CED4DA');
+
+
+            if($("#sat_led").val()!="STEADY ON"){
+            	 $('#sat_led').css('border-color', 'red');}
+           
+			if($("#io_led").val()!="STEADY ON"){
+            	 $('#io_led').css('border-color', 'red');}
+           
+			if($("#odu_led").val()!="STEADY ON"){
+            	 $('#odu_led').css('border-color', 'red');}
+           
+            if($("#alarm_led").val()!="OFF"){
+               $('#alarm_led').css('border-color', 'red');}
+            
+            if($("#power_led").val()!="STEADY ON"){
+               $('#power_led').css('border-color', 'red');
+            }
+
+            if($("#v35_led").val()!="RX/TX BLINKING" ){
+               $('#v35_led').css('border-color', 'red');
+            }
+
+            if($("#ip_voltage").val() < "220" || $("#ip_voltage").val()> "240"){
+               $('#ip_voltage').css('border-color', 'red');
+            }
+
+            if($("#op_voltage").val() < "220" || $("#op_voltage").val()> "240" ){
+               $('#op_voltage').css('border-color', 'red');
+            }
+
+            if($("#battery_voltage").val() < "180"  || $("#battery_voltage").val()> "250" ){
+               $('#battery_voltage').css('border-color', 'red');
+            }
+
+            if($("#cof").val()!="OK" ){
+               $('#cof').css('border-color', 'red');
+            }
+           
+        });
+		
+
+
+	</script>
+</body>
+
+</html>

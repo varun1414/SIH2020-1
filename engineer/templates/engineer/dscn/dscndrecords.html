@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DSCN Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+		</nav>
+		<br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                  <th>Date-Time</th>
+                  <th style="width: 150px;">Status</th>
+                  <th>SAT LED</th>
+                  <th>Alarm LED</th>
+                  <th>Power LED</th>
+                  <th>V35 LED</th>
+                  <th>IP Voltage</th>
+                  <th>OP voltage</th>
+                  <th>Battery Voltage</th>
+                  <th>Test</th>
+                  <th>Approval Status</th>
+                  <th>Approval Date</th>
+                  <th>Approval Time</th>
+                </tr>
+    </thead>
+    <tbody>
+          {% for dscnd in dscn_d %}
+          <tr>
+           
+            <td>{{ dscnd.date }}<br>{{ dscnd.time }}</td>
+            <td style="width: 150px;">{{ dscnd.status }}</td>
+           <td>{{ dscnd.sat_led }}</td>
+            <td>{{ dscnd.alarm_led }}</td>
+            <td>{{ dscnd.power_led }}</td>
+            <td>{{ dscnd.v35_led }}</td>
+            <td>{{ dscnd.ip_voltage }}</td>
+            <td>{{ dscnd.op_voltage }}</td>
+            <td>{{ dscnd.battery_voltage }}</td>
+            
+            {% if dscnd.coro_function == "OK" and dscnd.ip_voltage > 219 and dscnd.ip_voltage < 241 and dscnd.op_voltage > 219 and dscnd.op_voltage < 241 and dscnd.battery_voltage > 180 and dscnd.battery_voltage < 250 and dscnd.power_led == "STEADY ON" and dscnd.sat_led == "STEADY ON" and dscnd.odu_led == "STEADY ON" and dscnd.io_led == "STEADY ON" and dscnd.alarm_led == "OFF" and dscnd.v35_led == "RX/TX BLINKING" %}
+            <td>Pass</td>
+            {% else %}
+           <td>Fail</td>
+            {% endif %}
+            <td>{{ dscnd.unit_incharge_approval }}</td>
+            <td>{{ dscnd.approval_date }}</td>
+            <td>{{ dscnd.approval_time }}</td>
+               </tr>
+                {% endfor %}
+             </tbody>
+        </table>
+    </div>
+             
+</body>
+</html>
+

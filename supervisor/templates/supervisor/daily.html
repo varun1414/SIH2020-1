@@ -1,0 +1,29 @@
+<!-- <html>
+{% for i in cdvordaily %}
+    {% for name, value in i.items %}
+            
+                <td> {{ name }} => {{ value }}</td>
+            
+        
+    {% endfor %}
+{% endfor %}
+<br><br>
+{% for i in datisdaily %}
+    {% for name, value in i.items %}
+        
+            {{ name }} => {{ value }}
+        
+    {% endfor %}
+{% endfor %}
+</html> -->
+
+<html>
+    <a href="{% url 'supervisor:cdvordaily' %}">cdvordaily</a><br>
+    <a href="{% url 'supervisor:datisdaily' %}">datisdaily</a><br>
+    <a href="{% url 'supervisor:dmedaily' %}">dmedaily</a><br>
+    <a href="{% url 'supervisor:dscndaily' %}">dscnrdaily</a><br>
+    <a href="{% url 'supervisor:ndbdaily' %}">ndbdaily</a><br>
+    <a href="{% url 'supervisor:scctvdaily' %}">scctvdaily</a><br>
+    <a href="{% url 'supervisor:vhfdaily' %}">vhfdaily</a><br>
+
+</html>

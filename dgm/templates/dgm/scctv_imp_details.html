@@ -1,0 +1,461 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Daily SCCTV Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'supervisor/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+       
+</head>
+<body onbeforeunload="return OnBeforeUnLoad ()"> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='{% url redir%}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+        
+
+        <div class="row">
+            <div class="col-sm-7">
+
+             {% if temp.unit_incharge_approval == NONE %}
+
+                  {% if temp.ups_battery_indication == None %}             
+                        <div class="alert alert-danger">
+                          <strong>Report Not Submitted</strong>
+
+                     {% elif temp.ups_battery_indication == "FULL" and temp.servers_on_condition == "OK" and temp.nas_status_in_vmsorvrm == "OK" and temp.recording_active_status_vrs_server == "EQUALS TO TOTAL CAMERA" and temp.recording_active_status_rrs_server == "PAUSE" and temp.database_status_vms == "OK" and temp.cameras_ivms == "OK" and temp.eqpt_cleaning == "CARRIED OUT" %}
+                        <div class="alert alert-success">
+                          <strong> All maintenance entries matched with standard values.</strong>                   
+
+                      {% else %}             
+                        <div class="alert alert-danger">
+                            <strong>Maintenance values do not match standards.</strong>  
+                      
+
+                  {% endif %}
+
+              {% else %}
+
+                  {% if temp.unit_incharge_approval == "NO" %}
+                    <div class="alert alert-danger">
+                      <strong>Report Declined; Waiting for update.</strong>
+                 
+                  {% endif %}
+
+                  {% if temp.unit_incharge_approval == "YES" %}
+                    <div class="alert alert-success">
+                      <strong>Report Approved.</strong> 
+
+                  {% endif %}
+
+              {% endif %}
+
+                <div class="card" style="text-align: center;">            
+                  
+                  <form id="form-v">                    
+                        <div class="card-body">
+                            <h2 class="card-title">SCCTV DAILY MAINTENANCE Report</h2>
+                          
+                            {% for log in logs|slice:":1" %}
+                            <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                                   Recorded on:  DATE: {{ temp.date }}  |  TIME: {{ temp.time }}<br>
+                                    <strong>STATUS: {{ temp.status }}  |  EmployeeID: {{ log.emp_id }}</strong> 
+                                   
+                            </div>
+                            {% endfor %}
+                             <hr>
+                            <div class="form-group row has-warning">
+							  <label for="UPS_battery_indication" class="col-sm-6 col-form-label">UPS Battery Indication</label>
+							  <div>
+							   	<input type="text" class="form-control form-control-sm" id="UPS_battery_indication" name="ups" readonly="true" value="{{ temp.ups_battery_indication }}">
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							  <label for="Servers_ON_condition" class="col-sm-6 col-form-label">Check all the servers are in ON condition</label>
+							  <div>
+							     <input type="text" class="form-control form-control-sm"id="Servers_ON_condition" name="ser" readonly="true" value="{{ temp.servers_on_condition }}">
+							  </div>
+							</div>
+							
+							<hr>
+							 <div class="form-group row has-warning">
+							  <label for="NAS_status_in_VMSorVRM" class="col-sm-6 col-form-label">Check the NAS status in VMS/VRM</label>
+							  <div>
+							    	<input type="text" class="form-control form-control-sm" id="NAS_status_in_VMSorVRM" name="vrm" readonly="true" value="{{ temp.nas_status_in_vmsorvrm }}"/><br>
+							    </div>
+							  </div>
+
+							  <hr>  
+							<div class="form-group row has-warning">
+							    <label for="recording_active_status_VRS_server" class="col-sm-6 col-form-label">Check Recording Active status of all VRS servers</label>
+							    <div>
+							   		<input type="text" class="form-control form-control-sm" id="recording_active_status_VRS_server" name="vrs"readonly="true" value="{{ temp.recording_active_status_vrs_server }}"/><br>
+							  	</div>
+							</div>
+
+							  	<hr>  
+							 <div class="form-group row has-warning">
+							    <label for="recording_active_status_RRS_server" class="col-sm-6 col-form-label">Check Recording status of cameras in RRS Server</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm"  id="recording_active_status_RRS_server" name="rrs" readonly="true" value="{{ temp.recording_active_status_rrs_server  }}">
+							    </div>
+							  </div>
+
+							<hr>  
+							<div class="form-group row has-warning">
+							  <label for="database_status_VMS" class="col-sm-6 col-form-label">Check the Database status in VMS server</label>
+							  <div>
+							    	<input type="text" class="form-control form-control-sm" id="database_status_VMS" name="vms" readonly="true" value="{{ temp.database_status_vms }}">
+							    </div>
+							</div>
+							
+							<hr>  
+							 <div class="form-group row has-warning">
+							  <label for="cameras_IVMS" class="col-sm-6 col-form-label">Check all camera are working in client IVMS software</label>
+							  <div>
+							    	<input type="text" class="form-control form-control-sm" id="cameras_IVMS" name="ivms" readonly="true" value="{{ temp.cameras_ivms  }}">
+							    </div>
+							  </div>
+
+							  <hr>  
+							 <div class="form-group row has-warning">
+							  <label for="eqpt_cleaning" class="col-sm-6 col-form-label">Cleaning of Equipments</label>
+							  <div>
+							    	<input type="text" class="form-control form-control-sm"  id="eqpt_cleaning" name="equip" readonly="true" value="{{ temp.eqpt_cleaning }}">
+							    </div>
+							  </div>
+
+                                
+                                <hr>
+                                {% if temp.status != "PENDING" and temp.unit_incharge_approval == NONE %}
+                                  {% if temp.status == "COMPLETED WITH ERRORS" %}                      
+                                      <button type="button" data-toggle="modal" data-target="#recheck" style="width: 100px; margin-right: 10%;"class="btn submitbut">DECLINE</button>
+                                      
+                                  {% endif %}
+                                  {% if temp.unit_incharge_approval != "YES" %}
+                                  <a href='/verify/{{names}}/{{temp.p_token}}' class="btn submitbut" >APPROVE</a>      
+                                {% endif %}
+                                {% endif %}
+</form></div>
+                                <div class="modal fade" id="recheck">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">SEND REPORT FOR RECHECKING</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <div class="helloform" style="padding:0">
+                                              <form method='post' action="{% url 'supervisor:sent' %}" >
+                                                  {% csrf_token %}
+                                                  <br>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="to" class="col-sm-6 col-form-label">TO:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.email}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="name" class="col-sm-6 col-form-label">NAME:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.name}}" ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="des" class="col-sm-6 col-form-label">DESIGNATION:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.designation}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <hr>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="body" class="col-sm-6 col-form-label">BODY:</label>
+                                                      <div>
+                                                        <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {$name}, this is regarding the issue." required="required"></textarea> 
+                                                      </div>
+                                                  </div>
+                                                  <hr>                                                  
+                                                  <button type="submit" class="btn btn-primary" value="SEND">Submit</button>
+                                              </form>
+                                            </div>
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>    
+
+                        </div>
+                                                          
+                </div>                      
+            </div>
+<!--if statement
+            <div class="alert alert-success">
+                    <strong>Report sent</strong> 
+                </div>  -->               
+
+            <div class="col-sm-5" >
+                <div class="sidebar s" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; " >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                      </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT ENGINEER</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                </div>
+                {% if temp.ups_battery_indication != None %}
+                <div> 
+                    <div class="logr">                       
+                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+                        <div class="tablogr">
+                            <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+                                <thead >
+                                    <tr>
+                                      <th>Log_ID</th>
+                                      <th>Remarks</th>
+                                      <th>Value</th>
+                                      <th>Date-Time</th>  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.log_id }}</td>
+                                        <td>{{ log.remarks }}</td>
+                                        <td>{{ log.value }}</td>
+                                        <td>{{ log.time }}<br>{{ log.date }}</td>
+                                     </tr>
+                                {% endfor %}
+                              </tbody>                           
+                            </table>
+                        </div>
+                    </div>
+                </div>   
+              {% endif %}
+                <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Standards</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                                    <tr>
+							          		<th>VALUE LABEL</th>
+							          		<th>NORMAL VALUE</th>
+							          	</tr>
+							          	<tr>
+							          		<td>UPS Battery Indication</td>
+							          		<td>Full</td>
+							          	</tr>
+							          	
+											<tr>
+							          		<td>Check all the servers are in ON Condition</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check the NAS status in VMS/VRM</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check Recording Active status of all VRS servers</td>
+							          		<td>EQUALS TO TOTAL CAMERA</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check Recording status of cameras in RRS Server</td>
+							          		<td>PAUSE</td>
+							          	</tr>
+							          <tr>
+							          		<td>Check the Database status in VMS server</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check all camera are working in client IVMS software</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Cleaning of Equipments</td>
+							          		<td>CARRIED OUT</td>
+							          	</tr>
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Maintenance History</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+                                    <thead>
+				                           <tr>  
+												<th>Date</th>
+												<th>Time</th>
+												<th>UPS Battery Indication</th>
+												<th>Status of Servers</th>
+												<th>NAS Status in VMS/VRM</th>
+											  	<th>Recording Active Status of all VRS Servers</th>
+												<th>Recording Status of cameras in RRS Server</th>
+												<th>Database Status in VMS Server</th>
+												<th>Status of Camera in Client IVMS Sofware</th>
+												<th>Cleaning of Equipments</th>
+												<th>Remarks</th>
+												<th>Test</th>
+										  </tr>
+									  </thead>
+									  <tbody>
+										  {% for scctvd in mrec %}      <!--check-->
+										  <tr>
+										   
+											  <td>{{ scctvd.date }}</td>
+												<td>{{ scctvd.time }}</td>
+												<td>{{ scctvd.ups_battery_indication }}</td>
+												<td>{{ scctvd.servers_on_condition }}</td>
+												<td>{{ scctvd.nas_status_in_vmsorvrm }}</td>
+												<td>{{ scctvd.recording_active_status_vrs_server }}</td>
+												<td>{{ scctvd.recording_active_status_rrs_server }}</td>
+												<td>{{ scctvd.database_status_vms }}</td>
+												<td>{{ scctvd.cameras_ivms }}</td>
+												<td>{{ scctvd.eqpt_cleaning }}</td>
+												<td>{{ scctvd.remarks }}</td>
+										  {% if scctvd.ups_battery_indication == "FULL" and scctvd.servers_on_condition == "OK" and scctvd.nas_status_in_vmsorvrm == "OK" and scctvd.recording_active_status_vrs_server == "EQUALS TO TOTAL CAMERA" and scctvd.recording_active_status_rrs_server == "PAUSE" and scctvd.database_status_vms == "OK" and scctvd.cameras_ivms == "OK" and scctvd.eqpt_cleaning == "CARRIED OUT" %}
+												<td>Pass</td>
+										  {% else %}
+												 <td>Fail</td>
+										  {% endif %}  
+										  </tr>
+				                          {% endfor %}
+				                         </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="contactsuper">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">ENGINEER</h4><!-- Need to enter details -->
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>{{eng.name}}</h5>
+                              <h6>Email: <a href="{{ eng.email }}">{{eng.email}}</a></h6>
+                              <h6>Phone: {{eng.contact}}</h6>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                      </div>
+                    </div>
+                </div>                 
+            </div>
+        </div>
+    </div>   
+    <script>
+
+        $(function(){
+            if($("#UPS_battery_indication").val()=="FULL"){
+            	 $('#UPS_battery_indication').css('border-color', 'pale-green');
+            }else{
+               $('#UPS_battery_indication').css('border-color', 'red');
+            }
+
+            if($("#Servers_ON_condition").val()=="OK"){
+            	 $('#Servers_ON_condition').css('border-color', 'pale-green');
+            }else{
+               $('#Servers_ON_condition').css('border-color', 'red');
+            }
+
+            if($("#NAS_status_in_VMSorVRM").val()=="OK"){
+            	 $('#NAS_status_in_VMSorVRM').css('border-color', 'pale-green');
+            }else{
+               $('#NAS_status_in_VMSorVRM').css('border-color', 'red');
+            }
+
+            if($("#recording_active_status_VRS_server").val()=="EQUALS TO TOTAL CAMERA"){
+            	 $('#recording_active_status_VRS_server').css('border-color', 'pale-green');
+            }else{
+            	 $('#recording_active_status_VRS_server').css('border-color', 'red');
+            }
+            if($("#recording_active_status_RRS_server").val()=="PAUSE") {
+               $('#recording_active_status_RRS_server').css('border-color', 'pale-green');
+              }else{
+               $('#recording_active_status_RRS_server').css('border-color', 'red');
+            }
+
+            if($("#database_status_VMS").val()=="OK"){
+            	 $('#database_status_VMS').css('border-color', 'pale-green');
+            }else{
+               $('#database_status_VMS').css('border-color', 'red');
+            }
+
+            if($("#cameras_IVMS").val()=="OK"){
+            	 $('#cameras_IVMS').css('border-color', 'pale-green');
+            }else{
+               $('#cameras_IVMS').css('border-color', 'red');
+            }
+
+            if($("#eqpt_cleaning").val()=="CARRIED OUT"){
+            	 $('#eqpt_cleaning').css('border-color', 'pale-green');
+            }else{
+               $('#eqpt_cleaning').css('border-color', 'red');
+            }
+           
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+

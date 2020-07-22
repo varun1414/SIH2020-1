@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Daily DSCN Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  
+                    <a href='#' onclick="window.location.href='/dscndaily/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Submission to the Supervisor
+                <form method='POST' action='/finalddrepsub/{{ p_id }}/{{ id }}'>
+                {% csrf_token %}
+                {% for dscndd in dscnd %}     
+                 <div class="card" style="text-align: center;">
+                <div class="card-body">
+                  <h2 class="card-title">DSCN DAILY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                    Recorded on:  DATE: {{ dscndd.date }}  |  TIME: {{ dscndd.time }}<br>
+                                    <strong>STATUS: {{ dscndd.status }} </strong>
+                </div>
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="sat_led" class="col-sm-6 col-form-label">SAT LED*</label>
+                  <div>
+                       <input type="text" class="form-control form-control-sm" id="sat_led" name="sled" readonly="true" value="{{ dscndd.sat_led }}">
+                  </div>
+                </div>
+
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="io_led" class="col-sm-6 col-form-label">I/O LED*</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="io_led" name="ioled" readonly="true" value="{{ dscndd.io_led }}">
+                  </div>
+                </div>
+                
+
+
+                  <hr>
+                <div class="form-group row has-warning">
+                  <label for="odu_led" class="col-sm-6 col-form-label">ODU LED*</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="odu_led" name="oduled" readonly="true" value="{{ dscndd.odu_led }}">
+                  </div>
+                </div>
+
+              
+                
+                  <hr>  
+                <div class="form-group row has-warning">
+                  <label for="alarm_led" class="col-sm-6 col-form-label">Alarm LED*</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="alarm_led" name="aled" readonly="true" value="{{ dscndd.alarm_led }}"/><br>
+                  </div>
+                </div>
+
+
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="power_led" class="col-sm-6 col-form-label">Power LED*</label>
+                    <div>
+                        <input type="text" class="form-control form-control-sm" id="power_led" name="pwled" readonly="true" value="{{ dscndd.power_led }}"/><br>
+                    </div>
+                  </div>
+
+                  
+                      <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="v35_led" class="col-sm-6 col-form-label">V35 LED*</label>
+                    <div>
+                        <input type="text" class="form-control form-control-sm" id="v35_led" name="v35led" readonly="true" value="{{ dscndd.v35_led }}">
+                    </div>
+                  </div>
+
+                    
+
+        
+      
+        <hr>  
+        <div class="form-group row has-warning">
+          <label for="ip_voltage" class="col-sm-6 col-form-label">I/P Voltage*</label>
+          <div>
+            <input type="text" class="form-control form-control-sm" id="ip_voltage" name="ipv" readonly="true" value="{{ dscndd.ip_voltage }}">
+          </div>
+        </div>
+
+          
+          
+          <hr>  
+          <div class="form-group row has-warning">
+            <label for="op_voltage" class="col-sm-6 col-form-label">O/P Voltage*</label>
+            <div>
+              <input type="text" class="form-control form-control-sm" id="op_voltage" name="opv" readonly="true" value="{{ dscndd.op_voltage }}">
+            </div>
+          </div>
+
+            
+            <hr>
+              <div class="form-group row has-warning">
+                <label for="battery_voltage" class="col-sm-6 col-form-label">Battery Voltage*</label>
+                <div>
+                  <input type="text" class="form-control form-control-sm" id="battery_voltage" name="" readonly="true" value="{{ dscndd.battery_voltage }}">
+                </div>
+              </div>
+
+                
+                <hr>  
+                <div class="form-group row has-warning">
+                  <label for="coro_function" class="col-sm-6 col-form-label">CorO Function*</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="cof" name="cof" readonly="true" value="{{ dscndd.coro_function }}">
+                  </div>
+                   <hr>                              
+                 </div>
+              
+                  <div class="alert" style="background-color: #DBDBDB">
+                        <strong>Remarks</strong>(Final submission)</div>
+    
+            <!-- <div class="col-sm-1"></div> -->
+                                
+                
+                <div class="form-group row has-warning"style="padding-left:0" >
+                  <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief" name='remarks' required></textarea>
+                  <!--<input type="textarea" class="form-control " id="room_temp" name="Maintenance Procedure"  style="height:200px;" required>-->
+                 
+              </div>
+                <!--<div class="form-group row has-warning" >
+                    <input required type="text" name="remarks" class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief.">-->
+                    <hr>
+                    <button class="btn submitbut">FINAL SUBMIT</button>
+                  </div>
+                    {% endfor %}
+                  </div>
+                </div>
+            </form>
+            <!-- <button onclick="window.location.href='/datisdaily/{{ id }}'">Back</button> -->
+        </div>
+        
+    </div>
+
+<script>
+$(function(){
+            if($("#sat_led").val()=="STEADY ON"){
+               $('#sat_led').css('border-color', 'pale-green');
+            }else{
+               $('#sat_led').css('border-color', 'red');
+            }
+
+            if($("#odu_led").val()=="STEADY ON"){
+               $('#odu_led').css('border-color', 'pale-green');
+            }else{
+               $('#odu_led').css('border-color', 'red');
+            }
+
+            if($("#alarm_led").val()=="OFF"){
+               $('#alarm_led').css('border-color', 'pale-green');
+            }else{
+               $('#alarm_led').css('border-color', 'red');
+            }
+
+            if($("#power_led").val()=="STEADY ON"){
+               $('#power_led').css('border-color', 'pale-green');
+            }else{
+               $('#power_led').css('border-color', 'red');
+            }
+
+            if($("#v35_led").val()=="RX/TX BLINKING" ){
+               $('#v35_led').css('border-color', 'pale-green');
+            }else{
+               $('#v35_led').css('border-color', 'red');
+            }
+
+            if($("#ip_voltage").val()>"219"){
+               $('#ip_voltage').css('border-color', 'pale-green');
+            }else{
+               $('ip_voltage').css('border-color', 'red');
+            }
+
+            if($("#op_voltage").val()>"219" && $("#op_voltage").val()<"241"){
+               $('#op_voltage').css('border-color', 'pale-green');
+            }else{
+               $('op_voltage').css('border-color', 'red');
+            }
+
+            if($("#battery_voltage").val()>"180" && $("#battery_voltage").val()<"250"){
+               $('#battery_voltage').css('border-color', 'pale-green');
+            }else{
+               $('#battery_voltage').css('border-color', 'red');
+            }
+
+            if($("#cof").val()=="OK" ){
+               $('#cof').css('border-color', 'pale-green');
+            }else{
+               $('#cof').css('border-color', 'red');
+            }
+           
+        });
+</script>
+</body>        
+</html>

@@ -1,0 +1,209 @@
+<html>
+
+<h1>supervisor: {{sup.name}}<br>contact:{{sup.contact}}</h1><br>
+<h3>dgm:{{dgm.name}}</h3>
+
+<h1>pending:<br></h1>
+<table>
+    <tr>
+        <th>date</th>
+        <th>p_id</th>
+        <th>Status</th>
+        <th>type</th>
+    </tr>
+    {% for i in datis %}
+    <tr>
+        <td>{{i.date}}</td>
+        <td><a href="/schoice/{{i.p_id}}/{{i.type}} ">{{i.p_id}}</a> </td>
+        <td>{{i.status}}</td>
+        <td>{{i.type}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>engineer:</h2>
+<table>
+    <tr><th>empid</th></tr>
+    {% for i in eid %}
+    <tr><td><a href="/schoice/employee/{{i.emp_id}}">{{i.emp_id}}</a> </td></tr>
+    {% endfor %}
+</table>
+        <form method="POST" action="/schoice/">
+            {% csrf_token %}
+        <button type="submit" name='daily' >daily</button>
+        <button type="submit"  name='monthly' >monthly</button>
+        <button type="submit"  name='yearly' >yearly</button>
+        <button type="submit"  name='weekly' >weekly</button>
+        </form>
+        <div id="facilities" class="tab-pane fade fac">
+            <div id="facfix"> 	
+                  <button class="tablink" onclick="openCity('Daily', this, 'blue')" id="defaultOpen">Daily</button>
+                <button class="tablink" onclick="openCity('Weekly', this, 'blue')">Weekly</button>
+                <button class="tablink" onclick="openCity('Monthly', this, 'blue')">Monthly</button>
+            </div>
+    
+        <div id="Daily" class="tabcontent">	
+            <h3 class="dateset">Daily</h3>
+            <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                <tr>	
+                  <th>Deadline</th>
+                  <th>Task Name</th>
+                  <th>Last submitted on</th>
+                  <th>Standards</th>
+                  <th>Previous Records</th>
+              </tr>
+              <!-- {% if datisd_deadline == currdate %} 
+              {% if datisdsub_on == currdate and ddr == 0 %}
+                    <tr data-href='/datisdaily/{{ id }}'>
+              {% elif ddr == 0 %}
+                  <tr data-href='/datisdailyrep/{{ id }}'>
+              {% endif %}
+              {% endif %}
+              
+              {% if ddr == 1 %}
+                  <tr data-href='/datisdailyrec/{{ id }}'>
+              {% endif %} -->
+              <tr data-href='#'>
+                  <td>{{ datisd_deadline }}</td>
+                  <td>DATIS</td>
+                  <td>{{ datisdsub_on }}</td>
+                  <!-- <td><button class="btn standards" data-toggle="modal" data-target="#datisdaily">STANDARDS</button></td> -->
+                  <td><button class="btn standards" onclick="window.location.href='/schoice/{{ id }}/Datisdaily'">MORE DETAILS</button></td>
+                  <td><button class="btn standards" onclick="window.location.href='/schoice/datisdaily'">DETAILS</button></td>
+                </tr>
+              
+                       <tr data-href='#'>
+                          <td>{{ vhfd_deadline }}</td>    
+                          <td>VHF</td>
+                          <td>{{ vhfdsub_on }}</td>
+                          <td><button class="btn standards" data-toggle="modal" data-target="#vhfdaily">STANDARDS</button></td>
+                          <td><button class="btn standards" href="/vhfdaily/{{ id }}">DETAILS</button></td>
+                      </tr>
+                       <tr data-href='#'>
+                          <td>01.04.2020</td>
+                          <td>DSCN</td>
+                          <td>01.04.2020</td>
+                          <td><button class="btn standards"data-toggle="modal" data-target="#dscndaily">STANDARDS</button></td>
+                          <td><button class="btn standards" href="#">DETAILS</button></td> 
+                         
+                        </tr>
+              
+          </table>
+          </div>
+
+<div id="Weekly" class="tabcontent">
+            <h3 class="dateset">Weekly</h3>
+            <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                <tr>	
+                  <th>Deadline</th>
+                  <th>Task Name</th>
+                  <th>Last submitted on</th>
+                  <th>Standards</th>
+                  <th>Previous Records</th>
+              </tr>
+
+              {% if dwr == 1 and datiswsub_on == currdate %}
+                  <tr data-href='/datisweeklyrec/{{ id }}'>
+              {% else %}
+                  <tr data-href='/datisweeklyrep/{{ id }}'>
+              {% endif %}
+                  <td>{{ datiswsub_deadline }}</td>    
+                  <td>DATIS</td>
+                  <td>{{ datiswsub_on }}</td>
+                  <td><button class="btn standards" data-toggle="modal" data-target="#datisweekly">STANDARDS</button></td>
+                  <td><button class="btn standards" href="/datisweeklyrec/{{ id }}">DETAILS</button></td>
+              </tr>
+               <tr data-href='#'>
+                  <td>01.04.2020</td>
+                  <td>VHF RX</td>
+                  <td>01.04.2020</td>
+                  <td></td>
+                  <td><button class="btn standards" href="#">DETAILS</button></td>
+              </tr>
+               <tr data-href='#'>
+                  <td>01.04.2020</td>
+                  <td>DSCN</td>
+                  <td>01.04.2020</td>
+                  <td></td>
+                  <td><button class="btn standards" href="#">DETAILS</button></td>
+              </tr>
+          </table>
+          </div>
+
+          <div id="Monthly" class="tabcontent">
+            <h3 class="dateset">Monthly</h3>
+            <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                <tr>	
+                  <th>Deadline</th>
+                  <th>Task Name</th>
+                  <th>Last submitted on</th>
+                  <th>Standards</th>
+                  <th>Previous Records</th>
+              </tr>
+               <tr data-href='#'>
+                  <td>01.04.2020</td>
+                  <td>DATIS</td>
+                  <td>01.04.2020</td>
+                  <td></a></td>
+                  <td><button class="btn standards" href="#">DETAILS</button></td>
+              </tr>
+               <tr data-href='#'>
+                  <td>{{ vhfmsub_deadline }}</td>    
+                  <td>VHF</td>
+                  <td>{{ vhfmsub_on }}</td>  
+                  <td><button class="btn standards" data-toggle="modal" data-target="#vhfmonthly">STANDARDS</button></td>
+                  <td><button class="btn standards" href="/vhfmonthly/{{ id }}">DETAILS</button></td>
+              </tr>
+               <tr data-href='#'>
+                  <td>01.04.2020</td>
+                  <td>DSCN</td>
+                  <td>01.04.2020</td>
+                  <td></td>
+                  <td><button class="btn standards" href="#">DETAILS</button></td>
+              </tr>
+          </table>
+          </div>
+    </div>
+</div>
+</div>
+</div>
+    
+
+
+</html>
+
+<script>
+    function openCity(cityName,elmnt,color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(cityName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+    
+    }
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    
+    $(function(){
+        $('.table tr[data-href]').each(function(){
+            $(this).css('cursor','pointer').hover(
+                function(){ 
+                    $(this).addClass('active'); 
+                },  
+                function(){ 
+                    $(this).removeClass('active'); 
+                }).click( function(){ 
+                    document.location = $(this).attr('data-href'); 
+                }
+            );
+        });
+    });
+    </script>
+    </body>
+    </html>

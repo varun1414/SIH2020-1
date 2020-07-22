@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily SCCTV Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackss/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>   <!--check-->
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+		</nav>
+		<br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                	<th>Date-Time</th>
+					  <th style="width: 150px;">Status</th>
+                  	<th>UPS Battery Indication</th>
+                    <th>Status of Servers</th>
+                    <th>NAS Status in VMS/VRM</th>
+                      <th>Recording Active Status of all VRS Servers</th>
+                    <th>Recording Status of cameras in RRS Server</th>
+                    <th>Database Status in VMS Server</th>
+                    <th>Status of Camera in Client IVMS Sofware</th>
+                    <th>Cleaning of Equipments</th>
+                    <th>Test</th>
+					          <th>Approval Status</th>
+                  	<th>Approval Date</th>
+                  	<th>Approval time</th>
+                  	
+                </tr>
+            </thead>
+            <tbody>
+                {% for datisd in scctv_d %}          <!--check-->
+                <tr>
+                 
+                	<td>{{ datisd.date }}<br>{{ datisd.time }}</td>
+					  <td style="width: 150px;">{{ datisd.status }}</td>
+                  	 <td>{{ datisd.ups_battery_indication }}</td>
+                    <td>{{ datisd.servers_on_condition }}</td>
+                    <td>{{ datisd.nas_status_in_vmsorvrm }}</td>
+                    <td>{{ datisd.recording_active_status_vrs_server }}</td>
+                    <td>{{ datisd.recording_active_status_rrs_server }}</td>
+                    <td>{{ datisd.database_status_vms }}</td>
+                    <td>{{ datisd.cameras_ivms }}</td>
+                    <td>{{ datisd.eqpt_cleaning }}</td>
+                   {% if datisd.ups_battery_indication == "FULL" and datisd.servers_on_condition == "OK" and datisd.nas_status_in_vmsorvrm == "OK" and datisd.recording_active_status_vrs_server == "EQUALS TO TOTAL CAMERA" and datisd.recording_active_status_rrs_server == "PAUSE" and datisd.database_status_vms == "OK" and datisd.cameras_ivms == "OK" and datisd.eqpt_cleaning == "CARRIED OUT" %}
+                    <td>Pass</td>
+                {% else %}
+                    <td>Fail</td>
+                {% endif %}  
+					          <td>{{ datisd.unit_incharge_approval }}</td>
+                  	<td>{{ datisd.approval_date }}</td>
+                  	<td>{{ datisd.approval_time }}</td>
+                      
+                </tr>
+                {% endfor %}
+             </tbody>
+        </table>
+    </div>
+             
+</body>
+</html>
+

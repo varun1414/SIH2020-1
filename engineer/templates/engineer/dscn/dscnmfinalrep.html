@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Daily DSCN Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  
+                    <a href='#' onclick="window.location.href='/dscnmonthly/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Submission to the Supervisor
+                <form method='POST' action='/finalmrepsub/{{ p_id }}/{{ id }}'>
+                {% csrf_token %}
+                {% for dscnmm in dscnm %}     
+                 <div class="card" style="text-align: center;">
+                <div class="card-body">
+                  <h2 class="card-title">DSCN DAILY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                    Recorded on:  DATE: {{ dscnmm.date }}  |  TIME: {{ dscnmm.time }}<br>
+                                    <strong>STATUS: {{ dscnmm.status }} </strong>
+                </div>
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="Cleaning_DSCN_associated_eqpt" class="col-sm-6 col-form-label">Cleaning DSCN associated eqpt</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Cleaning_DSCN_associated_eqpt" name="cdae" readonly="true" value="{{ dscnmm.cleaning_dscn_associated_eqpt }}" required>
+                  </div>
+               </div>
+                              
+              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Battery_backup_time_of_UPS1nUPS2" class="col-sm-6 col-form-label">Battery backup time of UPS1nUPS2</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Battery_backup_time_of_UPS1nUPS2" name="bbt" readonly="true" value="{{ dscnmm.battery_backup_time_of_ups1nups2 }}" required>
+                  </div>
+                </div>
+   
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="UPS_battery_voltage_on_load" class="col-sm-6 col-form-label">UPS battery voltage on load</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="UPS_battery_voltage_on_load" name="ubvl"  readonly="true" value="{{ dscnmm.ups_battery_voltage_on_load }}" required>
+                  </div>
+                              </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Antenna_n_Cable_check" class="col-sm-6 col-form-label">Antenna and Cable check</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Antenna_n_Cable_check" name="ancc" readonly="true" value="{{ dscnmm.antenna_n_cable_check }}"  required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Earth_resistance" class="col-sm-6 col-form-label">Earth resistance</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Earth_resistance" name="er" readonly="true" value="{{ dscnmm.earth_resistance }}" required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="EorN_voltage" class="col-sm-6 col-form-label">EorN voltage</label>
+                  <div>
+                     <input type="number" class="form-control form-control-sm" id="EorN_voltage" name="ev" readonly="true" value="{{ dscnmm.eorn_voltage }}" required>
+                  </div>
+                </div>
+                              <hr>
+                <div class="form-group row has-warning">
+                  <label for="Eqpt_status_after_check" class="col-sm-6 col-form-label">Eqpt status after check</label>
+                  <div>
+                     <input type="text" class="form-control form-control-sm" id="Eqpt_status_after_check" name="esac"  readonly="true" value="{{ dscnmm.eqpt_status_after_check }}"  required>
+                  </div>
+                  <hr>
+				</div>
+				
+                  <div class="alert" style="background-color: #DBDBDB">
+                        <strong>Remarks</strong>(Final submission)</div>
+    
+            <!-- <div class="col-sm-1"></div> -->
+                                
+                
+                <div class="form-group row has-warning"style="padding-left:0" >
+                  <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief" name='remarks' required></textarea>
+                  <!--<input type="textarea" class="form-control " id="Cleaning_DSCN_associated_eqpt" name="Maintenance Procedure"  style="height:200px;" required>-->
+                 
+              </div>
+                <!--<div class="form-group row has-warning" >
+                    <input required type="text" name="remarks" class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief.">-->
+                    <hr>
+                    <button class="btn submitbut">FINAL SUBMIT</button>
+                  </div>
+                    {% endfor %}
+                  </div>
+                </div>
+            </form>
+            <!-- <button onclick="window.location.href='/datisdaily/{{ id }}'">Back</button> -->
+        </div>
+        
+    </div>
+
+<script>
+$(function(){
+  $('#Cleaning_DSCN_associated_eqpt').css('border-color', '#CED4DA');
+  $('#Battery_backup_time_of_UPS1nUPS2').css('border-color', '#CED4DA');
+  $('#UPS_battery_voltage_on_load').css('border-color', '#CED4DA');
+  $('#Antenna_n_Cable_check').css('border-color', '#CED4DA');
+  $('#Earth_resistance').css('border-color', '#CED4DA');
+  $('#EorN_voltage').css('border-color', '#CED4DA');
+  $('#Eqpt_status_after_check').css('border-color', '#CED4DA');
+
+  $('#procedure').css('border-color', '#CED4DA');
+    });
+
+  
+  
+  $("#procedure").on("keyup",function(){
+      if($("#procedure").val()==""){
+         $('#procedure').css('border-color', 'red');
+          return false;
+      }else{
+         $('#procedure').css('border-color', '#CED4DA');
+      }
+  });
+</script>
+</body>        
+</html>

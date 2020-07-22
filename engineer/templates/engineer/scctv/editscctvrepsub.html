@@ -1,0 +1,364 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily SCCTV Maintenance Entry</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+					{% for scctvdd in scctvd %}
+	      			<a href='#' onclick="window.location.href='/scctvdaily/{{ scctvdd.emp_id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		      <!--check-->
+					  {% endfor %}
+				</li>
+				
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+			
+		</nav>
+		<br>
+			<div class="row">
+				<div class="col-sm-7">
+					<form method='POST' action='/upscctvrepsub/{{ id }}' id="form-v" >        <!--check-->
+						{% csrf_token %}
+						{% for scctvdd in scctvd %}
+					    <div class="card" style="text-align: center;">
+					      <div class="card-body">
+					        <h2 class="card-title">SCCTV DAILY MAINTENANCE ENTRY</h2>
+					      
+					      	<hr>
+							<div class="form-group row has-warning" >
+							  	<textarea required="required" class="form-control form-control-sm" rows="5" id="procedure" placeholder="Enter Maintenance Procedure" name='remarks'></textarea>
+							   	<!--<input type="textarea" class="form-control " id="room_temp" name="Maintenance Procedure"  style="height:200px;" required>-->
+							   
+							</div>
+
+	     					<hr>
+							<div class="form-group row has-warning">
+							  <label for="UPS_battery_indication" class="col-sm-6 col-form-label">UPS Battery Indication</label>
+							  <div>
+							   	  <select  required class="form-control form-control-sm" id="UPS_battery_indication" name="ups" value="{{ scctvdd.ups_battery_indication }}">
+							     	  <option value="{{ scctvdd.ups_battery_indication }}" selected="selected">Prev Value:{{ scctvdd.ups_battery_indication }}</option>
+									  <option value="FULL">FULL</option>
+									  <option value="DISCHARGED">DISCHARGED</option>
+								</select>
+							  </div>
+							</div>
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="Servers_ON_condition" class="col-sm-6 col-form-label">Check all the servers are in ON condition</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="Servers_ON_condition" name="ser" value="{{ scctvdd.servers_on_condition }}">
+							     	  <option value="{{ scctvdd.servers_on_condition }}"  selected="selected">Prev Value:{{ scctvdd.servers_on_condition }}</option>
+									  <option value="OK">OK</option>
+									  <option value="NOT OK">NOT OK</option>
+								</select>
+							  </div>
+							</div>
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="NAS_status_in_VMSorVRM" class="col-sm-6 col-form-label">Check the NAS status in VMS/VRM</label>
+							  <div>
+							    <select required class="form-control form-control-sm" id="NAS_status_in_VMSorVRM" name="vrm" value="{{ scctvdd.nas_status_in_vmsorvrm }}">
+							    	  <option value="{{ scctvdd.nas_status_in_vmsorvrm }}" selected="selected">Prev Value:{{ scctvdd.nas_status_in_vmsorvrm}}</option>
+									  <option value="OK">OK</option>
+									  <option value="NOT OK">NOT OK</option>
+								</select>
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							    <label for="recording_active_status_vrs_server" class="col-sm-6 col-form-label">Check Recording Active status of all VRS servers</label>
+							    <div>
+									<select required class="form-control form-control-sm" id="recording_active_status_VRS_server" name="vrs" value="{{ scctvdd.recording_active_status_vrs_server }}">
+									  <option value="{{ scctvdd.recording_active_status_vrs_server }}" selected="selected">Prev Value:{{ scctvdd.recording_active_status_vrs_server }}</option>
+									  <option value="EQUALS TO TOTAL CAMERA">EQUALS TO TOTAL CAMERA</option>
+									  <option value="None">NONE</option>
+								</select>
+							    </div>
+							  </div>
+
+							  
+							  	<hr>  
+							  <div class="form-group row has-warning">
+							    <label for="recording_active_status_RRS_server" class="col-sm-6 col-form-label">Check Recording status of cameras in RRS Server</label>
+							    <div>
+							    	<select required class="form-control form-control-sm" id="recording_active_status_RRS_server" name="rrs" value="{{ scctvdd.recording_active_status_rrs_server  }}">
+							    	  <option value="{{ scctvdd.recording_active_status_rrs_server  }}" selected="selected">Prev Value:{{ scctvdd.recording_active_status_rrs_server  }}</option>
+									  <option value="ON">ON</option>
+									  <option value="PAUSE">PAUSE</option>
+									  <option value="OFF">OFF</option>
+								</select>
+							    </div>
+							  </div>
+
+							      <hr>
+							<div class="form-group row has-warning">
+							  <label for="database_status_VMS" class="col-sm-6 col-form-label">Check the Database status in VMS server</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="database_status_VMS" name="vms" value="{{ scctvdd.database_status_vms }}">
+							     	  <option value="{{ scctvdd.database_status_vms }}" selected="selected">Prev Value:{{ scctvdd.database_status_vms }}</option>
+									  <option value="OK">OK</option>
+									  <option value="NOT OK">NOT OK</option>
+								</select>
+							  </div>
+							</div>
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="cameras_IVMS" class="col-sm-6 col-form-label">Check all camera are working in client ivms software</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="cameras_IVMS" name="ivms" value="{{ scctvdd.cameras_ivms  }}">
+							     	  <option value="{{ scctvdd.cameras_ivms  }}"  selected="selected">Prev Value: {{ scctvdd.cameras_ivms  }}</option>
+									  <option value="OK">OK</option>
+									  <option value="NOT OK">NOT OK</option>
+								</select>
+							  </div>
+							</div>
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="eqpt_cleaning" class="col-sm-6 col-form-label">Cleaning of Equipments</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="eqpt_cleaning" name="equip" value="{{ scctvdd.eqpt_cleaning }}">
+							     	  <option value="{{ scctvdd.eqpt_cleaning }}" selected="selected">Prev Value: {{ scctvdd.eqpt_cleaning }}</option>
+									  <option value="CARRIED OUT">CARRIED OUT</option>
+									  <option value="NOT CARRIED OUT">NOT CARRIED OUT</option>
+								</select>
+							  </div>
+							</div>
+
+							<hr>
+							<button class="btn submitbut">SUBMIT</button>
+								{% endfor %}
+				      		</div>
+				    	</div>
+				  	</form>
+				</div>
+	
+				 <div class="col-sm-5" >
+	            	<div class="sidebar s" >
+		                <div class="col-sm-12">
+		                  <div class="card mb-3 sidecard" style="width: 22rem; " >
+		                      <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+		                          <h6>MAINTENANCE HISTORY</h6>
+		                      </div>
+	                  	  </div>    
+	                	</div>
+	                	<div class="row rows">
+		                    <div class="col">
+		                      	<div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+		                          	<div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+		                              	<h6>CHECK STANDARDS</h6>
+		                          	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col">
+		                      <div class="card sidecard" style="width:10rem;" >
+		                            <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+		                                <h6>CONTACT SUPERVISOR</h6>
+		                            </div>
+		                        </div>     
+		                    </div>
+	                	</div>    
+	              	</div>
+
+	                <div> 
+	                  	<div class="logr">                       
+	                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+	                        <div class="tablogr">
+		                        <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+			                        <thead >
+			                            <tr>
+			                              <th>Log_ID</th>
+			                              <th>Remarks</th>
+			                              <th>Value</th>
+			                              <th>Date-Time</th>  
+			                            </tr>
+			                        </thead>
+		                          	<tbody>
+		                            {% for log in scctvdlogs %}       <!--check-->
+			                            <tr>
+			                                <td>{{ log.log_id }}</td>
+			                                <td>{{ log.remarks }}</td>
+			                                <td>{{ log.value }}</td>
+			                                <td>{{ log.time }}<br>{{ log.date }}</td>
+			                             </tr>
+		                            {% endfor %}
+		                          </tbody>                           
+		                        </table>
+	                    	</div>
+	                  	</div>
+	                </div>   
+	              
+	          		<div class="modal fade" id="standardcheck">
+					    <div class="modal-dialog">
+	      				    <div class="modal-content">
+	      				      	<div class="modal-header">
+	      				          	<h4 class="modal-title">Standards</h4>
+	      				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      				      	</div>
+	    				        <div class="modal-body">
+	    				          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+		    				          	<tr>
+							          		<th>VALUE LABEL</th>
+							          		<th>NORMAL VALUE</th>
+							          	</tr>
+							          	<tr>
+							          		<td>UPS Battery Indication</td>
+							          		<td>Full</td>
+							          	</tr>
+							          	
+											<tr>
+							          		<td>Check all the servers are in ON Condition</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check the NAS status in VMS/VRM</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check Recording Active status of all VRS servers</td>
+							          		<td>EQUALS TO TOTAL CAMERA</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check Recording status of cameras in RRS Server</td>
+							          		<td>PAUSE</td>
+							          	</tr>
+							          <tr>
+							          		<td>Check the Database status in VMS server</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Check all camera are working in client IVMS software</td>
+							          		<td>OK</td>
+							          	</tr>
+							          		<tr>
+							          		<td>Cleaning of Equipments</td>
+							          		<td>CARRIED OUT</td>
+							          	</tr>
+	    				          </table>
+	    				        </div>
+	    				        <div class="modal-footer">
+	    				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    				        </div>  
+	      				    </div>
+	  				  	</div>
+	  				</div>
+
+	              	<div class="modal fade" id="pastlog">
+		                <div class="modal-dialog modal-lg">
+		                  	<div class="modal-content">
+			                    <div class="modal-header">
+			                      <h4 class="modal-title">Maintenance History</h4>
+			                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                    </div>
+			                    <div class="modal-body">
+				                    <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+				                        <thead>
+				                           <tr>  
+												<th>Date-Time</th>
+												<th>UPS Battery Indication</th>
+												<th>Status of Servers</th>
+												<th>NAS Status in VMS/VRM</th>
+											  	<th>Recording Active Status of all VRS Servers</th>
+												<th>Recording Status of cameras in RRS Server</th>
+												<th>Database Status in VMS Server</th>
+												<th>Status of Camera in Client IVMS Sofware</th>
+												<th>Cleaning of Equipments</th>
+												<th>Remarks</th>
+												<th>Test</th>
+										  </tr>
+									  </thead>
+									  <tbody>
+										  {% for scctvd in scctv_d %}         <!--check-->
+										  <tr>
+										   
+											  <td>{{ scctvd.date }}<br>{{ scctvd.time }}</td>
+												<td>{{ scctvd.ups_battery_indication }}</td>
+												<td>{{ scctvd.servers_on_condition }}</td>
+												<td>{{ scctvd.nas_status_in_vmsorvrm }}</td>
+												<td>{{ scctvd.recording_active_status_vrs_server }}</td>
+												<td>{{ scctvd.recording_active_status_rrs_server }}</td>
+												<td>{{ scctvd.database_status_vms }}</td>
+												<td>{{ scctvd.cameras_ivms }}</td>
+												<td>{{ scctvd.eqpt_cleaning }}</td>
+												<td>{{ scctvd.remarks }}</td>
+										  {% if scctvd.ups_battery_indication == "FULL" and scctvd.servers_on_condition == "OK" and scctvd.nas_status_in_vmsorvrm == "OK" and scctvd.recording_active_status_vrs_server == "EQUALS TO TOTAL CAMERA" and scctvd.recording_active_status_rrs_server == "PAUSE" and scctvd.database_status_vms == "OK" and scctvd.cameras_ivms == "OK" and scctvd.eqpt_cleaning == "CARRIED OUT" %}
+												<td>Pass</td>
+										  {% else %}
+												 <td>Fail</td>
+										  {% endif %}  
+										  </tr>
+				                          {% endfor %}
+				                         </tbody>
+				                    </table>
+			                    </div>
+			                    <div class="modal-footer">
+			                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				                </div>  
+		                 	</div>
+		                </div>
+	              	</div>
+
+	            
+
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">SUPERVISOR</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+							{% for sup in supdetails %}
+				          <h5>{{ sup.name }}</h5>
+				          <h6>Email: <a href="mmailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+						 
+						  <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+						  <h6>Phone: {{ sup.contact }}</h6>
+						  {% endfor %}
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+				
+			</div>			
+	<!--ADDITION-->
+<script>
+	$(function(){
+	 $('#procedure').css('border-color', '#CED4DA');
+	});
+
+ $("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+            	 $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>
+

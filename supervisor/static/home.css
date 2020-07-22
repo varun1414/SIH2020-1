@@ -1,0 +1,152 @@
+.body{ overflow: hidden; }
+a{ text-decoration: none !important; }
+.active a 
+{
+  background-color: #FFFFFF !important; color: #1E72FA !important; 
+}
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+   background-color: #DBDBDB;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+   background-color: #A4A4A4;
+}
+.todaytasks{ table-layout: fixed; }
+.todaytasks th{
+  background-color: rgba(32, 48, 203, 1) ! important; border-width: 4px 0px 4px 0px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ; text-align: left; color: white !important;
+}
+.todaytasks tr{
+	border-width: 4px 0px 4px 0px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ; text-align: left; margin:5px; color: black !important;
+}
+.todaytasks td{
+	border-width: 4px 0px 4px 0px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ;  text-align: left; margin:5px; color: black !important;
+}
+.container{
+	box-shadow:1px 0px 10px 1px #333; position: relative; 
+	height: auto;
+  	margin: auto;
+}
+.title-header
+{
+	height: 90px; font-size: 30px; background-color: #1E27FA ; color: white; font-family: 'Righteous', cursive;
+}
+.title-header img
+{
+	height:80px; padding:10px;
+}
+.jumbotron
+{
+	background-image:url(image/sky1.jpg);
+}
+.card.cardlogo
+{
+	width: 18rem; height: 27rem; overflow-y:hidden; border-radius: 30px; background-color:#FFFFFF; font-family: 'Gotu', sans-serif;
+}
+.card-img-top
+{
+	width:100px; border-radius:50%; margin-left: 40px; margin-top:20px;
+}
+.card-title
+{
+	text-align: center; font-size: 22px; color: #1E72FA; text-decoration: bold;
+}
+.data-emp
+{
+	background-color:#FFFFFF; border-radius: 30px; border-color:grey; color: #1E72FA; text-align: center; font-size: 12px;
+}
+.card.cardcontact
+{
+	margin-top: 5px; font-family: 'Gotu', sans-serif;width: 18rem; border-radius: 15px; background-color:#1E72FA; 
+}
+.headcard
+{
+	background-color:#1E72FA; border-radius: 30px; border-color:grey; color: white; text-align: center; font-size: 14px;
+}
+.contactbut
+{
+	 background-color: #EBF3FF !important; color: black !important; border-radius: 30px !important;
+}
+.data-table
+{
+	margin-top: 100px;
+}
+.fac
+{
+	font-family: 'Gotu', sans-serif;  overflow-y: auto; max-height: 28rem; max-width: 49rem ; overflow-x: hidden;
+}
+.dateset
+{
+	color: rgba(83, 98, 203, 1);
+}
+.topic
+{
+	border: none;
+}
+.tabcard
+{
+	font-family: 'Gotu', sans-serif; width: 24rem; height:28rem; background-color:#1E72FA; border-radius:15px 0px 0px 15px;
+}
+.todays
+{
+	color:white; font-family: 'Gotu', sans-serif;
+}
+.faculty
+{
+	color:white;
+}
+.logout
+{
+	margin-top: 120px; margin-left: 130px; height:30x; border-radius:30px !important; background-color: #EBF3FF !important; color: black !important;
+}
+.factab a
+{
+	padding: 0 !important; height:12px; background-color: rgba(83, 98, 203, 1) !important; color: white !important;
+}
+.tabcol
+{
+	background-color: rgba(235, 243, 255, 1) ; width: 52rem !important; height:28rem !important; border-radius: 0px 15px 15px 0px;
+	}
+.todaytab
+{
+	width: 50rem; height:26rem; background-color: rgba(235, 243, 255, 1);
+}
+.tod
+{
+	padding: 50px 7px 50px 7px;background-color: rgba(235, 243, 255, 1); 	font-family: 'Gotu', sans-serif;  overflow-y: auto; max-height: 28rem; overflow-x: hidden;
+}
+
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 33.33%;
+}
+
+.tablink:hover {  background-color: #777; }
+
+.tr:hover{ background-color:#1E72FA; }
+
+/* Style the tab content */
+.tabcontent { color: white; display: none; padding: 50px 7px 50px 7px; text-align: center;}
+
+.standtab tabcon{ border:4px solid black; padding:3px; }
+.standtab th{ border:4px solid black; padding:3px; }
+.standtab tr{ border:4px solid black; padding:3px; }
+.standtab td{ border:4px solid black; padding:3px;}
+#facfix{ padding-top: 0px; width: 49rem; position: fixed;}
+
+.details{border-radius: 30px !important;}
+.standards{border-radius: 30px !important;  
+	background-color: #1E72FA;  color: white; border-color: #1E27FA;
+	width: auto; font-size: 8px !important;
+}
+
+.standards:hover {
+  background-color: #1E27FA; /* Green */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: white;
+}
