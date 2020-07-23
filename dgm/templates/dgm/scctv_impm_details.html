@@ -1,0 +1,521 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Monthly SCCTV Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'supervisor/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+       
+</head>
+<body onbeforeunload="return OnBeforeUnLoad ()"> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='{% url redir%}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+        
+
+        <div class="row">
+            <div class="col-sm-7">
+
+              {% if temp.unit_incharge_approval == NONE %}
+
+                  {% if temp.ups_ip_voltage == None %}             
+                        <div class="alert alert-danger">
+                          <strong>Report Not Submitted</strong>
+
+                      {% elif temp.ups_ip_voltage <= 235 and  temp.ups_ip_voltage >= 225 and temp.ups_op_voltage <= 230 and temp.ups_op_voltage >= 220 and temp.ups_battery_op_voltage_acpwron <= 213 and temp.ups_battery_op_voltage_acpwron >= 203 and temp.ups_battery_op_voltage_acpwroff <= 191 and temp.ups_battery_op_voltage_acpwroff >= 181 and temp.ups_battery_op_voltage_after15min_acpwroff <= 181 and temp.ups_battery_op_voltage_after15min_acpwroff >= 171 and temp.server_status == "ON" and temp.cameras_in_vrs_server == "OK" and temp.nas_free_capacity != 0 and temp.ofclinkto_l2l3_switches == "BLINKING GREEN" and temp.cleaning_camera_eqpt == "CARRIED OUT" and temp.user_rights_check == "OK" %}
+                        <div class="alert alert-success">
+                          <strong> All maintenance entries matched with standard values.</strong>                   
+
+                      {% else %}             
+                        <div class="alert alert-danger">
+                            <strong>Maintenance values do not match standards.</strong>  
+                      
+
+                  {% endif %}
+
+              {% else %}
+
+                  {% if temp.unit_incharge_approval == "NO" %}
+                    <div class="alert alert-danger">
+                      <strong>Report Declined; Waiting for update.</strong>
+                 
+                  {% endif %}
+
+                  {% if temp.unit_incharge_approval == "YES" %}
+                    <div class="alert alert-success">
+                      <strong>Report Approved.</strong> 
+
+                  {% endif %}
+
+              {% endif %}
+
+                <div class="card" style="text-align: center;">            
+                  
+                  <form id="form-v">                    
+                        <div class="card-body">
+                            <h2 class="card-title">SCCTV MONTHLY MAINTENANCE Report</h2>
+                          
+                            {% for log in logs|slice:":1" %}
+                            <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                                   Recorded on:  DATE: {{ temp.date }}  |  TIME: {{ temp.time }}<br>
+                                    <strong>STATUS: {{ temp.status }}  |  EmployeeID: {{ log.emp_id }}</strong> 
+                                   
+                            </div>
+                            {% endfor %}
+                             <hr>
+                           <div class="form-group row has-warning">
+                             <label for="ups_ip_voltage" class="col-sm-6 col-form-label">UPS Input Voltage</label>
+                            <div>
+                                <input type="text" class="form-control form-control-sm" id="ups_ip_voltage" name="ups_ip_voltage" readonly="true" value="{{ temp.ups_ip_voltage }}">
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row has-warning">
+                              <label for="ups_op_voltage" class="col-sm-6 col-form-label">UPS Output Voltage</label>
+                              <div>
+                                <input type="text" class="form-control form-control-sm" id="ups_op_voltage" name="ups_op_voltage" readonly="true" value="{{ temp.ups_op_voltage }}">
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row has-warning">
+                              <label for="ups_battery_op_voltage_acpwron" class="col-sm-6 col-form-label">UPS Battery output voltage during AC power ON (on both battery banks)</label>
+                              <div>
+                                <input type=number name="ups_battery_op_voltage_ACpwrON" id="ups_battery_op_voltage_acpwron" class="form-control form-control-sm" required readonly="true" value="{{ temp.ups_battery_op_voltage_acpwron }}"></input>
+                              </div>
+                            </div>
+
+                            <hr>
+                            <div class="form-group row has-warning">
+                              <label for="ups_battery_op_voltage_acpwroff" class="col-sm-6 col-form-label">UPS Battery output voltage during AC power OFF (on both battery banks)</label>
+                              <div>
+                                <input type=number name="ups_battery_op_voltage_acpwroff" id="ups_battery_op_voltage_acpwroff" class="form-control form-control-sm" required readonly="true" value="{{ temp.ups_battery_op_voltage_acpwroff }}"></input>
+                              </div>
+                            </div>
+
+                            <hr>
+                            <div class="form-group row has-warning">
+                              <label for="ups_battery_op_voltage_after15min_acpwroff" class="col-sm-6 col-form-label">UPS Battery output voltage after 15 min of AC main OFF (on both battery banks)</label>
+                              <div>
+                                <input type=number name="ups_battery_op_voltage_after15min_acpwroff" id="ups_battery_op_voltage_after15min_acpwroff" class="form-control form-control-sm" required readonly="true" value="{{ temp.ups_battery_op_voltage_after15min_acpwroff }}"></input>
+                              </div>
+                            </div>
+
+                            <hr>  
+                             <div class="form-group row has-warning">
+                            <label for="server_status" class="col-sm-6 col-form-label">Check all the server status</label>
+                            <div>
+                                
+                                <input type="text" class="form-control form-control-sm" id="server_status" name="server_status" readonly="true" value="{{ temp.server_status }}">
+                              </div>
+                            </div>
+
+                            <hr>  
+                            <div class="form-group row has-warning">
+                             <label for="cameras_in_vrs_server" class="col-sm-6 col-form-label">Check Camera/NAS status in VRS servers</label>
+                            <div>
+                                <input type="text" class="form-control form-control-sm" id="cameras_in_vrs_server" name="cameras_in_vrs_server" readonly="true" value="{{ temp.cameras_in_vrs_server }}">
+                              </div>
+                            </div>
+
+                            <hr>  
+                            <div class="form-group row has-warning">
+                              <label for="nas_free_capacity" class="col-sm-6 col-form-label">Check NAS free capacity</label>
+                              <div>
+                                <input type=float class="form-control form-control-sm" id="nas_free_capacity" name="nas_free_capacity" readonly="true" value="{{ temp.nas_free_capacity }}">
+                              </div>
+                            </div>
+
+                            <hr>  
+                            <div class="form-group row has-warning">
+                              <label for="ofclinkto_l2l3_switches" class="col-sm-6 col-form-label">OFC Link in all L2 and L3 switches</label>
+                              <div>
+                                <input type="text" class="form-control form-control-sm" id="ofclinkto_l2l3_switches" name="ofclinkto_l2l3_switches" readonly="true" value="{{ temp.ofclinkto_l2l3_switches }}">
+                              </div>
+                            </div>
+
+                            <hr>  
+                            <div class="form-group row has-warning">
+                              <label for="cleaning_camera_eqpt" class="col-sm-6 col-form-label">Cleaning of Cameras and Equipment</label>
+                              <div>
+                                <input type="text" class="form-control form-control-sm" id="cleaning_camera_eqpt" name="cleaning_camera_eqpt" readonly="true" value="{{ temp.cleaning_camera_eqpt }}">
+                              </div>
+                            </div>
+
+                            <hr>  
+                            <div class="form-group row has-warning">
+                              <label for="user_rights_check" class="col-sm-6 col-form-label">Check username and passwords of all users</label>
+                              <div>
+                                <input type="text" class="form-control form-control-sm" id="user_rights_check" name="user_rights_check" readonly="true" value="{{ temp.user_rights_check }}">
+                              </div>
+                            </div>
+
+                                
+                                <hr>
+                                {% if temp.status != "PENDING" and temp.unit_incharge_approval == NONE %}
+                                  {% if temp.status == "COMPLETED WITH ERRORS" %}                      
+                                      <button type="button" data-toggle="modal" data-target="#recheck" style="width: 100px; margin-right: 10%;"class="btn submitbut">DECLINE</button>
+                                      
+                                  {% endif %}
+                                  {% if temp.unit_incharge_approval != "YES" %}
+                                  <a href='/verify/{{names}}/{{temp.p_token}}' class="btn submitbut" >APPROVE</a>      
+                                {% endif %}
+                                {% endif %}
+</form></div>
+                                <div class="modal fade" id="recheck">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">SEND REPORT FOR RECHECKING</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <div class="helloform" style="padding:0">
+                                              <form method='post' action="{% url 'supervisor:sent' %}" >
+                                                  {% csrf_token %}
+                                                  <br>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="to" class="col-sm-6 col-form-label">TO:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.email}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="name" class="col-sm-6 col-form-label">NAME:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.name}}" ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group row has-warning">
+                                                      <label for="des" class="col-sm-6 col-form-label">DESIGNATION:</label>
+                                                      <div>
+                                                        <input class="form-control form-control-sm" type='text' readonly value="{{eng.designation}}"  ></input><!-- Non functional -->
+                                                      </div>
+                                                  </div>
+                                                  <hr>
+                                                 
+                                                  <div class="form-group row has-warning">
+                                                      <label for="body" class="col-sm-6 col-form-label">BODY:</label>
+                                                      <div>
+                                                        <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {$name}, this is regarding the issue." required="required"></textarea> 
+                                                      </div>
+                                                  </div>
+                                                  <hr>                                                  
+                                                  <button type="submit" class="btn btn-primary" value="SEND">Submit</button>
+                                              </form>
+                                            </div>
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>    
+
+                        </div>
+                                                          
+                </div>                      
+            </div>
+<!--if statement
+            <div class="alert alert-success">
+                    <strong>Report sent</strong> 
+                </div>  -->               
+
+            <div class="col-sm-5" >
+                <div class="sidebar s" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; " >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                      </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT ENGINEER</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                </div>
+                {% if temp.ups_ip_voltage != None %}
+                <div> 
+                    <div class="logr">                       
+                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+                        <div class="tablogr">
+                            <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+                                <thead >
+                                    <tr>
+                                      <th>Log_ID</th>
+                                      <th>Remarks</th>
+                                      <th>Value</th>
+                                      <th>Date-Time</th>  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.log_id }}</td>
+                                        <td>{{ log.remarks }}</td>
+                                        <td>{{ log.value }}</td>
+                                        <td>{{ log.time }}<br>{{ log.date }}</td>
+                                     </tr>
+                                {% endfor %}
+                              </tbody>                           
+                            </table>
+                        </div>
+                    </div>
+                </div>   
+              {% endif %}
+                <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Standards</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                                    <tr>
+                                      <th>VALUE LABEL</th>
+                                      <th>NORMAL VALUE</th>
+                                    </tr>
+                                    <tr>
+                                      <td>UPS Input Voltage</td>
+                                      <td>225-235V</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                      <td>UPS Output Voltage</td>
+                                      <td>220-230V</td>
+                                    </tr>
+                                    <tr>
+                                      <td>UPS Battery O/P V - AC power ON</td>
+                                      <td>203-213V</td>
+                                    </tr>
+                                      <tr>
+                                      <td>UPS Battery O/P V - AC power OFF</td>
+                                      <td>181-191V</td>
+                                    </tr>
+                                      <tr>
+                                      <td>UPS Battery O/P V - after 15m AC main OFF </td>
+                                      <td>171-181V</td>
+                                    </tr>
+                                      <tr>
+                                      <td>Server Status</td>
+                                      <td>ON</td>
+                                    </tr>
+                                      <tr>
+                                      <td>Camera / NAS Status in VRS Servers</td>
+                                      <td>OK/Accesible</td>
+                                    </tr>
+                                    <tr>
+                                      <td>NAS free Capacity</td>
+                                      <td>Not zero</td>
+                                    </tr>
+                                    <tr>
+                                      <td>OFC Link in all L2 and L3 Switches</td>
+                                      <td>Blinking Green</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Cleaning of Cameras and Equipment</td>
+                                      <td>Carried Out</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Check the rights of all users</td>
+                                      <td>OK</td>
+                                    </tr>
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Maintenance History</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+                                    <thead>
+                                      <tr>  
+                                          <th>Date</th>
+                                          <th>Time</th>
+                                          <th>UPS Input Voltage</th>
+                                          <th>UPS Output Voltage</th>
+                                          <th>UPS Battery O/P V - AC power ON</th>
+                                          <th>UPS Battery O/P V - AC power OFF</th>
+                                          <th>UPS Battery O/P V - after 15m AC main OFF</th>
+                                          <th>Server Status</th>
+                                          <th>Camera / NAS Status in VRS Servers</th>
+                                          <th>NAS free Capacity</th>
+                                          <th>OFC Link in all L2 and L3 Switches</th>
+                                          <th>Cleaning of Cameras and Equipment</th>
+                                          <th>Check the rights of all users</th>
+                                          <th>Test</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                       <!--check-->
+                                      <tr>
+                                       {% for scctvmm in mrec %}
+                                      <td>{{ scctvmm.date }}</td>
+                                        <td>{{ scctvmm.time }}</td>
+                                       <td>{{ scctvmm.ups_ip_voltage }}</td>
+                                        <td>{{ scctvmm.ups_op_voltage }}</td>
+                                        <td>{{ scctvmm.ups_battery_op_voltage_acpwron }}</td>
+                                        <td>{{ scctvmm.ups_battery_op_voltage_acpwroff }}</td>
+                                        <td>{{ scctvmm.ups_battery_op_voltage_after15min_acpwroff }}</td>
+                                        <td>{{ scctvmm.server_status }}</td>
+                                        <td>{{ scctvmm.cameras_in_vrs_server }}</td>
+                                        <td>{{ scctvmm.nas_free_capacity }}</td>
+                                        <td>{{ scctvmm.ofclinkto_l2l3_switches }}</td>
+                                        <td>{{ scctvmm.cleaning_camera_eqpt }}</td>
+                                        <td>{{ scctvmm.user_rights_check }}</td>
+                                          {% if scctvmm.ups_ip_voltage <= 235 and  scctvmm.ups_ip_voltage >= 225 and scctvmm.ups_op_voltage <= 230 and scctvmm.ups_op_voltage >= 220 and scctvmm.ups_battery_op_voltage_acpwron <= 213 and scctvmm.ups_battery_op_voltage_acpwron >= 203 and scctvmm.ups_battery_op_voltage_acpwroff <= 191 and scctvmm.ups_battery_op_voltage_acpwroff >= 181 and scctvmm.ups_battery_op_voltage_after15min_acpwroff <= 181 and scctvmm.ups_battery_op_voltage_after15min_acpwroff >= 171 and scctvmm.server_status == "ON" and scctvmm.cameras_in_vrs_server == "OK" and scctvmm.nas_free_capacity != 0 and scctvmm.ofclinkto_l2l3_switches == "BLINKING GREEN" and scctvmm.cleaning_camera_eqpt == "CARRIED OUT" and scctvmm.user_rights_check == "OK" %}
+                                   <td>Pass</td>
+                                       {% else %}
+                                        <td>Fail</td>
+                                     {% endif %}
+                                     
+                                   </tr>
+                                    {% endfor %}
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="contactsuper">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">ENGINEER</h4><!-- Need to enter details -->
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>{{eng.name}}</h5>
+                              <h6>Email: <a href="{{ eng.email }}">{{eng.email}}</a></h6>
+                              <h6>Phone: {{eng.contact}}</h6>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>  
+                      </div>
+                    </div>
+                </div>                 
+            </div>
+        </div>
+    </div>   
+    <script>
+$(function(){
+
+    if($("#ups_ip_voltage").val()<"225" || $("#ups_ip_voltage").val()>"235"){
+        $('#ups_ip_voltage').css('border-color', 'red');
+    }else{
+        $('#ups_ip_voltage').css('border-color', 'pale-green');
+  }
+
+    if($("#ups_op_voltage").val()<"220" || $("#ups_op_voltage").val()>"230"){
+        $('#ups_op_voltage').css('border-color', 'red');
+    }else{
+        $('#ups_op_voltage').css('border-color', 'pale-green');
+    }
+
+    if($("#ups_battery_op_voltage_acpwron").val()>"213" || $("#ups_battery_op_voltage_acpwron").val()<"203"){
+        $('#ups_battery_op_voltage_acpwron').css('border-color', 'red');
+    }else{
+        $('#ups_battery_op_voltage_acpwron').css('border-color', 'pale-green');
+    }
+
+    if($("#ups_battery_op_voltage_acpwroff").val()>"191" || $("#ups_battery_op_voltage_acpwroff").val()<"181"){
+        $('#ups_battery_op_voltage_acpwroff').css('border-color', 'red');
+    }else{
+        $('#ups_battery_op_voltage_acpwroff').css('border-color', 'pale-green');
+    }
+
+    if($("#ups_battery_op_voltage_after15min_acpwroff").val()>"181" || $("#ups_battery_op_voltage_after15min_acpwroff").val()<"171"){
+        $('#ups_battery_op_voltage_after15min_acpwroff').css('border-color', 'red');
+    }else{
+        $('#ups_battery_op_voltage_after15min_acpwroff').css('border-color', 'pale-green');
+    }
+
+    
+
+    if($("#server_status").val()!="ON"){
+        $('#server_status').css('border-color', 'red');
+    }else{
+        $('#server_status').css('border-color', 'pale-green');
+    }
+
+    if($("#cameras_in_vrs_server").val()!="OK"){
+        $('#cameras_in_vrs_server').css('border-color', 'red');
+    }else{
+        $('#cameras_in_vrs_server').css('border-color', 'pale-green');
+    }
+
+    if($("#user_rights_check").val()!="OK"){
+        $('#user_rights_check').css('border-color', 'red');
+    }else{
+        $('#user_rights_check').css('border-color', 'pale-green');
+    }
+
+    if($("#ofclinkto_l2l3_switches").val()!="BLINKING GREEN"){
+        $('#ofclinkto_l2l3_switches').css('border-color', 'red');
+    }else{
+        $('#ofclinkto_l2l3_switches').css('border-color', 'pale-green');
+    }
+
+     if($("#cleaning_camera_eqpt").val()!="CARRIED OUT"){
+        $('#cleaning_camera_eqpt').css('border-color', 'red');
+    }else{
+        $('#cleaning_camera_eqpt').css('border-color', 'pale-green');
+    }
+
+     if($("#nas_free_capacity").val()=="0.0"){
+        $('#nas_free_capacity').css('border-color', 'red');
+    }else{
+        $('#nas_free_capacity').css('border-color', 'pale-green');
+    }
+
+});
+    </script>
+</body>
+
+</html>
+
+
+
+
+

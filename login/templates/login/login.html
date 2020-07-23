@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>LOGIN</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static '/style.css' %}">
+</head>
+<body>
+	<div class="container">
+	<img class="bg-img" src="{% static '/images/flightlogin.jpg' %}" alt="">
+		<div class="row">
+			<div class="col-sm-3">
+				
+			</div>
+			<div class="col-sm-8">
+				<div class="connexion">
+					<div class="card">
+						<form method='POST' action='/validate/'>
+						{% csrf_token %}
+							<div class="contact-form">
+								<label>USERNAME</label>
+								<input placeholder="Employee ID" name="id" required="required">
+
+								<label>PASSWORD</label>
+								<input type=password placeholder="Password" name="passw" required="required">
+								
+								<input class="submit" value="SIGN IN" type="submit">
+								<br>
+								<!-- <a href="#">Forgot Username / Password?</a> -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				
+			</div>
+		</div>
+	</div>
+</body> 
+{%if flag %}
+    enter again
+{% endif %}
+</html>
+<script>
+$(document).ready(function() {
+	function disableBack() { window.history.forward() }
+
+	window.onload = disableBack();
+	window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+});
+</script>

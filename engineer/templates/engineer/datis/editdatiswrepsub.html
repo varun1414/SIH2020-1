@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weekly DATIS Maintenance Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    {% for datissw in datisw %}
+                    <a href='#' onclick="window.location.href='/datisweekly/{{ datissw.emp_id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>       
+                      {% endfor %}
+                </li>
+                
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+            
+        </nav>
+        <br>
+            <div class="row">
+                <div class="col-sm-7">
+    <form method='POST' action='/updatiswrepsub/{{ id }}' id="form-v">
+        {% csrf_token %}
+        {% for datisdw in datisw %}
+        <div class="card" style="text-align: center;">
+                          <div class="card-body">
+                            <h2 class="card-title">DATIS-TERMA WEEKLY MAINTENANCE ENTRY</h2>
+        
+                            <hr>
+                            <div class="form-group row has-warning" >
+                                <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Enter Maintenance Procedure" name='remarks' required="required"></textarea> 
+                            </div>
+                                  
+                               <hr>
+                            <div class="form-group row has-warning">
+                         <label for="serverAorB" class="col-sm-6 col-form-label">Server A / B</label>
+                          <div>
+                            <select  required class="form-control form-control-sm" id="serverAorB" name="serverAorB" value ="{{ datisdw.serveraorb }}" >
+                                      <option value="{{ datisdw.serveraorb }}" selected="selected">Prev Value: {{ datisdw.serveraorb }}</option>
+                                      <option value="A">A</option>
+                                      <option value="B">B</option>
+                                </select></div></div>
+
+<hr>
+        <div class="form-group row has-warning">
+            <label for="UPS_ip" class="col-sm-6 col-form-label">UPS Input</label>
+            <div>
+        <input type=number  value = "{{ datisdw.ups_ip }}" id="UPS_ip" name="UPS_ip" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+         <div class="form-group row has-warning">
+            <label for="UPS_op" class="col-sm-6 col-form-label">UPS Output</label>
+            <div>
+        <input type=number value="{{ datisdw.ups_op }}" name="UPS_op" id="UPS_op" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+        <div class="form-group row has-warning">
+            <label for="UPS_op" class="col-sm-6 col-form-label">Dust Free</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="Dust_free" name="Dust_free" value="{{ datisdw.dust_free }}">
+                                      <option value="{{ datisdw.dust_free }}" selected="selected">Prev Value: {{ datisdw.dust_free }}</option>
+                                      <option value="OK">OK</option>
+                                      <option value="NOT OK">NOT OK</option>
+                                </select></div></div>
+
+<hr>
+        <div class="form-group row has-warning">
+            <label for="LAN_status" class="col-sm-6 col-form-label">LAN Status</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="LAN_status" name="LAN_status" value="{{ datisdw.lan_status }}">
+                                      <option value="{{ datisdw.lan_status }}" selected="selected">Prev Value: {{ datisdw.lan_status }}</option>
+                                      <option value="OK">OK</option>
+                                      <option value="NOT OK">NOT OK</option>
+                                </select></div></div>
+        <hr>
+        <button class="btn submitbut"> SUBMIT </button>
+    </div>
+</div>
+    </form>
+</div>
+   <!-- <td><button class="btn btn-success" onclick="window.open('/datisweeklyrec/{{ datisdw.emp_id }}','_blank')" >Past Equipment Logs</button></td>
+    {% endfor %}
+    <td><button class="btn btn-success" onclick="window.open('/standards','_blank')">Check Standards</button></td>
+    <td><button onclick="window.location.href= '/datisdaily/{{ id }}'"> Contact Supervisor</button></td>
+   
+</html>-->
+                    <div class="col-sm-5">
+                    <div class="sidebar s">
+                        <div class="col-sm-12">
+                            <div class="card mb-3 sidecard" style="width: 22rem; " >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                        </div>    
+                    </div>
+  
+                        <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT SUPERVISOR</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                  </div>
+                  <div> 
+                      <div class="logr">                       
+                          <div class="card sidecard logrtitle"> REPORT LOG </div>
+                          <div class="tablogr">
+                            <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+                              <thead >
+                                  <tr>
+                                    <th>Log_ID</th>
+                                    <th>Remarks</th>
+                                    <th>Value</th>
+                                    <th>Date-Time</th>  
+                                  </tr>
+                              </thead>
+                                <tbody>
+                                {% for log in datiswlogs %}
+                                  <tr>
+                                      <td>{{ log.log_id }}</td>
+                                      <td>{{ log.remarks }}</td>
+                                      <td>{{ log.value }}</td>
+                                      <td>{{ log.time }}<br>{{ log.date }}</td>
+                                   </tr>
+                                {% endfor %}
+                              </tbody>                           
+                            </table>
+                        </div>
+                      </div>
+                  </div>   
+                
+  
+    <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog" >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Standards</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                            <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>UPS Input</td>
+                                <td>200-230V</td>
+                            </tr>
+                            
+                                <tr>
+                                <td>UPS Output</td>
+                                <td>230V</td>
+                            </tr>
+                                <tr>
+                                <td>Dust Free</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>LAN Status</td>
+                                <td>OK</td>
+                            </tr>
+                             <!--    <tr>
+                                <td>Time Sync</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Quality of Audio</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>PTT Off Interval</td>
+                                <td>OK</td>
+                            </tr>-->
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Maintenance History</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                    <th>Date-Time</th>
+                    <th>Server A/B</th>
+                    <th>UPS Input</th>
+                    <th>UPS Output</th>
+                    <th>Dust Free</th>
+                    <th>LAN Status</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for datisw in datis_w %}
+                <tr>
+                 
+                <td>{{ datisw.date }}<br>{{ datisw.time }}</td>
+                 <td>{{ datisw.serveraorb }}</td>
+                  <td>{{ datisw.ups_ip }}</td>
+                  <td>{{ datisw.ups_op }}</td>
+                  <td>{{ datisw.dust_free }}</td>
+                  <td>{{ datisw.lan_status }}</td>
+                  <td>{{ datisw.remarks }}</td>
+                  {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+                  {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                  {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                   <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                {% else %}
+                <td>Fail</td>
+                {% endif %}
+                {% else %}
+                   <td>Fail</td>
+                {% endif %}
+             </tr>
+               {% endfor %}
+             </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="contactsuper">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">SUPERVISOR</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+    {% for sup in supdetails %}
+        <h5>{{ sup.name }}</h5>
+        <h6>Email: <a  href="mailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+   
+    <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+    <h6>Phone: {{ sup.contact }}</h6>
+    {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>  
+    </div>
+  </div>
+</div>
+
+
+            </div>
+
+    </div>
+    <!--ADDITION-->
+<script>
+$(function(){
+     $('#UPS_ip').css('border-color', '#CED4DA');
+     $('#UPS_op').css('border-color', '#CED4DA');
+     $('#procedure').css('border-color', '#CED4DA');
+    });
+
+$("#UPS_ip").on("keyup",function(){
+    if($("#UPS_ip").val()==""){
+        $('#UPS_ip').css('border-color', 'red');
+            return false;
+    }else{
+        $('#UPS_ip').css('border-color', '#ced4da');
+    }
+});
+
+$("#UPS_op").on("keyup",function(){
+    if($("#UPS_op").val()==""){
+        $('#UPS_op').css('border-color', 'red');
+            return false;
+    }else{
+        $('#UPS_op').css('border-color', '#ced4da');
+    }
+});
+
+$("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+               $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>
+
+
+

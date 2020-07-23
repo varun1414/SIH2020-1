@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Monthly SCCTV Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar sticky-top">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a href='#' onclick="window.location.href='/routebackss/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>   <!--check-->
+          </li>
+        </ul>
+      <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+    </nav>
+    <br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+
+<!--<button onclick="window.location.href='/logout/{{ id }}'"> Logout</button></td>  -->  
+  
+                    
+                  <th>Date-Time</th>
+                  <th style="width: 150px;">Status</th>
+                  <th>UPS Input Voltage</th>
+                  <th>UPS Output Voltage</th>
+                  <th>UPS Battery O/P V - AC power ON</th>
+                  <th>UPS Battery O/P V - AC power OFF</th>
+                  <th>UPS Battery O/P V - after 15 min AC main OFF</th>
+                  <th>Server Status</th>
+                  <th>Camera / NAS Status in VRS Servers</th>
+                  <th> NAS free Capacity</th>
+                  <th>OFC Link in all L2 and L3 Switches</th>
+                  <th>Cleaning of Cameras and Equipment</th>
+                  <th>Check the rights of all users</th>
+                  <th>Test</th>
+                  <th>Approval Status</th>
+                  <th>Approval Date</th>
+                  <th>Approval time</th>
+                </tr>
+              </thead>
+              <tbody>
+                    {% for scctvw in scctv_m %}  <!--check-->
+                <tr>
+                  <td>{{ scctvw.time }}<br>{{ scctvw.date }}</td>
+                  <td>{{ scctvw.status }}</td>
+                 <td>{{ scctvw.ups_ip_voltage }}</td>
+                  <td>{{ scctvw.ups_op_voltage }}</td>
+                  <td>{{ scctvw.ups_battery_op_voltage_acpwron }}</td>
+                  <td>{{ scctvw.ups_battery_op_voltage_acpwroff }}</td>
+                  <td>{{ scctvw.ups_battery_op_voltage_after15min_acpwroff }}</td>
+                  <td>{{ scctvw.server_status }}</td>
+                  <td>{{ scctvw.cameras_in_vrs_server }}</td>
+                  <td>{{ scctvw.nas_free_capacity }}</td>
+                  <td>{{ scctvw.ofclinkto_l2l3_switches }}</td>
+                  <td>{{ scctvw.cleaning_camera_eqpt }}</td>
+                  <td>{{ scctvw.user_rights_check }}</td>
+                   {% if scctvw.ups_ip_voltage <= 235 and  scctvw.ups_ip_voltage >= 225 and scctvw.ups_op_voltage <= 230 and scctvw.ups_op_voltage >= 220 and scctvw.ups_battery_op_voltage_acpwron <= 213 and scctvw.ups_battery_op_voltage_acpwron >= 203 and scctvw.ups_battery_op_voltage_acpwroff <= 191 and scctvw.ups_battery_op_voltage_acpwroff >= 181 and scctvw.ups_battery_op_voltage_after15min_acpwroff <= 181 and scctvw.ups_battery_op_voltage_after15min_acpwroff >= 171 and scctvw.server_status == "ON" and scctvw.cameras_in_vrs_server == "OK" and scctvw.nas_free_capacity != 0 and scctvw.ofclinkto_l2l3_switches == "BLINKING GREEN" and scctvw.cleaning_camera_eqpt == "CARRIED OUT" and scctvw.user_rights_check == "OK" %}
+             <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                  <td>{{ scctvw.unit_incharge_approval }}</td>
+                  <td>{{ scctvw.approval_date }}</td>
+                  <td>{{ scctvw.approval_time }}</td>
+                  
+             </tr>
+               {% endfor %}
+             </tbody>
+             </table>
+             </div>
+</body>
+</html>
+

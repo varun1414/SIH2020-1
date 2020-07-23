@@ -1,0 +1,699 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Surveillance Facility Maintenance</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static '/dgm/dashboard.css' %}">
+	<link rel="stylesheet" type="text/css" href="dashboard.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+
+</head>
+<body> 
+	<div class="container">
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>	<!--check here-->      				
+	    		</li>
+	    	</ul>
+			<div class="title-header">SURVEILLANCE FACILITY MAINTENANCE<img src="{% static '/images/aai.jpg' %}"></div>			
+		</nav>
+		<br>
+		<div class="row" style="padding-left:1rem;">
+			<div class="col-sm-8"><iframe src="{% url 'calendars' %}" class="iframe-css"></iframe></div>
+			<div class="col-sm-4">
+				<div class="card mb-3" style="width: 20rem; height:7rem; cursor:pointer" >
+		            <div class="card-body" data-toggle="modal" data-target="#searchrec" href='#'>
+		            	<b>SEARCH FOR RECORDS</b>
+		            	<img src="{% static '/images/search.png' %}" style="width:4rem; height:4rem;">
+		            </div>
+		            <br>
+		            <div class="modal fade" id="searchrec">
+					    <div class="modal-dialog">
+						    <div class="modal-content">
+						        <div class="modal-header">
+						          <h3 class="modal-title">SEARCH FOR RECORDS</h3>
+						        </div>
+						        <div class="modal-body" >
+									<div class="bootstrap-iso">
+									    <form method="post" action='/formsent/'> <!--backend action for movement-->
+									    	<div class="form-group  has-warning">
+									      		<label class="control-label " for="select">
+											    	CATEGORY
+											    </label>
+										      	<select class="select form-control" id="select" name="select" required="required">
+										      		<option value="" selected="selected" disabled="disabled">Choose a Category</option>
+										       		<option value="SCCTV Daily">SCCTV DAILY</option>
+										       		<option value="SCCTV Weekly">SCCTV WEEKLY</option>
+										       		<option value="SCCTV Monthly">SCCTV MONTHLY</option>
+										      	</select>
+									     	</div>
+									    	<div class="form-group has-warning">
+									      		<label class="control-label " name="date">FROM</label>
+									      		<input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="date" required="required">
+									     	</div>
+									     	<div class="form-group has-warning">
+									      		<label class="control-label " name="date1">TO</label>
+									      		<input class="form-control" id="date1" name="date1" placeholder="MM/DD/YYYY" type="date" required="required">
+									     	</div>
+									     	<div class="form-group">
+									      		<div>
+									       			<button class="btn btn-primary " name="submit" type="submit">Submit</button>
+									      		</div>
+									     	</div>
+									    </form>
+									</div>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						        </div>  
+						    </div>
+					    </div>
+					</div>
+
+					<div class="modal fade" id="searchsuccess">
+					    <div class="modal-dialog">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <h3 class="modal-title">SEARCH RESULTS</h3>
+					          
+					        </div>
+					        <div class="modal-body" > <!--check heree-->
+					        	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								<tr>
+									<th></th>
+				      				<th>Latest Report Status</th>
+				      				<th>Check Standards</th>
+							 		<th>Maintenance Reports</th>
+							    </tr>
+							    <tr>
+							    	<td>DATIS</td>
+							    	<td>Pending</td>
+							    	<td>STANDARDS</td>
+							    	<td>REPORTS</td>
+							    </tr>
+							    <tr>
+							    	<td>DSCN</td>
+							    	<td>Completed</td>
+							    	<td>STANDARDS</td>
+							    	<td>REPORTS</td>
+							    </tr><!--till here-->
+							</table>   	
+					        </div>
+					        
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					        </div>  
+					      </div>
+					    </div>
+					</div>
+		  	    </div>
+		  	    <div class="card mb-3 sidecard1" style="width: 20rem;" >
+		            <div class="card-body">
+		            	<div class="row" style="padding-left: 0px;">
+		            		<div class="col-sm-3"><img src="{% static '/images/email.png' %}" style="width:4rem; height:4rem;"></div>
+							<div class="col-sm-9">
+								{% for sup in supdetails %}
+								<b style="text-align: left;">INCHARGE: {{ sup.name }}</b><!-- check-->{% endfor %}
+			            	<button class="btn submitbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button>
+			            	</div>
+		            	</div>
+		            	<hr>
+		            	<div class="row" style="padding-left: 0px;">
+							<div class="col-sm-8" style=" padding-right: 0px">
+								<b style="text-align: left;">ENGINEER STATISTICS</b>
+			                	<button class="btn submitbut" data-toggle="modal" data-target="#leaderboard" href='#'>Leaderboard</button>
+			            	</div>
+			            	<div class="col-sm-4" ><img src="{% static '/images/podium.png' %}" style="width:4rem; height:4rem;"></div>
+		            	</div>
+					</div>
+		  	    </div>
+		  	    <div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h3 class="modal-title">SUPERVISOR</h3>
+				          
+				        </div>
+				        <div class="modal-body" >
+				        	{% for supdetails1 in supdetails %} <!--check here-->
+				          <h4>Name:{{supdetails1.name}}</h4>
+				          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{ supdetails1.email }}</a></h5>
+				          <h5>Phone: {{ supdetails1.contact }}</h5>
+							{% endfor %}
+				        </div><!--till here-->
+				        
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+
+				<div class="modal fade" id="leaderboard">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h3 class="modal-title">LEADERBOARD</h3>
+				          
+				        </div>
+				        <div class="modal-body" >
+				        	<table class="leaderboard"> <!--check here-->
+				        		<tr>
+				        			<th class="speclh">Name</th>
+				        			<th>Total Submissions</th>
+				        			<th>Reports Approved</th>
+				        			<th>Reports Declined</th>
+				        			<th class="specrh">Reports Pending</th>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        		<tr>
+				        			<td class="specl">Kumar Sanu</td>
+				        			<td>54</td>
+				        			<td>53</td>
+				        			<td>34</td>
+				        			<td class="specr">100</td>
+				        		</tr>
+				        	</table> <!--till here-->
+				        </div>
+				        
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+
+			</div>
+	    <div class="card mb-3" style="float:left; width: 347px; height:500px; padding-top:0px; padding-bottom: 10px; margin-left:1rem; margin-right:1rem;" >
+		    <div class="card-body" style="padding:0!important; background-image: url({% static 'images/scctvdback.gif' %});" >
+			      <h1><br><br><br><br><br><br></h1><div class="alert value-alert"><strong>Up-To-Date!</strong></div><br><!--check here-->
+			      <button class="btn standards s-left" data-toggle="modal" data-target="#scctvdaily">STANDARDS</button>
+			      <h6 style="font-size:5px"><br></h6>
+			      <button class="btn standards learn-left" data-toggle="modal" data-target="#scctvd">LEARN MORE</button>
+			      <br><br><br>
+		  	</div>
+
+			<div class="modal fade" id="scctvdaily">
+			    <div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h4 class="modal-title">Standards - SCCTV Daily</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        </div>
+			        <div class="modal-body">
+			          <table  class="table table-bordered standtab table-condensed table-striped table-hover todaytasks">
+			          	<tr>
+								<th>VALUE LABEL</th>
+								<th>NORMAL VALUE</th>
+							</tr>
+							<tr>
+								<td>Azimuth Angle</td>
+								<td> less than 25</td>
+							</tr>
+							
+								<tr>
+								<td>30Hz Modulation</td>
+								<td>28 - 30</td>
+							</tr>
+								<tr>
+								<td>9960Hz Modulation</td>
+								<td>28 - 30</td>
+							</tr>
+								<tr>
+								<td>9960Hz Deviation</td>
+								<td>15 - 17</td>
+							</tr>
+								<tr>
+								<td>Field Intensity</td>
+								<td>-1 - 1</td>
+							</tr>
+			          </table>
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			        </div>  
+		      	  </div>
+		      	</div>
+		    </div>
+			
+			<div class="modal fade" id="scctvd">
+			    <div class="modal-dialog modal-lg">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h4 class="modal-title">Maintenance for SCCTV Daily</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        </div>
+			        <div class="modal-body">
+			        	<div class="chart">
+			        		
+			        		<br><br>
+			        		<canvas id="scctvdChart"></canvas>
+			        	</div>
+			        	<h6><b>LATEST MAINTENANCE DETAILS</b></h6>
+			          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks" style="width: 40%!important; "><!--check here-->
+				          	<tr >
+				          		<th >ENGINEER</th>
+				          		<th>DATE - TIME</th>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Mason Mount</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Mason Mount</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr><!--till here-->
+			          	</table>
+			          	<button class="btn report" data-toggle="modal" data-target="#datisd" >ALL REPORTS</button><!--check here-->
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			        </div>  
+			      </div>
+			    </div>
+			</div>
+		</div>
+
+		<div class="card mb-3" style="float:left; width: 347px; height:500px; padding-top:0px; padding-bottom: 10px; margin-right:1rem;" >
+		    <div class="card-body" style="padding:0!important; background-image: url({% static 'images/scctvwback.gif' %});" >
+			      <h1><br><br><br><br><br><br></h1><div class="alert value-alert" style="background-color: orange;"><strong>Pending</strong></div><!--check here-->
+					      <h1 style="font-size:3.3rem;"><br></h1>
+			      <button class="btn standards s-mid" data-toggle="modal" data-target="#scctvweekly">STANDARDS</button>
+					<button class="btn standards learn-mid" data-toggle="modal" data-target="#scctvw">LEARN MORE</button>
+			      <br><br><br>
+		  	</div>
+
+			<div class="modal fade" id="scctvweekly">
+			    <div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h4 class="modal-title">Standards - SCCTV Weekly</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>				          
+			        </div>
+			        <div class="modal-body">
+			          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+			          	<tr>
+			          		<th>VALUE LABEL</th>
+			          		<th>NORMAL VALUE</th>
+			          	</tr>
+			          	<tr>
+                            <td>PS 5V</td>
+                            <td>4.75 - 5.25 </td>
+                        </tr>
+                        
+                            <tr>
+                            <td>PS 12V</td>
+                            <td>11.5 - 12.5</td>
+                        </tr>
+                            <tr>
+                            <td>PS 28V</td>
+                            <td>27 - 29</td>
+                        </tr>
+                            <tr>
+                            <td>Outside Temperature</td>
+                            <td>-25 C - 70 C</td>
+                        </tr>
+                            <tr>
+                            <td>Sideband Frequency</td>        
+                            <td>10001 Hz</td>
+                        </tr>
+			          </table>
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			        </div>  
+			      </div>
+			    </div>
+			</div>
+
+			<div class="modal fade" id="scctvw">
+			    <div class="modal-dialog modal-lg">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h4 class="modal-title">Maintenance for SCCTV Weekly</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        </div>
+			        <div class="modal-body">
+			        	<div class="chart">				        		
+			        		<br><br>
+			        		<canvas id="scctvwChart"></canvas>
+			        	</div>
+			        	<h6><b>LATEST MAINTENANCE DETAILS</b></h6>
+			          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks" style="width: 40%!important; ">
+				          	<tr ><!--check here-->
+				          		<th >ENGINEER</th>
+				          		<th>DATE - TIME</th>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Mason Mount</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Mason Mount</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr>
+				          	</tr>
+				          	<tr>
+				          		<td>Kunal David</td>
+				          		<td>20th Jan 2020, 10.30pm</td>
+				          	</tr><!--till here-->
+			          	</table>
+			          	<button class="btn report" data-toggle="modal" data-target="#scctvw" >ALL REPORTS</button><!--check here-->
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			        </div>  
+			      </div>
+			    </div>
+			  </div>
+			</div>  
+
+	        <div class="card mb-3" style="float:left; width: 347px; height:500px; padding-top:0px; padding-bottom: 10px;" >
+		    <div class="card-body" style="padding:0!important; background-image: url({% static 'images/scctvmback.gif' %});" >
+			      <h1><br><br><br><br><br><br></h1><div class="alert value-alert"><strong>Up-To-Date!</strong></div><br><!--check here-->
+			      <button class="btn standards s-right" data-toggle="modal" data-target="#scctvmonthly">STANDARDS</button>
+			      <h6 style="font-size:5px"><br></h6><h5><br></h5>
+			      <button class="btn standards learn-right" data-toggle="modal" data-target="#scctvm">LEARN MORE</button>
+			      <br><br><br>
+		  	</div>
+
+					  <div class="modal fade" id="scctvmonthly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - SCCTV Monthly</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>				          
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+									<th>VALUE LABEL</th>
+									<th>NORMAL VALUE</th>
+								</tr>
+								<tr>
+									<td>Measured Bearing 1</td>
+									<td> 0</td>
+								</tr>
+								
+									<tr>
+									<td>Measured Bearing 2</td>
+									<td> 7.5</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 3</td>
+									<td> 15</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 4</td>
+									<td> 22.5</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 5</td>
+									<td> 30</td>
+								</tr>
+									<tr>
+									<td>Error Spread</td>
+									<td>Minimum as possible, typically 0</td>
+								</tr>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+
+					  <div class="modal fade" id="scctvm">
+					    <div class="modal-dialog modal-lg">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <h4 class="modal-title">Maintenance for SCCTV Monthly</h4>
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
+					        </div>
+					        <div class="modal-body">
+					        	<div class="chart">				        		
+					        		<br><br>
+					        		<canvas id="scctvmChart"></canvas>
+					        	</div>
+					        	<h6><b>LATEST MAINTENANCE DETAILS</b></h6>
+					          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks" style="width: 40%!important; ">
+						          	<tr ><!--check here-->
+						          		<th >ENGINEER</th>
+						          		<th>DATE - TIME</th>
+						          	</tr>
+						          	<tr>
+						          		<td>Kunal David</td>
+						          		<td>20th Jan 2020, 10.30pm</td>
+						          	</tr>
+						          	<tr>
+						          		<td>Mason Mount</td>
+						          		<td>20th Jan 2020, 10.30pm</td>
+						          	</tr>
+						          	<tr>
+						          		<td>Mason Mount</td>
+						          		<td>20th Jan 2020, 10.30pm</td>
+						          	</tr>
+						          	<tr>
+						          		<td>Kunal David</td>
+						          		<td>20th Jan 2020, 10.30pm</td>
+						          	</tr>
+						          	</tr>
+						          	<tr>
+						          		<td>Kunal David</td>
+						          		<td>20th Jan 2020, 10.30pm</td>
+						          	</tr><!--till here-->
+					          	</table>
+					          	<button class="btn report" data-toggle="modal" data-target="#scctvm" >ALL REPORTS</button><!--check here-->
+					        </div>
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					        </div>  
+					      </div>
+					    </div>
+					  </div>
+
+		</div>
+	</div>
+
+
+	        
+</div>
+
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+$('#date').css('border-color', '#ced4da');
+$('#date1').css('border-color', '#ced4da');
+
+document.getElementById('date').max = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
+document.getElementById('date1').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
+document.getElementById('date1').max = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
+
+document.getElementById('date').onchange = function () {
+    document.getElementById('date1').setAttribute('min',  this.value);
+};
+
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+
+
+</script>
+
+<script>
+	var scctvdCanvas = document.getElementById("scctvdChart");
+	var scctvwCanvas = document.getElementById("scctvwChart");
+	var scctvmCanvas = document.getElementById("scctvmChart");
+	Chart.defaults.global.defaultFontFamily = "Lato";
+	Chart.defaults.global.defaultFontSize = 18;
+	Chart.defaults.global.legend.display = false;
+	Chart.defaults.global.tooltips.enabled = false;
+
+	var scctvdData = {
+	  data: [5427, 5243, 5514, 3933],
+	  backgroundColor: [
+	    'red',
+	    'orange',
+	    'blue',
+	    'green'
+	  ],
+	  borderColor: [
+	    'rgba(0, 99, 132, 1)',
+	    'rgba(30, 99, 132, 1)',
+	    'rgba(60, 99, 132, 1)',
+	    'rgba(90, 99, 132, 1)'
+	  ],
+	  borderWidth: 2,
+	  hoverBorderWidth:0
+	};
+	var chartOptions = {
+		scales: {
+			yAxes: [{
+				barPercentage : 0.5,
+				ticks: {
+	                fontSize: 12
+            	}
+			}],
+			xAxes: [{
+	            ticks: {
+	                fontSize: 12
+	            }
+        	}]
+		},
+		elements:{
+			rectangle:{
+				borderSkipped:'left',
+			}
+		}
+	};
+	var barChart = new Chart(scctvdCanvas, {
+	  type: 'horizontalBar',
+	  data: {
+	    labels: ["Reports Not Submitted", "Pending Reports", "Approved Erratical Reports", "Correct Reports"],
+	    datasets: [scctvdData],   
+	  },
+	  options:chartOptions
+	});
+
+	var scctvwData = {
+	  data: [5427, 5243, 5514, 3933],
+	  backgroundColor: [
+	    'red',
+	    'orange',
+	    'blue',
+	    'green'
+	  ],
+	  borderColor: [
+	    'rgba(0, 99, 132, 1)',
+	    'rgba(30, 99, 132, 1)',
+	    'rgba(60, 99, 132, 1)',
+	    'rgba(90, 99, 132, 1)'
+	  ],
+	  borderWidth: 2,
+	  hoverBorderWidth:0
+	};
+var barChart2 = new Chart(scctvwCanvas, {
+	  type: 'horizontalBar',
+	  data: {
+	    labels: ["Reports Not Submitted", "Pending Reports", "Approved Erratical Reports", "Correct Reports"],
+	    datasets: [scctvwData],   
+	  },
+	  options:chartOptions
+	});
+
+var scctvmData = {
+	  data: [5427, 5243, 5514, 3933],
+	  backgroundColor: [
+	    'red',
+	    'orange',
+	    'blue',
+	    'green'
+	  ],
+	  borderColor: [
+	    'rgba(0, 99, 132, 1)',
+	    'rgba(30, 99, 132, 1)',
+	    'rgba(60, 99, 132, 1)',
+	    'rgba(90, 99, 132, 1)'
+	  ],
+	  borderWidth: 2,
+	  hoverBorderWidth:0
+	};
+var barChart4 = new Chart(scctvmCanvas, {
+	  type: 'horizontalBar',
+	  data: {
+	    labels: ["Reports Not Submitted", "Pending Reports", "Approved Erratical Reports", "Correct Reports"],
+	    datasets: [scctvmData],   
+	  },
+	  options:chartOptions
+	});
+
+</script>
+
+
+</body>
+
+</html>

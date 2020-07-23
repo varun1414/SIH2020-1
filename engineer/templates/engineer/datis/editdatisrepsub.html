@@ -1,0 +1,418 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DATIS Maintenance Entry</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+					{% for datisdd in datisd %}
+	      			<a href='#' onclick="window.location.href='/datisdaily/{{ datisdd.emp_id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		
+					  {% endfor %}
+				</li>
+				
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+			
+		</nav>
+		<br>
+			<div class="row">
+				<div class="col-sm-7">
+					<form method='POST' action='/updatisrepsub/{{ id }}' id="form-v" >
+						{% csrf_token %}
+						{% for datisdd in datisd %}
+					    <div class="card" style="text-align: center;">
+					      <div class="card-body">
+					        <h2 class="card-title">DATIS-TERMA DAILY MAINTENANCE ENTRY</h2>
+					      
+					      	<hr>
+							<div class="form-group row has-warning" >
+							  	<textarea required="required" class="form-control form-control-sm" rows="5" id="procedure" placeholder="Enter Maintenance Procedure" name='remarks'></textarea>
+							   	<!--<input type="textarea" class="form-control " id="room_temp" name="Maintenance Procedure"  style="height:200px;" required>-->
+							   
+							</div>
+
+	     					 <hr>
+							<div class="form-group row has-warning">
+							  <label for="room_temp" class="col-sm-6 col-form-label">Room Temperature</label>
+							  <div>
+							   	<input type="text/number" class="form-control form-control-sm" id="room_temp" name="Room Temperature"  value="{{ datisdd.room_temp }}" required>
+							  </div>
+							</div>
+
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="status_of_AC" class="col-sm-6 col-form-label">Status of AC</label>
+							  <div>
+							     <!--<input type="text" class="form-control form-control-sm" id="status_of_AC" name="Status of AC" required>-->
+							     <select  required class="form-control form-control-sm" id="status_of_AC" name="Status of AC" value="{{ datisdd.status_of_ac }}">
+							     <option value="{{ datisdd.status_of_ac }}"  	selected="selected">Prev Value: {{ datisdd.status_of_ac }}</option>
+									  <option value="SVCBL">SVCBL</option>
+									  <option value="NON SVCBL">NON SVCBL</option>
+								</select>
+							  </div>
+							</div>
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="status_of_UPS" class="col-sm-6 col-form-label">Status of UPS</label>
+							  <div>
+							    <!--<input type="text" class="form-control form-control-sm" id="status_of_UPS" name="Status of UPS" required>-->
+							    <select required class="form-control form-control-sm" id="status_of_UPS" name="Status of UPS"  value="{{ datisdd.status_of_ups }}">
+							    		<option value="{{ datisdd.status_of_ups }}" selected="selected">Prev Value: {{ datisdd.status_of_ups }}</option>
+									  <option value="NORMAL">NORMAL</option>
+									  <option value="NOT NORMAL">NOT NORMAL</option>
+								</select>
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							    <label for="status_of_server A" class="col-sm-6 col-form-label">Status of Server A</label>
+							    <div>
+							     <!-- <input type="text" class="form-control form-control-sm" id="status_of_serverA" name="Status of Server A" required>-->
+									<select required class="form-control form-control-sm" id="status_of_serverA" name="Status of Server A" value="{{ datisdd.status_of_servera }}">
+										<option value="{{ datisdd.status_of_servera }}" selected="selected">Prev Value: {{ datisdd.status_of_servera }}</option>
+									  <option value="MAINS">MAINS</option>
+									  <option value="STANDBY">STANDBY</option>
+									  <option value="None">None</option>
+								</select>
+							    </div>
+							  </div>
+
+							  
+							  	<hr>  
+							  <div class="form-group row has-warning">
+							    <label for="status_of_serverB" class="col-sm-6 col-form-label">Status of Server B</label>
+							    <div>
+							    	<!--<input type="text" class="form-control form-control-sm" id="status_of_serverB" name="Status of Server B" required>-->
+							    	<select required class="form-control form-control-sm" id="status_of_serverB" name="Status of Server B" value="{{ datisdd.status_of_serverb }}">
+							    		<option value="{{ datisdd.status_of_serverb }}" selected="selected">Prev Value: {{ datisdd.status_of_serverb }}</option>
+									  <option value="MAINS">MAINS</option>
+									  <option value="STANDBY">STANDBY</option>
+									  <option value="None">None</option>
+								</select>
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+						<!--  
+							 <div class="form-group row">
+							    <label for="datetime_of_servers_wrt_GPS_CLK" class="col-sm-6 col-form-label">Date and time of servers wrt GPS CLK</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="datetime_of_servers_wrt_GPS_CLK">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="status_of_Disk_array" class="col-sm-6 col-form-label">Status of Disk Array</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="status_of_Disk_array">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFTX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF TX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFTX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFRX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF RX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFRX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="DATIS_update" class="col-sm-6 col-form-label">DATIS Update</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="DATIS_update">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Audio_quality" class="col-sm-6 col-form-label">Audio Quality</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Audio_quality">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="REMARKS" class="col-sm-6 col-form-label">Remarks</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="REMARKS">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Unit_incharge_approval" class="col-sm-6 col-form-label">Unit Incharge Approval</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Unit_incharge_approval">
+							    </div>
+							  </div>
+							    <hr> 
+						-->
+							<button class="btn submitbut">SUBMIT</button>
+								{%endfor%}
+				      		</div>
+				    	</div>
+				  	</form>
+				</div>
+	
+				 <div class="col-sm-5" >
+	            	<div class="sidebar s" >
+		                <div class="col-sm-12">
+		                  <div class="card mb-3 sidecard" style="width: 22rem; " >
+		                      <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+		                          <h6>MAINTENANCE HISTORY</h6>
+		                      </div>
+	                  	  </div>    
+	                	</div>
+	                	<div class="row rows">
+		                    <div class="col">
+		                      	<div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+		                          	<div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+		                              	<h6>CHECK STANDARDS</h6>
+		                          	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col">
+		                      <div class="card sidecard" style="width:10rem;" >
+		                            <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+		                                <h6>CONTACT SUPERVISOR</h6>
+		                            </div>
+		                        </div>     
+		                    </div>
+	                	</div>    
+	              	</div>
+
+	                <div> 
+	                  	<div class="logr">                       
+	                        <div class="card sidecard logrtitle"> REPORT LOG </div>
+	                        <div class="tablogr">
+		                        <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+			                        <thead >
+			                            <tr>
+			                              <th>Log_ID</th>
+			                              <th>Remarks</th>
+			                              <th>Value</th>
+			                              <th>Date-Time</th>  
+			                            </tr>
+			                        </thead>
+		                          	<tbody>
+		                            {% for log in datisdlogs %}
+			                            <tr>
+			                                <td>{{ log.log_id }}</td>
+			                                <td>{{ log.remarks }}</td>
+			                                <td>{{ log.value }}</td>
+			                                <td>{{ log.time }}<br>{{ log.date }}</td>
+			                             </tr>
+		                            {% endfor %}
+		                          </tbody>                           
+		                        </table>
+	                    	</div>
+	                  	</div>
+	                </div>   
+	              
+	          		<div class="modal fade" id="standardcheck">
+					    <div class="modal-dialog">
+	      				    <div class="modal-content">
+	      				      	<div class="modal-header">
+	      				          	<h4 class="modal-title">Standards</h4>
+	      				          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	      				      	</div>
+	    				        <div class="modal-body">
+	    				          	<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+		    				          	<tr>
+		    				          		<th>VALUE LABEL</th>
+		    				          		<th>NORMAL VALUE</th>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>Room Temperature</td>
+		    				          		<td>24 C</td>
+		    				          	</tr>
+		    				          	
+		    								    <tr>
+		    				          		<td>Status of AC</td>
+		    				          		<td>SVCBL</td>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>Status OF UPS</td>
+		    				          		<td>NORMAL</td>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>Status of Server A</td>
+		    				          		<td>MAINS/STANDBY</td>
+		    				          	</tr>
+		    				          	<tr>
+		    				          		<td>Status of Server B</td>
+		    				          		<td>MAINS/STANDBY</td>
+		    				          	</tr>
+		    				          	<!--	<tr>
+		    				          		<td>Date and time of servers wrt GPS CLK</td>
+		    				          		<td>Correct</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of Disk Array</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF TX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Status of VHF RX used for ATIS</td>
+		    				          		<td>On-Line</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>DATIS update</td>
+		    				          		<td>OK</td>
+		    				          	</tr>
+		    				          		<tr>
+		    				          		<td>Audio Quality of Datis Announcement</td>
+		    				          		<td>Good</td>
+		    				          	</tr>-->
+	    				          </table>
+	    				        </div>
+	    				        <div class="modal-footer">
+	    				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    				        </div>  
+	      				    </div>
+	  				  	</div>
+	  				</div>
+
+	              	<div class="modal fade" id="pastlog">
+		                <div class="modal-dialog modal-lg">
+		                  	<div class="modal-content">
+			                    <div class="modal-header">
+			                      <h4 class="modal-title">Maintenance History</h4>
+			                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                    </div>
+			                    <div class="modal-body">
+				                    <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+				                        <thead>
+				                            <tr>  
+												<th>Date-Time</th>
+												<th>Room Temp</th>
+				                                <th>Status of AC</th>
+				                              <th>Status of UPS</th>
+				                                <th>Status of server A</th>
+				                                <th>Status of server B</th>
+				                                <th>Remarks</th>
+				                                <th>Test</th>
+				                            </tr>
+				                        </thead>
+				                        <tbody>
+				                            {% for datisdd in datis_d %}
+				                            <tr>
+				                             
+				                              <td>{{ datisdd.date }}<br>{{ datisdd.time }}</td>
+				                                <td>{{ datisdd.room_temp }}</td>
+				                                <td>{{ datisdd.status_of_ac }}</td>
+				                                <td>{{ datisdd.status_of_ups }}</td>
+				                                <td>{{ datisdd.status_of_servera }}</td>
+				                                <td>{{ datisdd.status_of_serverb }}</td>
+				                                <td>{{ datisdd.remarks }}</td>
+				                            {% if datisd.room_temp < 25 and datisd.status_of_servera == "MAINS" and datisd.status_of_serverb == "STANDBY" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" or datisd.room_temp < 25 and datisd.status_of_servera == "STANDBY" and datisd.status_of_serverb == "MAINS" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" %}
+				                                <td>Pass</td>
+				                            {% else %}
+				                                <td>Fail</td>
+				                            {% endif %}  
+				                            </tr>
+				                            {% endfor %}
+				                       </tbody>
+				                    </table>
+			                    </div>
+			                    <div class="modal-footer">
+			                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				                </div>  
+		                 	</div>
+		                </div>
+	              	</div>
+
+	            
+
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">SUPERVISOR</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+							{% for sup in supdetails %}
+				          <h5>{{ sup.name }}</h5>
+				          <h6>Email: <a href="mmailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+						 
+						  <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+						  <h6>Phone: {{ sup.contact }}</h6>
+						  {% endfor %}
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+				
+			</div>			
+	<!--ADDITION-->
+<script>
+$(function(){
+	 $('#room_temp').css('border-color', '#CED4DA');
+	 $('#procedure').css('border-color', '#CED4DA');
+	});
+
+ $("#room_temp").on("keyup",function(){
+            if($("#room_temp").val()==""){
+            	 $('#room_temp').css('border-color', 'red');
+                return false;
+            }else{
+               $('#room_temp').css('border-color', '#CED4DA');
+            }
+        });
+ $("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+            	 $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>
+

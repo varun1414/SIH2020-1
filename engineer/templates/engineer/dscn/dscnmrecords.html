@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DSCN Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+		</nav>
+		<br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+               
+    <tbody>
+        <th>Date-Time</th>
+        <th>Status</th>
+         <th>Cleaning DSCN associated eqpt</th>
+        <th>Battery backup time of UPS1 and UPS2</th>
+         <th>UPS battery voltage on load</th>
+          <th>Antenna and cable check</th>
+          <th>Earth resistance</th>
+          <th>E or N voltage</th>
+          <th>Equipment status after check</th>
+          <th>Test</th>
+           <th>Approval Status</th>
+          <th>Approval Date</th>
+          <th>Approval Time</th>
+ </tbody></tr>
+    </thead>
+    <tbody><td>
+          {% for dscnm in dscn_m %}
+      <tr>
+       
+        <td>{{ dscnm.date }}<br>{{ dscnm.time }}</td>
+        <td>{{ dscnm.status }}</td>
+        <td>{{ dscnm.cleaning_dscn_associated_eqpt }}</td>
+        <td>{{ dscnm.battery_backup_time_of_ups1nups2 }}</td>
+        <td>{{ dscnm.ups_battery_voltage_on_load }}</td>
+        <td>{{ dscnm.antenna_n_cable_check }}</td>
+        <td>{{ dscnm.earth_resistance }}</td>
+        <td>{{ dscnm.eorn_voltage }}</td>
+        <td>{{ dscnm.eqpt_status_after_check }}</td>
+         <td>Pass</td>  
+         <td>{{ dscnm.unit_incharge_approval }}</td>
+            <td>{{ dscnm.approval_date }}</td>
+            <td>{{ dscnm.approval_time }}</td>
+        </tr>
+         {% endfor %}
+             </tbody>
+        </table>
+    </div>
+             
+</body>
+</html>
+

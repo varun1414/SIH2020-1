@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weekly DATIS Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar sticky-top">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+          </li>
+        </ul>
+      <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+    </nav>
+    <br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+
+<!--<button onclick="window.location.href='/logout/{{ id }}'"> Logout</button></td>  -->  
+  
+                    
+                  <th>Date-Time</th>
+                  <th style="width: 150px;">Status</th>
+                  <th>Server A/B</th>
+                  <th>UPS Input</th>
+                  <th>UPS Output</th>
+                  <th>Dust Free</th>
+                  <th>LAN Status</th>
+                  <th>Test</th>
+                  <th>Approval Status</th>
+                  <th>Approval Date</th>
+                  <th>Approval time</th>
+                </tr>
+              </thead>
+              <tbody>
+                    {% for datisw in datis_w %}
+                <tr>
+                  <td>{{ datisw.time }}<br>{{ datisw.date }}</td>
+                  <td>{{ datisw.status }}</td>
+                 <td>{{ datisw.serveraorb }}</td>
+                  <td>{{ datisw.ups_ip }}</td>
+                  <td>{{ datisw.ups_op }}</td>
+                  <td>{{ datisw.dust_free }}</td>
+                  <td>{{ datisw.lan_status }}</td>
+                  {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+                  {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                  {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                  <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                {% else %}
+                <td>Fail</td>
+                {% endif %}
+                {% else %}
+                   <td>Fail</td>
+                {% endif %}
+                  <td>{{ datisw.unit_incharge_approval }}</td>
+                  <td>{{ datisw.approval_date }}</td>
+                  <td>{{ datisw.approval_time }}</td>
+                  
+             </tr>
+               {% endfor %}
+             </tbody>
+             </table>
+             </div>
+          <!--<button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+             
+</body>
+</html>
+

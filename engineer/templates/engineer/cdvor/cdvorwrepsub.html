@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weekly CDVOR Maintenance Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='/routebackcd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>      
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+            
+        </nav>
+        <br>
+        <div class="row">
+                <div class="col-sm-7">
+                    <form method='POST' action='/cdvorwrepsub/{{ id }}' id="form-v">
+                        {% csrf_token %}
+                        <div class="card" style="text-align: center;">
+                          <div class="card-body">
+                            <h2 class="card-title">CDVOR WEEKLY MAINTENANCE ENTRY</h2>
+                            <hr>
+<!--
+    <h1>Submit weekly DATIS report </h1>
+    <form method='POST' action='/datiswrepsub/{{ id }}'>
+        {% csrf_token %}-->
+
+        <div class="form-group row has-warning">
+            <label for="ps_5v" class="col-sm-6 col-form-label">PS 5V</label>
+            <div>
+        <input type=number step="0.01" id="ps_5v" name="PS 5V" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+         <div class="form-group row has-warning">
+            <label for="ps_12v" class="col-sm-6 col-form-label">PS 12V</label>
+            <div>
+        <input type=number step="0.01" name="PS 12V" id="ps_12v" class="form-control form-control-sm" required></input></div></div>
+
+<hr>
+        <div class="form-group row has-warning">
+            <label for="ps_28v" class="col-sm-6 col-form-label">PS 28V</label>
+            <div>
+        <input type=number step="0.01" name="PS 28V" id="ps_28v" class="form-control form-control-sm" required></input></div></div>
+<hr>
+        <div class="form-group row has-warning">
+            <label for="outside_temp" class="col-sm-6 col-form-label">Outside Temperature</label>
+            <div>
+        <input type=number name="Outside temp" id="outside_temp" class="form-control form-control-sm" required></input></div></div>
+<hr>
+        <div class="form-group row has-warning">
+            <label for="sideband_frequency" class="col-sm-6 col-form-label">Sideband frequency</label>
+            <div>
+        <input type=number name="Sideband frequency" id="sideband_frequency" class="form-control form-control-sm" required></input></div></div>
+
+
+
+        <hr>
+        <button class="btn submitbut"> SUBMIT </button>
+    </div>
+</div>
+    </form>
+</div>
+<div class="col-sm-5" >
+                <div class="sidebar s s_01" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; padding-top:10px; padding-bottom: 10px;" >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                        </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT SUPERVISOR</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                  </div>
+                </div>
+
+   <!-- <td><button class="btn btn-success" onclick="window.open('/datisweeklyrec/{{ id }}','_blank')" >Past Equipment Logs</button></td>
+    <td><button class="btn btn-success" onclick="window.open('/standards','_blank')">Check Standards</button></td>
+    <td><button onclick="window.location.href= '/datisdaily/{{ id }}'"> Contact Supervisor</button></td>
+    <button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+    <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog" >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Standards</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                            <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>PS 5V</td>
+                                <td>4.75 - 5.25 </td>
+                            </tr>
+                            
+                                <tr>
+                                <td>PS 12V</td>
+                                <td>11.5 - 12.5</td>
+                            </tr>
+                                <tr>
+                                <td>PS 28V</td>
+                                <td>27 - 29</td>
+                            </tr>
+                                <tr>
+                                <td>Outside Temperature</td>
+                                <td>-25 C - 70 C</td>
+                            </tr>
+                                <tr>
+                                <td>Sideband Frequency</td>        
+                                <td>10001 Hz</td>
+                            </tr>
+                             <!--    <tr>
+                                <td>Time Sync</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Quality of Audio</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>PTT Off Interval</td>
+                                <td>OK</td>
+                            </tr>-->
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Maintenance History</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                    <th>Date-Time</th>
+                    <th>PS 5V</th>
+                    <th>PS 12V</th>
+                    <th>PS 28V</th>
+                    <th>Outside Temperature</th>
+                    <th>Sideband Frequency</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cdvorw in cdvor_w %}
+                <tr>
+                 <td>{{ cdvorw.date }}<br>{{ cdvorw.time }}</td>
+                 <td>{{ cdvorw.ps_5v }}</td>
+                  <td>{{ cdvorw.ps_12v }}</td>
+                  <td>{{ cdvorw.ps_28v }}</td>
+                  <td>{{ cdvorw.outside_temp }}</td>
+                  <td>{{ cdvorw.sideband_frequency }}</td>
+                  <td>{{ cdvorw.remarks }}
+                  {% if cdvorw.ps_5v >= 4.75 and cdvorw.ps_5v <= 5.25 and cdvorw.ps_12v >= 11.5 and cdvorw.ps_12v <= 12.5 and cdvorw.ps_28v >= 27 and cdvorw.ps_28v <= 29 and cdvorw.outside_temp >= -25 and cdvorw.outside_temp <= 70 and cdvorw.sideband_frequency == 10001 %}
+                  <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+             </tr>
+               {% endfor %}
+             </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="contactsuper">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">SUPERVISOR</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+    {% for sup in supdetails %}
+        <h5>{{ sup.name }}</h5>
+        <h6>Email: <a data-toggle="modal" data-target="#report" href="/email">{{ sup.email }}</a></h6>
+   
+    <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+    <h6>Phone: {{ sup.contact }}</h6>
+    {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>  
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="report">
+<div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">SEND REPORT TO SUPERVISOR</h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+  </div>
+  <div class="modal-body">
+   <div class="helloform" style="padding:0">
+    <form method='post' action="/sent/" >
+      {% csrf_token %}
+      {% for sup in supdetails %}
+           <br>
+      <div class="form-group row has-warning">
+        <label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+      </div>
+      <div class="form-group row has-warning">
+        <label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+        <div>
+          <input class="form-control form-control-sm" type='text'></input>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group row has-warning">
+        <label for="body" class="col-sm-6 col-form-label">BODY:</label>
+        <div>
+          <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue."></textarea> 
+        </div>
+      </div>
+      <hr>                                                  
+      <input type="submit" value="SEND">
+      {% endfor %} 
+    </form>
+    </div>
+  </div>
+  </div>
+</div>
+</div>    
+
+            </div>
+
+    </div>
+    <!--ADDITION-->
+<script>
+
+$("#ps_28v").on("keyup",function(){
+    if($("#ps_28v").val()==""){
+        $('#ps_28v').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ps_28v').css('border-color', '#ced4da');
+    }
+});
+$("#ps_12v").on("keyup",function(){
+    if($("#ps_12v").val()==""){
+        $('#ps_12v').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ps_12v').css('border-color', '#ced4da');
+    }
+});
+$("#ps_5v").on("keyup",function(){
+    if($("#ps_5v").val()==""){
+        $('#ps_5v').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ps_5v').css('border-color', '#ced4da');
+    }
+});
+$("#outside_temp").on("keyup",function(){
+    if($("#outside_temp").val()==""){
+        $('#outside_temp').css('border-color', 'red');
+            return false;
+    }else{
+        $('#outside_temp').css('border-color', '#ced4da');
+    }
+});
+$("#sideband_frequency").on("keyup",function(){
+    if($("#sideband_frequency").val()==""){
+        $('#sideband_frequency').css('border-color', 'red');
+            return false;
+    }else{
+        $('#sideband_frequency').css('border-color', '#ced4da');
+    }
+});
+</script>
+</body>

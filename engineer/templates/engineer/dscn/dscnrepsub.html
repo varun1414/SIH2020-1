@@ -1,0 +1,469 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DSCN Maintenance Entry</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+		
+		<nav class="navbar sticky-top">
+			<ul class="navbar-nav">
+	    		<li class="nav-item">
+	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		
+	    		</li>
+	    	</ul>
+			<div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+			
+		</nav>
+		<br>
+			<div class="row">
+				<div class="col-sm-7">
+					<form method='POST' action='/dscnrepsub/{{ id }}' id="form-v">
+						{% csrf_token %}
+					    <div class="card" style="text-align: center;">
+					      <div class="card-body">
+					        <h2 class="card-title">DSCN DAILY MAINTENANCE ENTRY</h2>
+                          
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="sat_led" class="col-sm-6 col-form-label">SAT LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="sat_led" name="sled">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="STEADY ON">STEADY ON</option>
+									  <option value="NOT STEADY ON">NOT STEADY ON</option>
+								</select>
+							  </div>
+							</div>
+							<hr>
+							<div class="form-group row has-warning">
+							  <label for="io_led" class="col-sm-6 col-form-label">IO LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="io_led" name="ioled">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="STEADY ON">STEADY ON</option>
+									  <option value="NOT STEADY ON">NOT STEADY ON</option>
+								</select>
+							  </div>
+                            </div>
+
+
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="odu_led" class="col-sm-6 col-form-label">ODU LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="odu_led" name="oled">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="STEADY ON">STEADY ON</option>
+									  <option value="NOT STEADY ON">NOT STEADY ON</option>
+								</select>
+							  </div>
+                            </div>
+
+                        
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="alarm_led" class="col-sm-6 col-form-label">Alarm LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="alarm_led" name="aled">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="ON">ON</option>
+									  <option value="OFF">OFF</option>
+								</select>
+							  </div>
+                            </div>
+                            
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="v35_led" class="col-sm-6 col-form-label">V35 LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="sat_led" name="v35led">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="RX/TX BLINKING">RX/TX BLINKING</option>
+									  <option value="RX/TX NOT BLINKING">RX/TX NOT BLINKING</option>
+								</select>
+							  </div>
+                            </div>
+
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="pw_led" class="col-sm-6 col-form-label">Power LED</label>
+							  <div>
+							     <select  required class="form-control form-control-sm" id="pw_led" name="pwled">
+							     	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="STEADY ON">STEADY ON</option>
+									  <option value="NOT STEADY ON">NOT STEADY ON</option>
+								</select>
+							  </div>
+                            </div>
+
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="ip_voltage" class="col-sm-6 col-form-label">I/P Voltage</label>
+							  <div>
+							   	<input type="number" class="form-control form-control-sm" id="ip_voltage" name="iv"  required>
+							  </div>
+                            </div>
+                            
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="op_voltage" class="col-sm-6 col-form-label">O/P Voltage</label>
+							  <div>
+							   	<input type="number" class="form-control form-control-sm" id="op_voltage" name="ov"  required>
+							  </div>
+							</div>
+ 
+                            <hr>
+							<div class="form-group row has-warning">
+							  <label for="bat_voltage" class="col-sm-6 col-form-label">Battery Voltage</label>
+							  <div>
+							   	<input type="number" class="form-control form-control-sm" id="bat_voltage" name="bv"  required>
+							  </div>
+							</div>
+
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="coro_function" class="col-sm-6 col-form-label">CorO Function</label>
+							  <div>
+							    <select required class="form-control form-control-sm" id="cof" name="cof">
+							    	  <option value="" disabled="disabled" selected="selected">Please select an option</option>
+									  <option value="OK">OK</option>
+									  <option value="NOT OK">NOT OK</option>
+								</select>
+							  </div>
+							</div>
+
+
+							  	<hr>
+						<!--  
+							 <div class="form-group row">
+							    <label for="datetime_of_servers_wrt_GPS_CLK" class="col-sm-6 col-form-label">Date and time of servers wrt GPS CLK</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="datetime_of_servers_wrt_GPS_CLK">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="status_of_Disk_array" class="col-sm-6 col-form-label">Status of Disk Array</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="status_of_Disk_array">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFTX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF TX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFTX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="VHFRX_ATIS_status" class="col-sm-6 col-form-label">Status of VHF RX used for ATIS</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="VHFRX_ATIS_status">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="DATIS_update" class="col-sm-6 col-form-label">DATIS Update</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="DATIS_update">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Audio_quality" class="col-sm-6 col-form-label">Audio Quality</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Audio_quality">
+							    </div>
+							  </div>
+
+							   
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="REMARKS" class="col-sm-6 col-form-label">Remarks</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="REMARKS">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+							  <div class="form-group row">
+							    <label for="Unit_incharge_approval" class="col-sm-6 col-form-label">Unit Incharge Approval</label>
+							    <div>
+							      <input type="text" class="form-control form-control-sm" id="Unit_incharge_approval">
+							    </div>
+							  </div>
+							    <hr> 
+						-->
+							<button class="btn submitbut">SUBMIT</button>
+
+				      		</div>
+				    	</div>
+				  	</form>
+				</div>
+	
+				<div class="col-sm-5" >
+	            	<div class="sidebar s s_01" >
+		                <div class="col-sm-12">
+		                  <div class="card mb-3 sidecard" style="width: 22rem; padding-top:10px; padding-bottom: 10px;" >
+		                      <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+		                          <h6>MAINTENANCE HISTORY</h6>
+		                      </div>
+	                  	  </div>    
+	                	</div>
+	                	<div class="row rows">
+		                    <div class="col">
+		                      	<div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+		                          	<div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+		                              	<h6>CHECK STANDARDS</h6>
+		                          	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col">
+		                      <div class="card sidecard" style="width:10rem;" >
+		                            <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+		                                <h6>CONTACT SUPERVISOR</h6>
+		                            </div>
+		                        </div>     
+		                    </div>
+	                	</div>    
+	              	</div>
+	              </div>
+
+				<div class="modal fade" id="standardcheck">
+				    <div class="modal-dialog" >
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>SAT LED</td>
+                                <td>Steady ON</td>
+                            </tr>
+                            
+                              <tr>
+                                <td>ODU LED</td>
+                                <td>Steady ON</td>
+                            </tr>
+                                <tr>
+                                <td>I/O LED</td>
+                                <td>Steady ON</td>
+                            </tr>
+                                <tr>
+                                <td>Alarm LED</td>
+                                <td>OFF</td>
+                            </tr>
+                                <tr>
+                                <td>Power LED</td>
+                                <td>Steady ON</td>
+                            </tr>
+                                <tr>
+                                <td>V.35 LED</td>
+                                <td>Rx/Tx- Blinking, When data is being Xmitted/R'cvd</td>
+                            </tr>
+                                <tr>
+                                <td>Input Voltage</td>
+                                <td>230-10%, 230+10%</td>
+                            </tr>
+                                <tr>
+                                <td>Output Voltage</td>
+                                <td>Refer Airtel/UPS service manual</td>
+                            </tr>
+                                <tr>
+                                <td>Battery Voltage</td>
+                                <td>Refer Airtel/UPS service manual</td>
+                          </tr>
+                                <tr>
+                                <td>C/O Function</td>
+                                <td>OK</td>
+                           </tr>
+				          	<!--	<tr>
+				          		<td>Date and time of servers wrt GPS CLK</td>
+				          		<td>Correct</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of Disk Array</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF TX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF RX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>DATIS update</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Audio Quality of Datis Announcement</td>
+				          		<td>Good</td>
+				          	</tr>-->
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+</div>
+
+<div class="modal fade" id="pastlog">
+				    <div class="modal-dialog modal-lg">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Maintenance History</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                    <th>Date-Time</th>
+                    <th>SAT LED</th>
+                    <th>ODU LED</th>
+                    <th>IO LED</th>
+                    <th>Alarm LED</th>
+                    <th>Power LED</th>
+                    <th>V35 LED</th>
+                    <th>IP Voltage</th>
+                    <th>OP voltage</th>
+                    <th>Battery Voltage</th>
+					<th>CorO function</th>
+					<th>Remarks</th>
+                    <th>Test</th>
+                  </tr>
+		  </thead>
+		  <tbody>
+            {% for dscnd in dscn_d %}
+            <tr>
+             
+              <td>{{ dscnd.date }}<br><td>{{ dscnd.time }}</td>
+			  <td>{{ dscnd.sat_led }}</td>
+              <td>{{ dscnd.odu_led }}</td>
+              <td>{{ dscnd.io_led }}</td>
+              <td>{{ dscnd.alarm_led }}</td>
+              <td>{{ dscnd.power_led }}</td>
+              <td>{{ dscnd.v35_led }}</td>
+              <td>{{ dscnd.ip_voltage }}</td>
+              <td>{{ dscnd.op_voltage }}</td>
+              <td>{{ dscnd.battery_voltage }}</td>
+              <td>{{ dscnd.coro_function }}</td>
+              <td>{{ dscnd.remarks }}</td>
+              {% if dscnd.coro_function == "OK" and dscnd.ip_voltage > 219 and dscnd.ip_voltage < 241 and dscnd.op_voltage > 219 and dscnd.op_voltage < 241 and dscnd.battery_voltage > 180 and dscnd.battery_voltage < 250 and dscnd.power_led == "STEADY ON" and dscnd.sat_led == "STEADY ON" and dscnd.odu_led == "STEADY ON" and dscnd.io_led == "STEADY ON" and dscnd.alarm_led == "OFF" and dscnd.v35_led == "RX/TX BLINKING" %}
+              <td>Pass</td>
+              {% else %}
+             <td>Fail</td>
+              {% endif %}
+         </tr>
+			  {% endfor %}
+				</tbody>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+</div>
+
+
+
+
+
+				<div class="modal fade" id="contactsuper">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">SUPERVISOR</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+							{% for sup in supdetails %}
+				          <h5>{{ sup.name }}</h5>
+				          <h6>Email: <a href="mailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+						 
+						  <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+						  <h6>Phone: {{ sup.contact }}</h6>
+						  {% endfor %}
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+			
+				
+			</div>
+
+	</div>
+	<!--ADDITION-->
+<script>
+
+
+$("#ip_voltage").on("keyup",function(){
+    if($("#ip_voltage").val()==""){
+        $('#ip_voltage').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ip_voltage').css('border-color', '#ced4da');
+    }
+});
+
+$("#op_voltage").on("keyup",function(){
+    if($("#op_voltage").val()==""){
+        $('#op_voltage').css('border-color', 'red');
+            return false;
+    }else{
+        $('#op_voltage').css('border-color', '#ced4da');
+    }
+});
+
+$("#battery_voltage").on("keyup",function(){
+    if($("#battery_voltage").val()==""){
+        $('#battery_voltage').css('border-color', 'red');
+            return false;
+    }else{
+        $('#battery_voltage').css('border-color', '#ced4da');
+    }
+});
+</script>
+</body>
+

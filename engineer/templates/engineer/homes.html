@@ -1,0 +1,766 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" type="text/css" href="{% static 'engineer/home.css' %}">
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+		<style>
+		.jumbotron {
+		  background-image: url("{% static '/images/sky1.jpg' %}"); 
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+		  background-size: cover;
+		}
+		</style>
+</head>
+<body> 
+	<div class="container" >
+		<div class="title-header"><img src="{% static '/images/aai.jpg' %}">PREVENTIVE MAINTENANCE LOG</div>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card cardlogo" style="word-wrap: break-word;" >
+						<img class="card-img-top" src="{% static '/images/man1.jpg' %}" alt="FACE">
+						<div class="card-body">
+						  	<br>
+						  	{% for empdets in empdet %}
+						    <h5 class="card-title">{{empdets.name }}</h5>
+							<div class="data-emp">
+								<h6 class="card-subsubtitle">{{ empdets.designation }}</h6>
+								{% endfor %}  
+	    						 {% csrf_token %}
+								<br>
+								{% for name1 in name %}
+								<h6 class="card-subsubtitle">{{ name1.name }} Airport</h6>
+								{% endfor %}							
+								<br>
+							</div>
+					   </div>
+					</div>
+					<div class="card cardcontact">	
+						<div class="card-body headcard">
+							{% for supdetails1 in supdetails %}
+							<b>Sup: {{ supdetails1.name }}</b>
+						  
+						    {% endfor %}
+							<br>
+							<button class="btn btn-primary contactbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button>
+						
+							<br>
+						</div>
+					</div>
+					<div class="modal fade" id="contactsuper">
+					    <div class="modal-dialog">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <h3 class="modal-title">SUPERVISOR</h3>
+					          
+					        </div>
+					        <div class="modal-body" >
+					        	{% for supdetails1 in supdetails %}
+					          <h4>Name:{{supdetails1.name}}</h4>
+					          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{ supdetails1.email }}</a></h5>
+					          <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+					          <h5>Phone: {{ supdetails1.contact }}</h5>
+								{% endfor %}
+					        </div>
+					        
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					        </div>  
+					      </div>
+					    </div>
+					</div>
+
+					<div class="modal fade" id="report">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h4 class="modal-title">SEND REPORT TO SUPERVISOR<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+							</div>
+							<div class="modal-body" style="margin-left:30px; margin-right:30px">
+								 <div class="helloform" style="padding:0">
+									<form method='post' action="/sent/" >
+										{% csrf_token %}
+										{% for sup in supdetails %}
+						         		<br>
+										<div class="form-group row has-warning">
+											<label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+										</div>
+										<div class="form-group row has-warning">
+											<label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+											<div>
+											  <input  type='text' required></input>
+											</div> 
+										</div>
+										<hr>
+										<div class="form-group row has-warning">
+											<label for="body" class="col-sm-6 col-form-label">BODY:</label>
+											<div>
+											  <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue." required style="width:16rem;"></textarea> 
+											</div>
+										</div>
+										<hr>                                                  
+										<input type="submit" value="SEND">
+										{% endfor %} 
+									</form>
+						  		 </div>
+							</div>
+					      </div>
+					    </div>
+				    </div>    
+				  
+				</div>	
+	
+				<div class="col-md-2">
+				</div>
+
+				<div class="data-table">
+					<div class="col-md-3" >
+						<div class="card tabcard">
+							<ul class="nav nav-pills nav-stacked">
+							    <li class="active"><a class="todays" data-toggle="pill" href="#today" >Today's Tasks</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#facilities" >Facilities</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#verific" >Verification Status</a></li>
+								
+							 </ul>
+						 	<button class="btn btn-primary logout" onclick="window.location.href='/logout/{{ id }}'"> Logout</button>
+		   				</div>
+					</div>
+				</div>
+		<div class="col-md-4 card tabcol">
+			<div class="tab-content">
+	    		<div id="today" class="tab-pane fade in active tod">
+					<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+						<tr>
+				      		<th>Deadline</th>
+				      		<th>Task Name</th>
+							  <th>Status</th>
+							  
+			      		</tr>
+			      		<!-- SCCTV DAILY -->   <!--CHECKstarting from here-->
+			      		{% if scctvd_deadline <= currdate %} 
+            			{% if scctvdsub_on == currdate and ddr == 0 %}
+						{% if statusd == "PENDING" %}	
+						<tr data-href='/scctvdaily/{{ id }}'> 
+			                	<td>{{ scctvd_deadline }}</td>            
+			                 	<td>SCCTV Daily</td>
+			                 	<td>Pending</td>
+							</tr>
+							{% endif %}
+						 {% elif ddr == 0 %}
+		                	<tr data-href='/scctvdailyrep/{{ id }}'>
+			                 <td>{{ scctvd_deadline }}</td>
+			                 <td>SCCTV Daily</td>
+			                 <td>Pending</td>
+		                	</tr>
+		                {% endif %}
+             			{% endif %}  
+						 {% if statusd == "COMPLETED WITH ERRORS" and ddr == 1 %}	
+						 <tr data-href='/scctvdailyrec/{{ id }}'>
+							 <td>{{ scctvdsub_on }}</td>                
+							  <td>SCCTV Daily</td>
+							  <td>Completed with errors</td>
+						 </tr>
+						 {% endif %}
+					
+             			{% if ddr == 1 and statusd == "COMPLETED" %}
+             				<tr data-href='/scctvdailyrec/{{ id }}'>
+			                 <td>{{ scctvdsub_on }}</td>
+			                 <td>SCCTV Daily</td>
+			                 <td>Completed</td>
+			                </tr>
+              			{% endif %}
+				
+						  <!-- SCCTV weekly-->
+				        {% if dwr == 0 %} 
+	                    {% if currdate > wdate %}
+	                    	<tr data-href='/scctvweeklyrep/{{ id }}' >
+		                       	<td>{{ scctvwsub_deadline }}</td>    
+		                   		<td>SCCTV Weekly</td>
+		                      	<td>Pending</td>
+		                    </tr>
+						  {% elif scctvwsub_deadline == currdate %}
+						    {% if status == "PENDING" and scctvwsub_on == currdate %}
+	                      	<tr data-href='/scctvweekly/{{ id }}' >
+		                      <td>{{ scctvwsub_deadline }}</td>    
+		                      <td>SCCTV Weekly</td>
+		                      <td>Pending</td>
+							</tr>
+							{% else %}
+							<tr data-href='/scctvweeklyrep/{{ id }}' >
+								<td>{{ scctvwsub_deadline }}</td>    
+								<td>SCCTV Weekly</td>
+								<td>Pending</td>
+							</tr>
+							  {% endif %}
+							  {% elif scctvwsub_on == currdate %}
+							  {% if status == "PENDING" %}
+							<tr data-href='/scctvweekly/{{ id }}' >
+								<td>{{ scctvwsub_deadline }}</td>    
+								<td>SCCTV Weekly</td>
+								<td>Pending</td>
+							</tr>	
+				                {% endif %}
+					  	     {% endif %} 
+	                      {% endif %}
+	                      
+	                      {% if dwr == 1 and scctvwsub_on == currdate %}
+						     {% if status == "COMPLETED"  %}  
+						    <tr data-href='/scctvweeklyrec/{{ id }}' > 
+		                      <td>{{ scctvwsub_deadline }}</td>    
+		                      <td>SCCTV Weekly</td>
+		                      <td>Completed</td>
+							</tr>
+							{% else %}
+							<tr data-href='/scctvweeklyrec/{{ id }}' > 
+								<td>{{ scctvwsub_deadline }}</td>    
+								<td>SCCTV Weekly</td>
+								<td>Completed with errors</td>
+							</tr>
+				  			  {% endif %}
+							 {% endif %} 
+							 
+							 {% if dmr == 0 %} 
+								   {% if currdate > wdatem %}
+									   <tr data-href='/scctvmonthlyrep/{{ id }}' >
+											  <td>{{ scctvmsub_deadline }}</td>    
+											  <td>SCCTV Monthly</td>
+											 <td>Pending</td>
+									   </tr>
+									 {% elif scctvmsub_deadline == currdate %}
+									   {% if statusdm == "PENDING" and scctvmsub_on == currdate %}
+										 <tr data-href='/scctvmonthly/{{ id }}' >
+										 <td>{{ scctvmsub_deadline }}</td>    
+										 <td>SCCTV Monthly</td>
+										 <td>Pending</td>
+									   </tr>
+									   {% else %}
+									   <tr data-href='/scctvmonthlyrep/{{ id }}' >
+										   <td>{{ scctvmsub_deadline }}</td>    
+										   <td>SCCTV Monthly</td>
+										   <td>Pending</td>
+									   </tr>
+										 {% endif %}
+										 {% elif scctvmsub_on == currdate %}
+										 {% if statusdm == "PENDING" %}
+									   <tr data-href='/scctvmonthly/{{ id }}' >
+										   <td>{{ scctvmsub_deadline }}</td>    
+										   <td>SCCTV Monthly</td>
+										   <td>Pending</td>
+									   </tr>	
+										   {% endif %}
+										  {% endif %} 
+									 {% endif %}
+									 
+									 {% if dmr == 1 and scctvmsub_on == currdate %}
+										{% if statusdm == "COMPLETED"  %}  
+									   <tr data-href='/scctvmonthlyrec/{{ id }}' > 
+										 <td>{{ scctvmsub_deadline }}</td>    
+										 <td>SCCTV Monthly</td>
+										 <td>Completed</td>
+									   </tr>
+									   {% else %}
+									   <tr data-href='/scctvmonthlyrec/{{ id }}' > 
+										   <td>{{ scctvmsub_deadline }}</td>    
+										   <td>SCCTV Monthly</td>
+										   <td>Completed with errors</td>
+									   </tr>
+										   {% endif %}
+										{% endif %}
+					</table>
+			    </div>
+
+			    <div id="facilities" class="tab-pane fade fac">
+			    	<div id="facfix"> 	
+			  			<button class="tablink" onclick="openCity('Daily', this, 'blue')" id="defaultOpen">Daily</button>
+						<button class="tablink" onclick="openCity('Weekly', this, 'blue')">Weekly</button>
+						<button class="tablink" onclick="openCity('Monthly', this, 'blue')">Monthly</button>
+					</div>
+					<div id="Daily" class="tabcontent">	
+  						<h3 class="dateset">Daily</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+							</tr>
+							<tr><!--check the next few-->
+								<td>{{ scctvd_deadline }}</td>
+	                            {% if scctvd_deadline == currdate %} 
+								{% if scctvdsub_on == currdate and ddr == 0 %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvdaily/{{ id }}'">SCTTV</button></td>
+					           	{% elif ddr == 0 %}
+							   	<td><button class="btn standards" onclick="window.location.href='/scctvdailyrep/{{ id }}'">SCCTV</button></td>
+					        	{% endif %}
+	                            {% endif %}
+								{% if ddr == 1  %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/scctvdailyrec/{{ id }}'">SCCTV</button></td>
+					            {% endif %}
+					    			<td>{{ scctvdsub_on }}</td>
+					    			<td><button class="btn standards" data-toggle="modal" data-target="#scctvdaily">STANDARDS</button></td>
+					    			<td><button class="btn standards" onclick="window.location.href='/scctvdailyrec/{{ id }}'">MORE DETAILS</button></td>
+				    		</tr>
+				    		
+				    		
+				    	</table>
+					</div>
+
+					<div id="Weekly" class="tabcontent">
+  						<h3 class="dateset">Weekly</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+				    		</tr>
+				    		<tr>
+								<td>{{ wdate }}</td>
+								{% if dwr == 1 and scctvwsub_on == currdate %}
+								{% if status == "COMPLETED" or status == "COMPLETED WITH ERRORS" %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/scctvweeklyrec/{{ id }}'">SCCTV</button></td>
+								{% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvweekly/{{ id }}'">SCCTV</button></td>
+								{% endif %}	 
+								{% elif dwr == 0 %}
+								 {% if currdate > wdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvweeklyrep/{{ id }}'">SCCTV</button></td>
+							   {% elif scctvwsub_deadline == currdate %}
+								 {% if status == "PENDING" and scctvwsub_on == currdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvweekly/{{ id }}'">SCCTV</button></td>
+							    {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvweeklyrep/{{ id }}'">SCCTV</button></td>
+								{% endif %}
+								{% elif scctvwsub_on == currdate %}
+								 {% if status == "PENDING" %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvweekly/{{ id }}'">SCCTV</button></td>
+								  {% endif %}
+								 {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvweeklyrep/{{ id }}'">SCCTV</button></td>
+								{% endif %}
+							    {% endif %}
+								<td>{{ scctvwsub_on }}</td>
+			         			<td><button class="btn standards" data-toggle="modal" data-target="#scctvweekly">STANDARDS</button></td>
+								 <td><button class="btn standards" onclick="window.location.href='/scctvweeklyrec/{{ id }}'">MORE DETAILS</button></td>
+					     	</tr>
+				    		
+				    	</table>
+					</div>
+
+					<div id="Monthly" class="tabcontent">
+  						<h3 class="dateset">Monthly</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+				    		</tr>
+				    		<tr>
+				    		<td>{{ wdatem }}</td>
+								{% if dmr == 1 and scctvmsub_on == currdate %}
+								{% if status == "COMPLETED" or status == "COMPLETED WITH ERRORS" %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/scctvmonthlyrec/{{ id }}'">SCCTV</button></td>
+								{% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvmonthly/{{ id }}'">SCCTV</button></td>
+								{% endif %}	 
+								{% elif dmr == 0 %}
+								 {% if currdate > wdatem %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvmonthlyrep/{{ id }}'">SCCTV</button></td>
+							   {% elif scctvmsub_deadline == currdate %}
+								 {% if status == "PENDING" and scctvmsub_on == currdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvmonthly/{{ id }}'">SCCTV</button></td>
+							    {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvmonthlyrep/{{ id }}'">SCCTV</button></td>
+								{% endif %}
+								{% elif scctvmsub_on == currdate %}
+								 {% if status == "PENDING" %}
+								 <td><button class="btn standards" onclick="window.location.href='/scctvmonthly/{{ id }}'">SCCTV</button></td>
+								  {% endif %}
+								 {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/scctvmonthlyrep/{{ id }}'">SCCTV</button></td>
+								{% endif %}
+							    {% endif %}
+								<td>{{ scctvmsub_on }}</td>
+			         			<td><button class="btn standards" data-toggle="modal" data-target="#scctvmonthly">STANDARDS</button></td>
+								 <td><button class="btn standards" onclick="window.location.href='/scctvmonthlyrec/{{ id }}'">MORE DETAILS</button></td>
+					     	</tr>
+				    	</table>
+					</div>
+				</div>
+
+				<div id="verific" class="tab-pane fade fac">
+					<h5 lass="dateset" style="text-align: center;">Choose type of report to view.</h5>
+			    	 <div id="facfix" style="position: relative;"> 	
+			  			<button class="reportlink" onclick="openReport('Pending', this, 'blue')" id="open">Pending</button>
+						<button class="reportlink" onclick="openReport('Approved', this, 'blue')">Approved</button>
+						<button class="reportlink" onclick="openReport('Declined', this, 'blue')">Declined</button>
+					</div>
+					
+					<div id="Pending" class="reportcontent">
+						<h4 class="dateset">Pending</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task Name</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == None %} 	
+								{% if coms.status == "COMPLETED" or coms.status == "COMPLETED WITH ERRORS" %}
+								{% if coms.type == "scctvdaily" %}
+									<tr data-href="/scctvhomed/{{ id }}/{{ coms.token }}">
+										{% elif coms.type == "scctvweekly" %}
+								<tr data-href="/scctvhomew/{{ id }}/{{ coms.token}}">
+									{% else %}
+								<tr data-href="/scctvhomem/{{ id }}/{{ coms.token}}">
+								{% endif %}
+									<td>{{ coms.time }}<br>{{ coms.date }}</td>
+									{% if coms.type == "scctvdaily" %}
+									<td>SCCTV Daily</td>
+									{% elif coms.type == "scctvweekly" %}
+									<td>SCCTV Weekly</td>
+									{% else %}
+									<td>SCCTV Monthly</td>
+							     	{% endif %}
+									<td>{{ coms.status }}</td>
+									{% endif %}
+									{% endif %}
+								</tr>
+								{% endfor %}
+				             </tbody>
+				        </table>
+					</div>
+					<div id="Approved" class="reportcontent">
+						<h4 class="dateset">Approved</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task Name</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == "YES" %}
+								{% if coms.type == "scctvdaily" %}
+									<tr data-href="/scctvhomed/{{ id }}/{{ coms.token }}">
+										{% elif coms.type == "scctvweekly" %}
+								<tr data-href="/scctvhomew/{{ id }}/{{ coms.token}}">
+									{% else %}
+								<tr data-href="/scctvhomem/{{ id }}/{{ coms.token}}">
+								{% endif %}
+									<td>{{ coms.time }}<br>{{ coms.date }}</td>
+									{% if coms.type == "scctvdaily" %}
+									<td>SCCTV Daily</td>
+									{% elif coms.type == "scctvweekly" %}
+									<td>SCCTV Weekly</td>
+									{% else %}
+									<td>SCCTV Monthly</td>
+							     	{% endif %}
+									<td>{{ coms.status }}</td>
+									{% endif %}
+									
+								</tr>
+								{% endfor %}
+				           
+				             </tbody>
+				        </table>
+					</div>
+					<div id="Declined" class="reportcontent">
+						<h4 class="dateset">Declined</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task Name</th>
+				                  	<th>Submission Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == "NO" %}
+								{% if coms.type == "scctvdaily" %}
+									<tr data-href="/scctvhomed/{{ id }}/{{ coms.token }}">
+										{% elif coms.type == "scctvweekly" %}
+								<tr data-href="/scctvhomew/{{ id }}/{{ coms.token}}">
+									{% else %}
+								<tr data-href="/scctvhomem/{{ id }}/{{ coms.token}}">
+								{% endif %}
+									<td>{{ coms.time }}<br>{{ coms.date }}</td>
+									{% if coms.type == "scctvdaily" %}
+									<td>SCCTV Daily</td>
+									{% elif coms.type == "scctvweekly" %}
+									<td>SCCTV Weekly</td>
+									{% else %}
+									<td>SCCTV Monthly</td>
+							     	{% endif %}
+									<td>{{ coms.status }}</td>
+									{% endif %}
+								</tr>
+								{% endfor %}
+				           </tbody>
+				        </table>
+					</div>
+			    </div> 
+			</div>
+		</div>
+		<div class="modal fade" id="scctvdaily">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - SCCTV Daily<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+				        </div>
+				        <div class="modal-body">
+				          <table  class="table table-bordered standtab table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+				          		<td>UPS Battery Indication</td>
+				          		<td>Full</td>
+				          	</tr>
+				          	
+								<tr>
+				          		<td>Check all the servers are in ON Condition</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check the NAS status in VMS/VRM</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check Recording Active status of all VRS servers</td>
+				          		<td>EQUALS TO TOTAL CAMERA</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check Recording status of cameras in RRS Server</td>
+				          		<td>PAUSE</td>
+				          	</tr>
+				          <tr>
+				          		<td>Check the Database status in VMS server</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check all camera are working in client IVMS software</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Cleaning of Equipments</td>
+				          		<td>CARRIED OUT</td>
+				          	</tr>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="scctvweekly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - SCCTV Weekly<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+				          
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>UPS Input Voltage</td>
+                                <td>225-235V</td>
+                            </tr>
+                            
+                                <tr>
+                                <td>UPS Output Voltage</td>
+                                <td>220-230V</td>
+                            </tr>
+                                <tr>
+                                <td>UPS Battery Status</td>
+                                <td>FULL</td>
+                            </tr>
+                                <tr>
+                                <td>Check all the server status</td>
+                                <td>ON</td>
+                            </tr>
+                            <tr>
+                                <td>Check Camera/NAS status in VRS Servers</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Check all workstations and its client software</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>Check all cameras are working in client IVMS software</td>
+                                <td>OK</td>
+                            </tr>
+                            <tr>
+                                <td>Check NAS free capacity</td>
+                                <td>Not Zero</td>
+                            </tr>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="scctvmonthly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - SCCTV Monthly<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+				          		<td>UPS Input Voltage</td>
+				          		<td>225-235V</td>
+				          	</tr>
+				          	
+								<tr>
+				          		<td>UPS Output Voltage</td>
+				          		<td>220-230V</td>
+				          	</tr>
+				          		<tr>
+				          		<td>UPS Battry output voltage during AC power OFF (on both battery banks)</td>
+				          		<td>181-191V</td>
+				          	</tr>
+				          		<tr>
+				          		<td>UPS Battry output voltage after 15 min of AC main OFF (on both battery banks)</td>
+				          		<td>171-181V</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check all the Server Status</td>
+				          		<td>ON</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Check all the Camera / NAS Status in VRS Servers</td>
+				          		<td>OK/Accesible</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Check all the workstations and its client software</td>
+				          		<td>OK</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Check all the Cameras</td>
+				          		<td>OK</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Check NAS free Capacity</td>
+				          		<td>Not zero</td>
+				          	</tr>
+				          	<tr>
+				          		<td>OFC Link in all L2 and L3 Switches</td>
+				          		<td>Blinking Green</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Cleaning of Cameras and Equipment</td>
+				          		<td>Carried Out</td>
+				          	</tr>
+				          	<tr>
+				          		<td>Check the rights of all users</td>
+				          		<td>OK</td>
+				          	</tr>
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				
+	</div>
+	</div>
+</div>
+{% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+<script>
+ function openReport(reportName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("reportcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("reportlink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(reportName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+document.getElementById("defaultOpen").click();
+
+
+
+function openCity(cityName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(cityName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+document.getElementById("defaultOpen").click();
+
+$(function(){
+    $('.table tr[data-href]').each(function(){
+        $(this).css('cursor','pointer').hover(
+            function(){ 
+                $(this).addClass('active'); 
+            },  
+            function(){ 
+                $(this).removeClass('active'); 
+            }).click( function(){ 
+                document.location = $(this).attr('data-href'); 
+            }
+        );
+    });
+});
+
+
+</script>
+</body>
+</html>

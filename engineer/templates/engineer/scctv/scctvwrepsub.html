@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weekly SCCTV Maintenance Entry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="strength.js"></script> temp-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href='#' onclick="window.location.href='/routebackss/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>         <!--check-->
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+            
+        </nav>
+        <br>
+        <div class="row">
+                <div class="col-sm-7">
+                    <form method='POST' action='/scctvwrepsub/{{ id }}' id="form-v">
+                        {% csrf_token %}
+                        <div class="card" style="text-align: center;">
+                          <div class="card-body">
+                            <h2 class="card-title">SCCTV WEEKLY MAINTENANCE ENTRY</h2>
+                            <hr>
+
+    
+        <div class="form-group row has-warning">
+            <label for="ups_ip_voltage" class="col-sm-6 col-form-label">UPS Input Voltage</label>
+            <div>
+       			<input type=number  id="ups_ip_voltage" name="upsip" class="form-control form-control-sm" required></input>
+       		</div>
+       	</div>
+
+		<hr>
+         <div class="form-group row has-warning">
+            <label for="ups_op_voltage" class="col-sm-6 col-form-label">UPS Output Voltage</label>
+            <div>
+        		<input type=number name="upsop" id="ups_op_voltage" class="form-control form-control-sm" required></input>
+    		</div>
+    	</div>
+
+		<hr>
+        <div class="form-group row has-warning">
+            <label for="ups_battery_status" class="col-sm-6 col-form-label">UPS Battery Status</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="ups_battery_status" name="upsbat">
+                    <option value="" disabled="disabled" selected="selected">Please select an option</option>
+                    <option value="FULL">FULL</option>
+                    <option value="DISCHARGED">DISCHARGED</option>
+                </select>
+            </div>
+        </div>
+
+		<hr>
+        <div class="form-group row has-warning">
+            <label for="server_status" class="col-sm-6 col-form-label">Check all the server status</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="server_status" name="ser">
+	                <option value="" disabled="disabled" selected="selected">Please select an option</option>
+	                <option value="ON">ON</option>
+	                <option value="OFF">OFF</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group row has-warning">
+            <label for="camera_NAS_status_in_VRS" class="col-sm-6 col-form-label">Check Camera/NAS status in VRS servers</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="camera_NAS_status_in_VRS" name="nas">
+	                <option value="" disabled="disabled" selected="selected">Please select an option</option>
+	                <option value="OK">OK</option>
+	                <option value="NOT OK">NOT OK</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group row has-warning">
+            <label for="workstns_n_client_softw_check" class="col-sm-6 col-form-label">Check all the workstations and its client software</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="workstns_n_client_softw_check" name="sw">
+	                <option value="" disabled="disabled" selected="selected">Please select an option</option>
+	                <option value="OK">OK</option>
+	                <option value="NOT OK">NOT OK</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group row has-warning">
+            <label for="cameras_client_IVMS_softw" class="col-sm-6 col-form-label">Check all cameras are working in client IVMS Software</label>
+            <div>
+                <select  required class="form-control form-control-sm" id="cameras_client_IVMS_softw" name="ivms">
+	                <option value="" disabled="disabled" selected="selected">Please select an option</option>
+	                <option value="OK">OK</option>
+	                <option value="NOT OK">NOT OK</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group row has-warning">
+            <label for="NAS_free_capacity" class="col-sm-6 col-form-label">Check NAS free capacity</label>
+            <div>
+	             <input type=float name="free" id="NAS_free_capacity" class="form-control form-control-sm" required></input>
+            </div>
+        </div>
+
+        <hr>
+        <button class="btn submitbut"> SUBMIT </button>
+    </div>
+</div>
+    </form>
+</div>
+<div class="col-sm-5" >
+                <div class="sidebar s s_01" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; padding-top:10px; padding-bottom: 10px;" >
+                          <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                              <h6>MAINTENANCE HISTORY</h6>
+                          </div>
+                        </div>    
+                    </div>
+                    <div class="row rows">
+                        <div class="col">
+                            <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                                <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                                    <h6>CHECK STANDARDS</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                          <div class="card sidecard" style="width:10rem;" >
+                                <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                                    <h6>CONTACT SUPERVISOR</h6>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>    
+                  </div>
+                </div>
+
+   <!-- <td><button class="btn btn-success" onclick="window.open('/scctvweeklyrec/{{ id }}','_blank')" >Past Equipment Logs</button></td>
+    <td><button class="btn btn-success" onclick="window.open('/standards','_blank')">Check Standards</button></td>
+    <td><button onclick="window.location.href= '/scctvdaily/{{ id }}'"> Contact Supervisor</button></td>
+    <button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+    <div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog" >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Standards</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                            <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>UPS Input Voltage</td>
+                                <td>225-235V</td>
+                            </tr>
+                            
+                                <tr>
+                                <td>UPS Output Voltage</td>
+                                <td>220-230V</td>
+                            </tr>
+                                <tr>
+                                <td>UPS Battery Status</td>
+                                <td>FULL</td>
+                            </tr>
+                                <tr>
+                                <td>Check all the server status</td>
+                                <td>ON</td>
+                            </tr>
+                            <tr>
+                                <td>Check Camera/NAS status in VRS Servers</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Check all workstations and its client software</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>Check all cameras are working in client IVMS software</td>
+                                <td>OK</td>
+                            </tr>
+                            <tr>
+                                <td>Check NAS free capacity</td>
+                                <td>Not Zero</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Maintenance History</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                 <tr>  
+                    <th>Date-Time</th>
+                    <th>UPS Input Voltage</th>
+                    <th>UPS Output Voltage</th>
+                    <th>UPS Battery Status</th>
+                    <th>Server status</th>
+                    <th>Camera/NAS status in VRS</th>
+                    <th>Workstations and client software</th>
+                    <th>Cameras in client IVMS S/W</th>
+                    <th>NAS free capacity</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scctvww in scctv_w %} <!--check-->
+                <tr>
+                 
+                <td>{{ scctvww.date }}<br>{{ scctvww.time }}</td>
+                  <td>{{ scctvww.ups_ip_voltage }}</td>
+                  <td>{{ scctvww.ups_op_voltage }}</td>
+                  <td>{{ scctvww.ups_battery_status }}</td>
+                  <td>{{ scctvww.server_status }}</td>
+                  <td>{{ scctvww.camera_nas_status_in_vrs }}</td>
+                  <td>{{ scctvww.workstns_n_client_softw_check }}</td>
+                  <td>{{ scctvww.cameras_client_ivms_softw }}</td>
+                  <td>{{ scctvww.nas_free_capacity }}</td>
+                  <td>{{ scctvww.remarks }}</td>
+                   {% if scctvww.ups_ip_voltage <= 235 and  scctvww.ups_ip_voltage >= 225 and scctvww.ups_op_voltage <= 230 and scctvww.ups_op_voltage >= 220 and scctvww.ups_battery_status == "FULL" and scctvww.server_status == "ON" and scctvww.camera_nas_status_in_vrs == "OK" and scctvww.workstns_n_client_softw_check == "OK" and scctvww.cameras_client_ivms_softw == "OK" and scctvww.nas_free_capacity != 0 %}
+                   <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+             </tr>
+               {% endfor %}
+             </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="contactsuper">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">SUPERVISOR</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+    {% for sup in supdetails %}
+        <h5>{{ sup.name }}</h5>
+        <h6>Email: <a href="mailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+   
+    <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+    <h6>Phone: {{ sup.contact }}</h6>
+    {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>  
+    </div>
+  </div>
+</div>
+
+
+
+            </div>
+
+    </div>
+    <!--ADDITION-->
+<script>
+
+$("#ups_ip_voltage").on("keyup",function(){
+    if($("#ups_ip_voltage").val()==""){
+        $('#ups_ip_voltage').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ups_ip_voltage').css('border-color', '#ced4da');
+    }
+});
+$("#ups_op_voltage").on("keyup",function(){
+    if($("#ups_op_voltage").val()==""){
+        $('#ups_op_voltage').css('border-color', 'red');
+            return false;
+    }else{
+        $('#ups_op_voltage').css('border-color', '#ced4da');
+    }
+});
+$("#NAS_free_capacity").on("keyup",function(){
+    if($("#NAS_free_capacity").val()==""){
+        $('#NAS_free_capacity').css('border-color', 'red');
+            return false;
+    }else{
+        $('#NAS_free_capacity').css('border-color', '#ced4da');
+    }
+});
+</script>
+</body>

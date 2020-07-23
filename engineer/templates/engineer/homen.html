@@ -1,0 +1,824 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" type="text/css" href="{% static 'engineer/home.css' %}">
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+		<style>
+		.jumbotron {
+		  background-image: url("{% static '/images/sky1.jpg' %}"); 
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+		  background-size: cover;
+		}
+		</style>
+</head>
+<body> 
+	<div class="container" >
+		<div class="title-header"><img src="{% static '/images/aai.jpg' %}">PREVENTIVE MAINTENANCE LOG</div>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card cardlogo" style="word-wrap: break-word;" >
+						<img class="card-img-top" src="{% static '/images/man1.jpg' %}" alt="FACE">
+						<div class="card-body">
+						  	<br>
+						  	{% for empdets in empdet %}
+						    <h5 class="card-title">{{empdets.name }}</h5>
+							<div class="data-emp">
+								<h6 class="card-subsubtitle">{{ empdets.designation }}</h6>
+								{% endfor %}  
+	    						 {% csrf_token %}
+								<br>
+								{% for name1 in name %}
+								<h6 class="card-subsubtitle">{{ name1.name }} Airport</h6>
+								{% endfor %}							
+								<br>
+							</div>
+					   </div>
+					</div>
+					<div class="card cardcontact">	
+						<div class="card-body headcard">
+							{% for supdetails1 in supdetails %}
+							<b>Sup: {{ supdetails1.name }}</b>
+						  
+						    {% endfor %}
+							<br>
+							<button class="btn btn-primary contactbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button>
+						
+							<br>
+						</div>
+					</div>
+					<div class="modal fade" id="contactsuper">
+					    <div class="modal-dialog">
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <h3 class="modal-title">SUPERVISOR</h3>
+					          
+					        </div>
+					        <div class="modal-body" >
+					        	{% for supdetails1 in supdetails %}
+					          <h4>Name:{{supdetails1.name}}</h4>
+					          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{ supdetails1.email }}</a></h5>
+					          <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+					          <h5>Phone: {{ supdetails1.contact }}</h5>
+								{% endfor %}
+					        </div>
+					        
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					        </div>  
+					      </div>
+					    </div>
+					</div>
+
+					<div class="modal fade" id="report">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h4 class="modal-title">SEND REPORT TO SUPERVISOR<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+							</div>
+							<div class="modal-body" style="margin-left:30px; margin-right:30px">
+								 <div class="helloform" style="padding:0">
+									<form method='post' action="/sent/" >
+										{% csrf_token %}
+										{% for sup in supdetails %}
+						         		<br>
+										<div class="form-group row has-warning">
+											<label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+										</div>
+										<div class="form-group row has-warning">
+											<label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+											<div>
+											  <input  type='text' required></input>
+											</div> 
+										</div>
+										<hr>
+										<div class="form-group row has-warning">
+											<label for="body" class="col-sm-6 col-form-label">BODY:</label>
+											<div>
+											  <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue." required style="width:16rem;"></textarea> 
+											</div>
+										</div>
+										<hr>                                                  
+										<input type="submit" value="SEND">
+										{% endfor %} 
+									</form>
+						  		 </div>
+							</div>
+					      </div>
+					    </div>
+				    </div>    
+				  </div>	
+	
+				<div class="col-md-2">
+				</div>
+
+				<div class="data-table">
+					<div class="col-md-3" >
+						<div class="card tabcard">
+							<ul class="nav nav-pills nav-stacked">
+							    <li class="active"><a class="todays" data-toggle="pill" href="#today" >Today's Tasks</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#facilities" >Facilities</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#verific" >Verification Status</a></li>
+								
+							 </ul>
+						 	<button class="btn btn-primary logout" onclick="window.location.href='/logout/{{ id }}'"> Logout</button>
+		   				</div>
+					</div>
+				</div>
+		<div class="col-md-4 card tabcol">
+			<div class="tab-content">
+	    		<div id="today" class="tab-pane fade in active tod">
+					<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+						<tr>
+				      		<th>Deadline</th>
+				      		<th>Task Name</th>
+							  <th>Status</th>
+							  
+			      		</tr>
+			      		<!-- CDVOR DAILY -->
+			      		{% if cdvord_deadline <= currdate %} 
+            			{% if cdvordsub_on == currdate and cdr == 0 %}
+						{% if statusd == "PENDING" %}	
+						<tr data-href='/cdvordaily/{{ id }}'>
+			                	<td>{{ cdvord_deadline }}</td>                
+			                 	<td>CDVOR DAILY</td>
+			                 	<td>Pending</td>
+							</tr>
+							{% endif %}
+						 {% elif cdr == 0 %}
+		                	<tr data-href='/cdvordailyrep/{{ id }}'>
+			                 <td>{{ cdvord_deadline }}</td>
+			                 <td>CDVOR Daily</td>
+			                 <td>Pending</td>
+		                	</tr>
+		                {% endif %}
+             			{% endif %}  
+						 {% if statusd == "COMPLETED WITH ERRORS" and cdr == 1 %}	
+						 <tr data-href='/cdvordailyrec/{{ id }}'>
+							 <td>{{ cdvordsub_on }}</td>                
+							  <td>CDVOR DAILY</td>
+							  <td>Completed with errors</td>
+						 </tr>
+						 {% endif %}
+					
+             			{% if cdr == 1 and statusd == "COMPLETED" %}
+             				<tr data-href='/cdvordailyrec/{{ id }}'>
+			                 <td>{{ cdvordsub_on }}</td>
+			                 <td>CDVOR Daily</td>
+			                 <td>Completed</td>
+			                </tr>
+              			{% endif %}
+              
+				
+						  <!--   CDVOR Weekly-->
+				        {% if cwr == 0 %} 
+  	                    {% if currdate > wdate %}
+	                    	<tr data-href='/cdvorweeklyrep/{{ id }}' >
+		                       	<td>{{ cdvorwsub_deadline }}</td>    
+		                   		<td>CDVOR Weekly</td>
+		                      	<td>Pending</td>
+		                    </tr>
+						  {% elif cdvorwsub_deadline == currdate %}
+						    {% if status == "PENDING" and cdvorwsub_on == currdate %}
+	                      	<tr data-href='/cdvorweekly/{{ id }}' >
+								<td>{{ cdvorwsub_deadline }}</td>    
+		                      <td>CDVOR Weekly</td>
+		                      <td>Pending</td>
+							</tr>
+							{% else %}
+							<tr data-href='/cdvorweeklyrep/{{ id }}' >
+								<td>{{ cdvorwsub_deadline }}</td>    
+								<td>CDVOR Weekly</td>
+								<td>Pending</td>
+							</tr>
+							  {% endif %}
+							  {% elif cdvorwsub_on == currdate %}
+							  {% if status == "PENDING" %}
+							<tr data-href='/cdvorweekly/{{ id }}' >
+								
+								<td>{{ cdvorwsub_deadline }}</td>    
+								<td>CDVOR Weekly</td>
+								<td>Pending</td>
+							</tr>	
+				                {% endif %}
+					  	     {% endif %} 
+	                      {% endif %}
+	                      
+	                      {% if cwr == 1 and cdvorwsub_on == currdate %}
+						     {% if status == "COMPLETED"  %}  
+						    <tr data-href='/cdvorweeklyrec/{{ id }}' > 
+		                      <td>{{ cdvorwsub_deadline }}</td>    
+		                      <td>CDVOR Weekly</td>
+		                      <td>Completed</td>
+							</tr>
+							{% else %}
+							<tr data-href='/cdvorweeklyrec/{{ id }}' > 
+								<td>{{ cdvorwsub_deadline }}</td>    
+								<td>CDVOR Weekly</td>
+								<td>Completed with errors</td>
+							</tr>
+				  			  {% endif %}
+							 {% endif %} 
+							 
+						<!--   CDVOR Monthly-->
+						{% if cmr == 0 %} 
+  	                    {% if currdate > wdatem %}
+	                    	<tr data-href='/cdvormonthlyrep/{{ id }}' >
+		                       	<td>{{ cdvormsub_deadline }}</td>    
+		                   		<td>CDVOR Monthly</td>
+		                      	<td>Pending</td>
+		                    </tr>
+						  {% elif cdvormsub_deadline == currdate %}
+						    {% if statusm == "PENDING" and cdvormsub_on == currdate %}
+	                      	<tr data-href='/cdvormonthly/{{ id }}' >
+		                      <td>{{ cdvormsub_deadline }}</td>    
+		                      <td>CDVOR Monthly</td>
+		                      <td>Pending</td>
+							</tr>
+							{% else %}
+							<tr data-href='/cdvormonthlyrep/{{ id }}' >
+								<td>{{ cdvormsub_deadline }}</td>    
+								<td>CDVOR Monthly</td>
+								<td>Pending</td>
+							</tr>
+							  {% endif %}
+							  {% elif cdvormsub_on == currdate %}
+							  {% if statusm == "PENDING" %}
+							<tr data-href='/cdvormonthly/{{ id }}' >
+								<td>{{ cdvormsub_deadline }}</td>    
+								<td>CDVOR Monthly</td>
+								<td>Pending</td>
+							</tr>	
+				                {% endif %}
+					  	     {% endif %} 
+	                      {% endif %}
+	                      
+	                      {% if cmr == 1 and cdvormsub_on == currdate %}
+						     {% if statusm == "COMPLETED"  %}  
+						    <tr data-href='/cdvormonthlyrec/{{ id }}' > 
+		                      <td>{{ cdvormsub_deadline }}</td>    
+		                      <td>CDVOR Monthly</td>
+		                      <td>Completed</td>
+							</tr>
+							{% else %}
+							<tr data-href='/cdvormonthlyrec/{{ id }}' > 
+								<td>{{ cdvormsub_deadline }}</td>    
+								<td>CDVOR Monthly</td>
+								<td>Completed with errors</td>
+							</tr>
+				  			  {% endif %}
+	                         {% endif %}	 
+					</table>
+			    </div>
+
+			    <div id="facilities" class="tab-pane fade fac">
+			    	<div id="facfix"> 	
+			  			<button class="tablink" onclick="openCity('Daily', this, 'blue')" id="defaultOpen">Daily</button>
+						<button class="tablink" onclick="openCity('Weekly', this, 'blue')">Weekly</button>
+						<button class="tablink" onclick="openCity('Monthly', this, 'blue')">Monthly</button>
+					</div>
+					<div id="Daily" class="tabcontent">	
+  						<h3 class="dateset">Daily</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+							</tr>
+							<tr>
+								<td>{{ cdvord_deadline }}</td>
+	                            {% if cdvord_deadline == currdate %} 
+								{% if cdvordsub_on == currdate and cdr == 0 %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvordaily/{{ id }}'">CDVOR</button></td>
+					           	{% elif cdr == 0 %}
+							   	<td><button class="btn standards" onclick="window.location.href='/cdvordailyrep/{{ id }}'">CDVOR</button></td>
+					        	{% endif %}
+	                            {% endif %}
+								{% if cdr == 1  %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/cdvordailyrec/{{ id }}'">Cdvor</button></td>
+					            {% endif %}
+					    			<td>{{ cdvordsub_on }}</td>
+					    			<td><button class="btn standards" data-toggle="modal" data-target="#cdvordaily">STANDARDS</button></td> <!-- dont change this #datisdaily-->
+					    			<td><button class="btn standards" onclick="window.location.href='/cdvordailyrec/{{ id }}'">MORE DETAILS</button></td>
+				    		</tr>
+				    		
+		    		 	<!--	<tr data-href='#'>
+				    			<td>02.04.2020</td>    
+	                            <td><button disabled class="btn standards" onclick="window.location.href='#'">VHF</button></td>
+	                            <td>{{ vhfdsub_on }}</td>
+				    			<td><button class="btn standards" data-toggle="modal" data-target="#vhfdaily">STANDARDS</button></td>
+				    			<td><button class="btn standards" href="/vhfdaily/{{ id }}">MORE DETAILS</button></td>
+				    		</tr>
+				    		<tr data-href='#'>
+				    			<td>01.04.2020</td>
+				    			<td><button disabled class="btn standards" onclick="window.location.href='#'">DSCN</button></td>
+				    			<td>01.04.2020</td>
+				    			<td><button class="btn standards"data-toggle="modal" data-target="#dscndaily">STANDARDS</button></td>
+				    			<td><button class="btn standards" href="#">MORE DETAILS</button></td> 
+				    		</tr>
+						-->
+				    	</table>
+					</div>
+
+					<div id="Weekly" class="tabcontent">
+  						<h3 class="dateset">Weekly</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+				    		</tr>
+				    		<tr>
+								<td>{{ wdate }}</td>
+								{% if cwr == 1 and cdvorwsub_on == currdate %}
+								{% if status == "COMPLETED" or status == "COMPLETED WITH ERRORS" %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/cdvorweeklyrec/{{ id }}'">CDVOR</button></td>
+								{% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvorweekly/{{ id }}'">CDVOR</button></td>
+								{% endif %}	 
+								{% elif cwr == 0 %}
+								 {% if currdate > wdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvorweeklyrep/{{ id }}'">CDVOR</button></td>
+							   {% elif cdvorwsub_deadline == currdate %}
+								 {% if status == "PENDING" and cdvorwsub_on == currdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvorweekly/{{ id }}'">CDVOR</button></td>
+							    {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvorweeklyrep/{{ id }}'">CDVOR</button></td>
+								{% endif %}
+								{% elif cdvorwsub_on == currdate %}
+								 {% if status == "PENDING" %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvorweekly/{{ id }}'">CDVOR</button></td>
+								  {% endif %}
+								 {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvorweeklyrep/{{ id }}'">CDVOR</button></td>
+								{% endif %}
+							    {% endif %}
+								<td>{{ cdvorwsub_on }}</td>
+			         			<td><button class="btn standards" data-toggle="modal" data-target="#cdvorweekly">STANDARDS</button></td>
+								 <td><button class="btn standards" onclick="window.location.href='/cdvorweeklyrec/{{ id }}'">MORE DETAILS</button></td>
+					     	</tr>
+				    <!--		 <tr data-href='#'>
+				    			<td>01.04.2020</td>
+				    			<td><button disabled class="btn standards" onclick="window.location.href='#'">VHF RX</button></td>
+				    			<td>01.04.2020</td>
+				    			<td></td>
+				    			<td><button class="btn standards" href="#">MORE DETAILS</button></td>
+				    		</tr>
+				    		 <tr data-href='#'>
+				    			<td>01.04.2020</td>
+				    			<td><button disabled class="btn standards" onclick="window.location.href='#'">DSCN</button></td>
+				    			<td>01.04.2020</td>
+				    			<td></td>
+				    			<td><button class="btn standards" href="#">MORE DETAILS</button></td>
+				    		</tr> -->
+				    	</table>
+					</div>
+
+					<div id="Monthly" class="tabcontent">
+  						<h3 class="dateset">Monthly</h3>
+  						<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+  							<tr>	
+				    			<th>Deadline</th>
+				    			<th>Task Name</th>
+				    			<th>Last submitted on</th>
+				    			<th>Standards</th>
+				    			<th>Previous Records</th>
+				    		</tr>
+				    		<tr>
+								<td>{{ wdatem }}</td>
+								{% if cmr == 1 and cdvormsub_on == currdate %}
+								{% if statusm == "COMPLETED" or statusm == "COMPLETED WITH ERRORS" %}
+								<td><button disabled class="btn standards" onclick="window.location.href='/cdvormonthlyrec/{{ id }}'">CDVOR</button></td>
+								{% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvormonthly/{{ id }}'">CDVOR</button></td>
+								{% endif %}	 
+								{% elif cmr == 0 %}
+								 {% if currdate > wdatem %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvormonthlyrep/{{ id }}'">CDVOR</button></td>
+							   {% elif cdvormsub_deadline == currdate %}
+								 {% if statusm == "PENDING" and cdvormsub_on == currdate %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvormonthly/{{ id }}'">CDVOR</button></td>
+							    {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvormonthlyrep/{{ id }}'">CDVOR</button></td>
+								{% endif %}
+								{% elif cdvormsub_on == currdate %}
+								 {% if statusm == "PENDING" %}
+								 <td><button class="btn standards" onclick="window.location.href='/cdvormonthly/{{ id }}'">CDVOR</button></td>
+								  {% endif %}
+								 {% else %}
+								<td><button class="btn standards" onclick="window.location.href='/cdvormonthlyrep/{{ id }}'">CDVOR</button></td>
+								{% endif %}
+							    {% endif %}
+								<td>{{ cdvormsub_on }}</td>
+			         			<td><button class="btn standards" data-toggle="modal" data-target="#cdvormonthly">STANDARDS</button></td>
+								 <td><button class="btn standards" onclick="window.location.href='/cdvormonthlyrec/{{ id }}'">MORE DETAILS</button></td>
+					     	</tr>
+				    <!--		 <tr data-href='#'>
+				    			<td>{{ vhfmsub_deadline }}</td>    
+		                        <td><button disabled class="btn standards" onclick="window.location.href='#'">VHF</button></td>
+		                        <td>{{ vhfmsub_on }}</td>  
+				    			<td><button class="btn standards" data-toggle="modal" data-target="#vhfmonthly">STANDARDS</button></td>
+				    			<td><button class="btn standards" href="/vhfmonthly/{{ id }}">MORE DETAILS</button></td>
+				    		</tr>
+				    		<tr data-href='#'>
+				    			<td>01.04.2020</td>
+				    			<td><button disabled class="btn standards" onclick="window.location.href='#'">DSCN</button></td>
+				    			<td>01.04.2020</td>
+				    			<td> </td>
+				    			<td><button class="btn standards" href="#">MORE DETAILS</button></td>
+				    		</tr> -->
+				    	</table>
+					</div>
+				</div>
+
+				<div id="verific" class="tab-pane fade fac">
+					<h5 lass="dateset" style="text-align: center;">Choose type of report to view.</h5>
+					<div id="facfix" style="position: relative;">
+						<button class="reportlink" onclick="openReport('Pending', this, 'blue')" id="open">Pending</button>
+						<button class="reportlink" onclick="openReport('Approved', this, 'blue')">Approved</button>
+						<button class="reportlink" onclick="openReport('Declined', this, 'blue')">Declined</button>
+					</div>
+					
+					<div id="Pending" class="reportcontent">
+						<h4 class="dateset">Pending</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task Name</th>
+				                  	<th>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == None %} 	
+								{% if coms.status == "COMPLETED" or coms.status == "COMPLETED WITH ERRORS" %}
+								{% if coms.type == "Cdvordaily" %}
+									<tr data-href="/homecd/{{ id }}/{{ coms.token }}">
+								{% elif coms.type == "Cdvorweekly" %}
+									<tr data-href="/homecw/{{ id }}/{{ coms.token }}">
+								{% else %}
+									<tr data-href="/homecm/{{ id }}/{{ coms.token }}">		
+								{% endif %}
+
+									<td>{{ coms.date }}<br>{{ coms.time }}</td>
+									{% if coms.type == "Cdvordaily" %}
+									<td>Cdvor Daily</td>
+									{% elif coms.type == "Cdvorweekly" %}
+									<td>Cdvor Weekly</td>
+									{% else %}
+									<td>Cdvor Monthly</td>
+							     	{% endif %}
+									<td>Pending Approval</td>
+									{% endif %}
+									{% endif %}
+								</tr>
+								{% endfor %}
+				             </tbody>
+				        </table>
+					</div>
+					<div id="Approved" class="reportcontent">
+						<h4 class="dateset">Approved</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task</th>
+				                  	<th>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == "YES" %}
+								{% if coms.type == "Cdvordaily" %}
+									<tr data-href="/homecd/{{ id }}/{{ coms.token }}">
+								{% elif coms.type == "Cdvorweekly" %}
+								<tr data-href="/homecw/{{ id }}/{{ coms.token }}">
+								{% else %}
+								<tr data-href="/homecm/{{ id }}/{{ coms.token }}">
+								{% endif %}
+									<td>{{ coms.date }}<br>{{ coms.time }}</td>
+									{% if coms.type == "Cdvordaily" %}
+									<td>Cdvor Daily</td>
+									{% elif coms.type == "Cdvorweekly" %}
+									<td>Cdvor Weekly</td>
+									{% else %}
+									<td>Cdvor Monthly</td>
+							     	{% endif %}
+									<td>Approved</td>
+									{% endif %}
+								</tr>
+								{% endfor %}
+				           
+				             </tbody>
+				        </table>
+					</div>
+					<div id="Declined" class="reportcontent">
+						<h4 class="dateset">Declined</h4>
+						<table class="table table-bordered table-condensed table-striped table-hover todaytasks" >
+				            <thead>
+				                <tr>
+				                	<th>Date-Time</th>
+				                  	<th>Task</th>
+				                  	<th>Status</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+								{% for coms in com %}
+								{% if coms.unit_incharge_approval == "NO" %}
+								{% if coms.type == "Cdvordaily" %}
+									<tr data-href="/homecd/{{ id }}/{{ coms.token }}">
+								{% elif coms.type == "Cdvorweekly" %}
+								<tr data-href="/cdvorweekly/{{ id }}/{{ coms.token }}">
+								{% else %}
+								<tr data-href="/homecm/{{ id }}/{{ coms.token }}">	
+								{% endif %}
+									<td>{{ coms.date }}<br>{{ coms.time }}</td>
+									{% if coms.type == "Cdvordaily" %}
+									<td>Cdvor Daily</td>
+									{% elif coms.type == "Cdvorweekly" %}
+									<td>Cdvor Weekly</td>
+									{% else %}
+									<td>Cdvor Monthly</td>
+							     	{% endif %}
+									<td>Declined</td>
+									{% endif %}
+								</tr>
+								{% endfor %}
+				           </tbody>
+				        </table>
+					</div>
+			    </div> 
+			</div>
+		</div>
+		<div class="modal fade" id="cdvordaily">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - CDVOR Daily</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+						<div class="modal-body">
+							<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								<tr>
+									<th>VALUE LABEL</th>
+									<th>NORMAL VALUE</th>
+								</tr>
+								<tr>
+									<td>Azimuth Angle</td>
+									<td> less than 25</td>
+								</tr>
+								
+									<tr>
+									<td>30Hz Modulation</td>
+									<td>28 - 30</td>
+								</tr>
+									<tr>
+									<td>9960Hz Modulation</td>
+									<td>28 - 30</td>
+								</tr>
+									<tr>
+									<td>9960Hz Deviation</td>
+									<td>15 - 17</td>
+								</tr>
+									<tr>
+									<td>Field Intensity</td>
+									<td>-1 - 1</td>
+								</tr>
+				          	<!--	<tr>
+				          		<td>Date and time of servers wrt GPS CLK</td>
+				          		<td>Correct</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of Disk Array</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF TX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF RX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>DATIS update</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Audio Quality of Datis Announcement</td>
+				          		<td>Good</td>
+				          	</tr>-->
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="cdvorweekly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - CDVOR Weekly</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+				          	<tr>
+				          		<th>VALUE LABEL</th>
+				          		<th>NORMAL VALUE</th>
+				          	</tr>
+				          	<tr>
+                                <td>PS 5V</td>
+                                <td>4.75 - 5.25 </td>
+                            </tr>
+                            
+                                <tr>
+                                <td>PS 12V</td>
+                                <td>11.5 - 12.5</td>
+                            </tr>
+                                <tr>
+                                <td>PS 28V</td>
+                                <td>27 - 29</td>
+                            </tr>
+                                <tr>
+                                <td>Outside Temperature</td>
+                                <td>-25 C - 70 C</td>
+                            </tr>
+                                <tr>
+                                <td>Sideband Frequency</td>        
+                                <td>10001 Hz</td>
+                            </tr>
+                            
+				          	<!--	<tr>
+				          		<td>Time Sync</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Quality of Audio</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>PTT off Interval</td>
+				          		<td>15 seconds</td>
+				          	</tr>-->
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+				<div class="modal fade" id="cdvormonthly">
+				    <div class="modal-dialog">
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <h4 class="modal-title">Standards - CDVOR Monthly	</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+						<div class="modal-body">
+							<table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+								<tr>
+									<th>VALUE LABEL</th>
+									<th>NORMAL VALUE</th>
+								</tr>
+								<tr>
+									<td>Measured Bearing 1</td>
+									<td> 0</td>
+								</tr>
+								
+									<tr>
+									<td>Measured Bearing 2</td>
+									<td> 7.5</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 3</td>
+									<td> 15</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 4</td>
+									<td> 22.5</td>
+								</tr>
+									<tr>
+									<td>Measured Bearing 5</td>
+									<td> 30</td>
+								</tr>
+									<tr>
+									<td>Error Spread</td>
+									<td>Minimum as possible, typically 0</td>
+								</tr>
+				          	<!--	<tr>
+				          		<td>Date and time of servers wrt GPS CLK</td>
+				          		<td>Correct</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of Disk Array</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF TX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Status of VHF RX used for ATIS</td>
+				          		<td>On-Line</td>
+				          	</tr>
+				          		<tr>
+				          		<td>DATIS update</td>
+				          		<td>OK</td>
+				          	</tr>
+				          		<tr>
+				          		<td>Audio Quality of Datis Announcement</td>
+				          		<td>Good</td>
+				          	</tr>-->
+				          </table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				        </div>  
+				      </div>
+				    </div>
+				</div>
+
+	</div>
+	</div>
+</div>
+{% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+<script>
+ function openReport(reportName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("reportcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("reportlink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(reportName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+document.getElementById("defaultOpen").click();
+
+
+
+function openCity(cityName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(cityName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+document.getElementById("defaultOpen").click();
+
+$(function(){
+    $('.table tr[data-href]').each(function(){
+        $(this).css('cursor','pointer').hover(
+            function(){ 
+                $(this).addClass('active'); 
+            },  
+            function(){ 
+                $(this).removeClass('active'); 
+            }).click( function(){ 
+                document.location = $(this).attr('data-href'); 
+            }
+        );
+    });
+});
+
+
+</script>
+</body>
+</html>

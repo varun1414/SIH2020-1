@@ -1,0 +1,395 @@
+body {
+	background-color: #000;
+  font-family: 'Open Sans',sans-serif;
+  color:#fff;
+
+
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+   background-color: #DBDBDB;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+   background-color: #A4A4A4;
+}
+.todaytasks{ 
+	font-size: 15px;	 
+}
+.todaytasks th{
+  text-align: center!important; background-color: rgba(32, 48, 203, 1) ! important; border-width: 4px 2px 4px 2px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ; text-align: left; color: white !important;
+}
+.todaytasks td{
+	text-align: center!important;	border-width: 4px 2px 4px 2px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ;  text-align: left; margin:5px; color: black !important;
+}
+
+a{
+	text-decoration: none !important;
+}
+
+.submitbut{
+	border-radius: 30px !important;
+	border-color: none;
+	background-color:white ;
+	color:#1E72FA;
+	max-width: 200px;
+	margin-top: 5px;
+}
+
+.container {
+  text-align: center;
+  display: absolute;
+  position: relative;
+  height: auto;
+  margin: auto;
+  box-shadow: 1px 5px 10px 1px #333;
+ /* overflow: hidden;*/
+}
+
+.taskbut img{
+	height:40px;
+}
+.title-header
+{
+	font-size: 30px; background-color: #1E27FA ; color: white; font-family: 'Righteous', cursive;
+}
+.title-header img
+{
+	height:80px; padding:10px; padding-top: 0;
+}
+
+.row{
+	padding: 0px 0px 0px 50px;
+
+}
+
+.card{
+	background-color: #FFFFFF !important;
+	position: absolute;
+
+}
+
+.navbar{
+	
+	height: 90px;
+	/*text-align: right;*/
+	background-color: #1E27FA;
+}
+
+
+.navbar-brand{
+	padding-top: 0px;
+	box-shadow: 1px 5px 10px 1px #333;
+}
+
+.navbar h3 {
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold; 
+
+
+}
+
+.card-title {
+	/*width: 18rem;*/
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold;
+	font-size: 20px;
+	box-shadow: 2px 2px 5px 1px #009
+}
+
+.form-group {
+	
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold; 
+	font-size: 14px;
+}
+.form-control {
+	size: 50;
+	color: #0000ff;
+}
+
+input[type=text] {
+  box-sizing: border-box;
+}
+
+.sidebar {
+	font-family: "Times New Roman", Times, serif;
+	text-align: center;
+	font-size: 50rem;
+	padding: 10px 30px 30px 30px;
+}
+.sidecard{
+	background-color: #1E72FA !important;
+	cursor:pointer;
+	color: white;
+}
+
+.standtab
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab th
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab tr
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab td
+{
+	border:4px solid black;
+	padding:3px;
+}
+
+input:not([type="submit"]):valid {
+  border-color: #2ecc71;
+}
+
+input:not([type="submit"]) + .input-requirements {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 1s ease-out;  
+}
+
+input:not([type="submit"]):hover + .input-requirements,
+input:not([type="submit"]):focus + .input-requirements,
+input:not([type="submit"]):active + .input-requirements {
+  max-height: 1000px; /* any large number (bigger then the .input-requirements list) */
+  transition: max-height 1s ease-in;
+}
+
+.requiredtext{
+	background-color:#EBF3FF ; font-size: 12px; width: 15rem; margin-left:30%;
+}
+/*input[readonly] {
+    background-color: red !important; color: white !important;
+}*/
+
+
+
+textarea {
+
+	width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+/*addition for sidecard of supervisor*/
+.logr{
+	max-height: 360px; position:fixed;  top:20rem; 
+}
+.logrtitle{
+	margin-left: 3rem;
+	width: 22rem;
+	background-color: #1E22FA !important; 
+	font-family: 'Times New Roman', Times, serif; 
+	cursor:default
+}
+.tablogr{
+	overflow-x: hidden;
+	 overflow-y:auto; 
+	 height:15rem;
+}
+.tabr{
+	width:22rem; margin-left:3rem;
+}
+.mantab{
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+.rows{
+	padding: 0px 0px 0px 0px;
+}
+
+.s{
+
+	position:fixed;
+}
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #555;
+
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color:white;
+  width:33.33%;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+  color:black;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #1e27fa;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.standards{border-radius: 30px !important;  
+	background-color: #1E72FA;  color: white; border-color: #1E27FA;
+	width: auto; font-size: 12px !important;
+}
+
+.standards:hover {
+  background-color: #1E27FA; /* Green */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: white;
+}
+
+.pendbut{border-radius: 30px !important;  
+	background-color: red;  color: white; border-color: #1E27FA;
+	width: auto; font-size: 12px !important;
+}
+
+.pendbut:hover {
+  background-color: red; /* Green */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: white;
+}
+
+.completebut{border-radius: 30px !important;  
+	background-color: #10E980;  color: white; border-color: #1E27FA;
+	width: auto; font-size: 12px !important;
+}
+
+.completebut:hover {
+  background-color: #10E980; /* Green */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: white;
+}
+
+.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}
+
+.sidecard1{
+	background-color: #1E72FA !important;
+	color: white;
+}
+
+	.tabcontent{
+		height:11.6rem!important;width: 45.6rem !important;
+	}
+
+	.carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
+
+.floated{
+	float: left;
+}
+iframe{
+	object-fit: contain;
+}
+
+.iframe-css{
+	width: 100%;
+	height: 340px;
+	margin-bottom: 30px;
+}
+
+hr{
+	background-color: white;
+}
+
+.stat{
+	margin: auto;
+	padding: 5px 7px;
+}
+
+.report{
+	background-color: #1e27fa;
+	color:white;
+}
+.report:hover {
+  background-color: #1E27FA; /* Green */
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: white;
+}
+
+.leaderboard td{
+	border-width: 0px 2px; border-color:#1e27fa!important; border-style: solid; 
+}
+.leaderboard th{
+	border-width: 0px 2px 2px 2px; border-color:#1e27fa!important; border-style: solid; 
+}
+.specl{
+
+	border-width: 0px 2px 0px 0px!important; border-color:#1e27fa!important; border-style: solid; 
+}
+.speclh{
+	width: 150px;
+	border-width: 0px 2px 2px 0px!important; border-color:#1e27fa!important; border-style: solid; 
+}
+
+.specr{
+	border-width: 0px 0px 0px 2px !important; border-color:#1e27fa!important; border-style: solid; 
+}
+.specrh{
+	border-width: 0px 0px 2px 2px !important; border-color:#1e27fa!important; border-style: solid; 
+}
+.value-alert{
+	background-color:green; color:white;margin-left:20%; margin-right:20%; padding:0px; font-size: 24px; padding:0!important;
+}
+.s-left{
+	margin-left:11rem; background-color:white; color:#1e72fa;width:35%;
+}
+
+.s-mid{
+	float:left;margin-left:1rem; background-color:white; color:#1e72fa;
+}
+
+.s-right{
+	float:left; margin-left:1rem; width:35%;background-color:white; color:#1e72fa;
+}
+.learn-left{
+	margin-left:11rem; background-color:white; color:#1e72fa;width:35%;
+}
+
+.learn-mid{
+	margin-left:7rem; background-color:white; color:#1e72fa;
+}
+
+.learn-right{
+	margin-right:11rem; background-color:white; color:#1e72fa;width:35%;
+}
+
+
+.chart{
+	margin-top: 2rem;
+	float:left; height:30vh; width:30vw; display: block; margin-right: 5%;
+}
+
+@media(max-width:1000px){
+	.chart{
+	margin-top: 10%;
+	float:left; height:30vh; width:30vw; display: block; margin-right: 5%;
+}
+}

@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weekly SCCTV Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <nav class="navbar sticky-top">
+      <ul class="navbar-nav">
+          <li class="nav-item">
+              <a href='#' onclick="window.location.href='/routebackss/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>   <!--check-->
+          </li>
+        </ul>
+      <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+    </nav>
+    <br>        
+        <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                  <th>Date-Time</th>
+                  <th style="width: 150px;">Status</th>
+                  <th>UPS Input Voltage</th>
+                  <th>UPS Output Voltage</th>
+                  <th>UPS Battery Status</th>
+                  <th>Check all the server status</th>
+                  <th>Check thevcamera/NAS status in VRS servers</th>
+                  <th>Check all the workstations and its client software</th>
+                  <th>Check all the cameras are working in client ivms software</th>
+                  <th>Check the NAS free capacity</th>
+                  <th>Test</th>
+                  <th>Approval Status</th>
+                  <th>Approval Date</th>
+                  <th>Approval time</th>
+                  
+             
+              <!--   <th>datetime_of_servers_wrt_GPS_CLK</th>
+                  <th>status_of_Disk_array</th>
+                  <th>VHFTX_ATIS_status</th>
+                 <th>VHFRX_ATIS_status</th>
+                  <th>scctv_update</th>
+                  <th>Audio_quality</th>
+                  <th>REMARKS</th>
+                  <th>Unit_incharge_approval</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                    {% for scctvw in scctv_w %}  <!--check-->
+                <tr>
+                  <td>{{ scctvw.date }}<br>{{ scctvw.time }}</td>
+                  <td>{{ scctvw.status }}
+                 <td>{{ scctvw.ups_ip_voltage }}</td>
+                  <td>{{ scctvw.ups_op_voltage }}</td>
+                  <td>{{ scctvw.ups_battery_status }}</td>
+                  <td>{{ scctvw.server_status }}</td>
+                  <td>{{ scctvw.camera_nas_status_in_vrs }}</td>
+                  <td>{{ scctvw.workstns_n_client_softw_check }}</td>
+                  <td>{{ scctvw.cameras_client_ivms_softw }}</td>
+                  <td>{{ scctvw.nas_free_capacity }}</td>
+                   {% if scctvw.ups_ip_voltage <= 235 and  scctvw.ups_ip_voltage >= 225 and scctvw.ups_op_voltage <= 230 and scctvw.ups_op_voltage >= 220 and scctvw.ups_battery_status == "FULL" and scctvw.server_status == "ON" and scctvw.camera_nas_status_in_vrs == "OK" and scctvw.workstns_n_client_softw_check == "OK" and scctvw.cameras_client_ivms_softw == "OK" and scctvw.nas_free_capacity != 0 %}
+                   <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                  <td>{{ scctvw.unit_incharge_approval }}</td>
+                  <td>{{ scctvw.approval_date }}</td>
+                  <td>{{ scctvw.approval_time }}</td>
+                  
+             </tr>
+               {% endfor %}
+             </tbody>
+             </table>
+             </div>
+</body>
+</html>
+

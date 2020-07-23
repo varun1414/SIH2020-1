@@ -1,0 +1,229 @@
+body {
+	background-color: #000;
+  font-family: 'Open Sans',sans-serif;
+  color:#fff;
+ /* overflow: hidden;*/
+
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+   background-color: #DBDBDB;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+   background-color: #A4A4A4;
+}
+.todaytasks{ 
+	font-size: 15px;
+	 
+}
+.todaytasks th{
+  background-color: rgba(32, 48, 203, 1) ! important; border-width: 4px 2px 4px 2px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ; text-align: left; color: white !important;
+}
+.todaytasks td{
+	border-width: 4px 2px 4px 2px !important; border-style: solid; border-color: rgba(235, 243, 255, 1)! important ;  text-align: left; margin:5px; color: black !important;
+}
+
+a{
+	text-decoration: none !important;
+}
+
+.submitbut{
+	border-radius: 30px !important;
+	border-color: none;
+	background-color: #1E72FA;
+	color:white;
+
+}
+.container {
+  text-align: center;
+  display: absolute;
+  position: relative;
+  height: auto;
+  margin: auto;
+  box-shadow: 1px 5px 10px 1px #333;
+ /* overflow: hidden;*/
+}
+
+.taskbut img{
+	height:40px;
+}
+.title-header
+{
+	font-size: 30px; background-color: #1E27FA ; color: white; font-family: 'Righteous', cursive;
+}
+.title-header img
+{
+	height:80px; padding:10px; padding-top: 0;
+}
+
+.row{
+	padding: 0px 0px 0px 50px;
+
+}
+
+.card{
+	background-color: #FFFFFF !important;
+	position: absolute;
+
+}
+
+.navbar{
+	
+	height: 90px;
+	/*text-align: right;*/
+	background-color: #1E27FA;
+}
+
+/*.navbar-right{
+	float: right;
+}*/
+
+.navbar-brand{
+	padding-top: 0px;
+	box-shadow: 1px 5px 10px 1px #333;
+}
+
+.navbar h3 {
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold; 
+
+
+}
+
+.card-title {
+	/*width: 18rem;*/
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold;
+	font-size: 20px;
+	box-shadow: 2px 2px 5px 1px #009
+}
+
+.form-group {
+	
+	font-family: "Times New Roman", Times, serif;
+	font-weight: bold; 
+	font-size: 14px;
+}
+/*
+.cardtwo{
+	position: sticky;
+	max-width: 18rem; 
+	height: 500px;
+}*/
+
+.form-control {
+	size: 50;
+	color: #0000ff;
+}
+
+input[type=text] {
+  box-sizing: border-box;
+}
+
+.sidebar {
+	font-family: "Times New Roman", Times, serif;
+	text-align: center;
+	font-size: 50rem;
+	padding: 10px 30px 30px 30px;
+}
+.sidecard{
+	background-color: #1E72FA !important;
+	cursor:pointer;
+	color: white;
+}
+
+.standtab
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab th
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab tr
+{
+	border:4px solid black;
+	padding:3px;
+}
+.standtab td
+{
+	border:4px solid black;
+	padding:3px;
+}
+
+input:not([type="submit"]):valid {
+  border-color: #2ecc71;
+}
+
+input:not([type="submit"]) + .input-requirements {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 1s ease-out;  
+}
+
+input:not([type="submit"]):hover + .input-requirements,
+input:not([type="submit"]):focus + .input-requirements,
+input:not([type="submit"]):active + .input-requirements {
+  max-height: 1000px; /* any large number (bigger then the .input-requirements list) */
+  transition: max-height 1s ease-in;
+}
+
+.requiredtext{
+	background-color:#EBF3FF ; font-size: 12px; width: 15rem; margin-left:30%;
+}
+/*input[readonly] {
+    background-color: red !important; color: white !important;
+}*/
+.submitbut{
+border-radius: 30px !important;
+border-color: none;
+background-color: #1E72FA;
+color:white;
+max-width: 200px;
+}
+
+
+textarea {
+
+	width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+/*addition for sidecard of supervisor*/
+.logr{
+	max-height: 360px; position:fixed;  top:20rem; 
+}
+.logrtitle{
+	margin-left: 3rem;
+	width: 22rem;
+	background-color: #1E22FA !important; 
+	font-family: 'Times New Roman', Times, serif; 
+	cursor:default
+}
+.tablogr{
+	overflow-x: hidden;
+	 overflow-y:auto; 
+	 height:15rem;
+}
+.tabr{
+	width:22rem; margin-left:3rem;
+}
+.mantab{
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+.rows{
+	padding: 0px 0px 0px 0px;
+}
+
+.s{
+
+	position:fixed;
+}

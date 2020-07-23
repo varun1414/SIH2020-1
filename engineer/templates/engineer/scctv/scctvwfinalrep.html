@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weekly SCCTV Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  
+                    <a href='#' onclick="window.location.href='/scctvweekly/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>  <!--check-->
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Submission to the Supervisor
+                <form method='POST' action='/finalscctvwrepsub/{{ p_id }}/{{ id }}'>
+                {% csrf_token %}
+                <div class="card" style="text-align: center;">
+                <div class="card-body">
+                  <h2 class="card-title">SCCTV WEEKLY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                    Recorded on:  DATE: {{ scctvw.date }}  |  TIME: {{ scctvw.time }}<br>
+                                    <strong>STATUS: {{ scctvw.status }} </strong>
+                </div>
+                  <hr> 
+     <div class="form-group row has-warning">
+                   <label for="ups_ip_voltage" class="col-sm-6 col-form-label">UPS Input Voltage</label>
+                  <div>
+                      <input type="text" class="form-control form-control-sm" id="ups_ip_voltage" name="upsip" readonly="true" value="{{ scctvw.ups_ip_voltage }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_op_voltage" class="col-sm-6 col-form-label">UPS Output Voltage</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="ups_op_voltage" name="upsop" readonly="true" value="{{ scctvw.ups_op_voltage }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="ups_battery_status" class="col-sm-6 col-form-label">UPS Battery Status</label>
+                    <div>
+                       <input type="text" class="form-control form-control-sm" id="ups_battery_status" name="upsbat" readonly="true" value="{{ scctvw.ups_battery_status }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                 <label for="server_status" class="col-sm-6 col-form-label">Check all the server status</label>
+                  <div>
+                      
+                      <input type="text" class="form-control form-control-sm" id="server_status" name="ser" readonly="true" value="{{ scctvw.server_status }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                   <label for="camera_NAS_status_in_VRS" class="col-sm-6 col-form-label">Check Camera/NAS status in VRS servers</label>
+                  <div>
+                      <input type="text" class="form-control form-control-sm" id="camera_NAS_status_in_VRS" name="nas" readonly="true" value="{{ scctvw.camera_nas_status_in_vrs }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                   <label for="workstns_n_client_softw_check" class="col-sm-6 col-form-label">Check all the workstations and its client software</label>
+                  <div>
+                      <input type="text" class="form-control form-control-sm" id="workstns_n_client_softw_check" name="sw" readonly="true" value="{{ scctvw.workstns_n_client_softw_check }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="cameras_client_IVMS_softw" class="col-sm-6 col-form-label">Check all cameras are working in client IVMS Software</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="cameras_client_IVMS_softw" name="ivms" readonly="true" value="{{ scctvw.cameras_client_ivms_softw }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="NAS_free_capacity" class="col-sm-6 col-form-label">Check NAS free capacity</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="NAS_free_capacity" name="free" readonly="true" value="{{ scctvw.nas_free_capacity }}">
+                    </div>
+                  </div>
+
+                <hr>
+                 <div class="alert" style="background-color: #DBDBDB;">
+                        <strong>Remarks</strong>(Final submission)</div>
+    
+           
+                
+                <div class="form-group row has-warning"style="padding-left:0" >
+                  <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief" name='remarks' required="required"></textarea>
+               
+                 
+              </div>
+                    <hr>
+                    <button class="btn submitbut">FINAL SUBMIT</button>
+                  </div>
+                   
+              </div>
+          </div>
+            </form>
+
+    </div>
+<script>
+$(function(){
+     $('#ups_ip_voltage').css('border-color', '#CED4DA');
+     $('#ups_op_voltage').css('border-color', '#CED4DA');
+     $('#NAS_free_capacity').css('border-color', '#CED4DA');
+     $('#procedure').css('border-color', '#CED4DA');
+    });
+
+ $("#ups_ip_voltage").on("keyup",function(){
+            if($("#ups_ip_voltage").val()==""){
+                 $('#ups_ip_voltage').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_ip_voltage').css('border-color', '#CED4DA');
+            }
+        });
+ $("#ups_op_voltage").on("keyup",function(){
+            if($("#ups_op_voltage").val()==""){
+                 $('#ups_op_voltage').css('border-color', 'red');
+                return false;
+            }else{
+               $('#ups_op_voltage').css('border-color', '#CED4DA');
+            }
+        });
+
+ $("#NAS_free_capacity").on("keyup",function(){
+            if($("#NAS_free_capacity").val()==""){
+                 $('#NAS_free_capacity').css('border-color', 'red');
+                return false;
+            }else{
+               $('#NAS_free_capacity').css('border-color', '#CED4DA');
+            }
+        });
+ 
+ $("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+               $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>        
+   
+    
+</html>
+
+

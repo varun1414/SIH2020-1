@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Weekly DATIS Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+  <div class="container">
+    <nav class="navbar sticky-top">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+        </li>
+      </ul>
+      <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+    </nav>
+    <br>
+    <div class="row">
+      <div class="col-sm-7">
+        {% for datisw in datis_w %}
+          {% if f != 1 %}
+            {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+              {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                  <div class="alert alert-success">
+                    <strong>Maintenance succesful!</strong> 
+                    All entries matched with standard values.
+                    {% else %}
+                    <div class="alert alert-danger">
+                    <strong>Maintenance failed!!!</strong> 
+                    Please try again.
+                {% endif %}
+                {% else %}
+                <div class="alert alert-danger">
+                  <strong>Maintenance failed!!!</strong> 
+                  Please try again.
+              {% endif %}
+              {% else %}
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Please try again.
+            {% endif %}
+          {% endif %}       
+          {% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong>
+				  {% endif %}
+			
+
+          <div class="card" style="text-align: center;">
+            <form id="form-v">             
+                <div class="card-body">
+                  <h2 class="card-title">DATIS-TERMA WEEKLY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                      Recorded on: DATE:{{ datisw.date }}  |  TIME:{{ datisw.time }}<br><strong>STATUS: {{ datisw.status }}</strong> 
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="serverAorB" class="col-sm-6 col-form-label">Server A / B</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="serverAorB" name="Server A / B" readonly="true" value="{{ datisw.serveraorb }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="UPS_ip" class="col-sm-6 col-form-label">UPS Input</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="UPS_ip" name="UPS Input" readonly="true" value="{{ datisw.ups_ip }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="UPS_op" class="col-sm-6 col-form-label">UPS Output</label>
+                    <div>
+                       <input type="text" class="form-control form-control-sm" id="UPS_op" name="UPS Output" readonly="true" value="{{ datisw.ups_op }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="Dust_free" class="col-sm-6 col-form-label">Dust Free</label>
+                    <div>
+                    	
+                      <input type="text" class="form-control form-control-sm" id="Dust_free" name="Dust Free" readonly="true" value="{{ datisw.dust_free }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="LAN_status" class="col-sm-6 col-form-label">LAN Status</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="LAN_status" name="LAN Status" readonly="true" value="{{ datisw.lan_status }}">
+                    </div>
+                  </div>
+
+                  <hr>
+              </div>
+            </form>
+
+            <div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
+              {% if f != 1 %}
+                  {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 and datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                  <p></p>
+                 {% else %}
+                  <p></p>
+               <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdatisw/{{ datisw.p_id }}'">EDIT</button>
+               <button  class="btn submitbut" onclick="window.location.href='/repsubwerrors/{{ datisw.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>
+               {% endif %}
+               {% endif %}
+            </div>
+          </div>
+
+        </div>
+          {% endfor %}
+    </div>
+<!--
+                {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+                {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                <p></p>
+                 {% else %}
+                 {% if f == 1 %}
+                 <p></p>
+                 {% else %}
+             <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdatisw/{{ datisw.p_id }}'">Edit</button>
+               <button class="btn submitbut" onclick="window.location.href='/repsubwerrors/{{ datisw.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>
+               {% endif %}
+               {% endif %}
+               {% else %}
+               {% if f == 1 %}
+               <p></p>
+               <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdatisw/{{ datisw.p_id }}'">EDIT</button>
+               <button  class="btn submitbut" onclick="window.location.href='/repsubwerrors/{{ datisw.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>
+               {% endif %}
+               {% endif %}
+                 {% else %}
+                 {% if f == 1 %}
+                 <p></p>
+                 {% else %}  
+                <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdatisw/{{ datisw.p_id }}'">EDIT</button>
+                <button  class="btn submitbut"onclick="window.location.href='/repsubwerrors/{{ datisw.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>
+                 {% endif %}
+               {% endif %}-->
+              
+           
+            
+           <div class="col-sm-5" >
+                <div class="sidebar s" >
+                    <div class="col-sm-12">
+                      <div class="card mb-3 sidecard" style="width: 22rem; " >
+                        <div class="card-body" data-toggle="modal" data-target="#pastlog" href='#' >
+                          <h6>MAINTENANCE HISTORY</h6>
+                        </div>
+                      </div>    
+                    </div>
+                    <div class="row rows">
+                      <div class="col">
+                        <div class="card sidecard"  style="margin-left: 1rem; width:10rem;">
+                          <div class="card-body" data-toggle="modal" data-target="#standardcheck" href='#'>
+                            <h6>CHECK STANDARDS</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card sidecard" style="width:10rem;" >
+                          <div class="card-body" data-toggle="modal" data-target="#contactsuper" href='#'>
+                            <h6>CONTACT SUPERVISOR</h6>
+                          </div>
+                        </div>     
+                      </div>
+                    </div>    
+                  </div>
+
+                  <div> 
+                      <div class="logr">                       
+                          <div class="card sidecard logrtitle"> REPORT LOG </div>
+                          <div class="tablogr">
+                            <table class= "table-bordered table-condensed table-striped table-hover todaytasks tabr">
+                              <thead >
+                                  <tr>
+                                    <th>Log_ID</th>
+                                    <th>Remarks</th>
+                                    <th>Value</th>
+                                    <th>Date-Time</th>  
+                                  </tr>
+                              </thead>
+                                <tbody>
+                                {% for log in datiswlogs %}
+                                  <tr>
+                                      <td>{{ log.log_id }}</td>
+                                      <td>{{ log.remarks }}</td>
+                                      <td>{{ log.value }}</td>
+                                      <td>{{ log.time }}<br>{{ log.date }}</td>
+                                   </tr>
+                                {% endfor %}
+                              </tbody>                           
+                            </table>
+                        </div>
+                      </div>
+                  </div>   
+
+				<div class="modal fade" id="standardcheck">
+                    <div class="modal-dialog" >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Standards</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks">
+                            <tr>
+                                <th>VALUE LABEL</th>
+                                <th>NORMAL VALUE</th>
+                            </tr>
+                            <tr>
+                                <td>UPS Input</td>
+                                <td>200-230V</td>
+                            </tr>
+                            
+                                <tr>
+                                <td>UPS Output</td>
+                                <td>230V</td>
+                            </tr>
+                                <tr>
+                                <td>Dust Free</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>LAN Status</td>
+                                <td>OK</td>
+                            </tr>
+                             <!--    <tr>
+                                <td>Time Sync</td>
+                                <td>OK</td>
+                            </tr>
+                               <tr>
+                                <td>Quality of Audio</td>
+                                <td>OK</td>
+                            </tr>
+                                <tr>
+                                <td>PTT Off Interval</td>
+                                <td>OK</td>
+                            </tr>-->
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="modal fade" id="contactsuper">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">SUPERVISOR</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                    {% for sup in supdetails %}
+                        <h5>{{ sup.name }}</h5>
+                        <h6>Email: <a href="mailto:{{ sup.email }}">{{ sup.email }}</a></h6>
+                   
+                    <!--put the contact in the a href as mailto:{{ contact }} and outside in phone too-->
+                    <h6>Phone: {{ sup.contact }}</h6>
+                    {% endfor %}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      </div>  
+                    </div>
+                  </div>
+                </div>
+                
+              
+                </div>
+                </div>
+
+<div class="modal fade" id="pastlog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Maintenance History</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <table class="table table-bordered table-condensed table-striped table-hover todaytasks mantab">
+            <thead>
+                <tr>  
+                    <th>Date-Time</th>
+                    <th>Server A/B</th>
+                    <th>UPS Input</th>
+                    <th>UPS Output</th>
+                    <th>Dust Free</th>
+                    <th>LAN Status</th>
+                    <th>Remarks</th>
+                    <th>Test</th>
+                    <!--<th>Test</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                {% for datisww in datisw %}
+                <tr>
+                 
+                <td>{{ datisww.date }}<br>{{ datisww.time }}</td>
+                 <td>{{ datisww.serveraorb }}</td>
+                  <td>{{ datisww.ups_ip }}</td>
+                  <td>{{ datisww.ups_op }}</td>
+                  <td>{{ datisww.dust_free }}</td>
+                  <td>{{ datisww.lan_status }}</td>
+                  <td>{{ datisww.remarks }}</td>
+                  {% if datisww.serveraorb == "A" or datisww.serveraorb == "B" %}  
+                  {% if datisww.ups_ip < 231 and datisww.ups_ip > 199 %}
+                  {% if datisww.ups_op == 230 and datisww.dust_free == "OK" and datisww.lan_status == "OK" %}
+                   <td>Pass</td>
+                 {% else %}
+                  <td>Fail</td>
+               {% endif %}
+                {% else %}
+                <td>Fail</td>
+                {% endif %}
+                {% else %}
+                   <td>Fail</td>
+                {% endif %}
+             </tr>
+               {% endfor %}
+             </tbody>
+                          </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+</div>
+</div>
+</div>
+
+              
+<script>
+$(function(){
+    $('#serverAorB').css('border-color', 'pale-green');
+
+    if($("#UPS_ip").val()<"200" || $("#UPS_ip").val()>"230"){
+        $('#UPS_ip').css('border-color', 'red');
+	}
+  
+    if($("#UPS_op").val()!="230"){
+        $('#UPS_op').css('border-color', 'red');
+    }
+
+    if($("#Dust_free").val()!="OK"){
+        $('#Dust_free').css('border-color', 'red');
+    }
+
+    if($("#LAN_status").val()!="OK"){
+        $('#LAN_status').css('border-color', 'red');
+    }
+
+});
+	</script>	
+          <!--  <button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+           
+</body>
+</html>
+

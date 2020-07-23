@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Monthly CDVOR Maintenance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="container">
+        <nav class="navbar sticky-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  
+                    <a href='#' onclick="window.location.href='/cdvormonthly/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>
+                </li>
+            </ul>
+            <div class="title-header">PREVENTIVE MAINTENANCE LOG<img src="{% static '/images/aai.jpg' %}"></div>
+        </nav>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Please try again.
+    <form method='POST' action='/finalcmrepsub/{{ p_id }}/{{ id }}'>
+        {% csrf_token %}
+        {% for cdvordm in cdvorm %}
+        <div class="card" style="text-align: center;">
+                <div class="card-body">
+                  <h2 class="card-title">CDVOR MONTHLY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                    Recorded on:  DATE: {{ cdvordm.date }}  |  TIME: {{ cdvordm.time }}<br>
+                                    <strong>STATUS: {{ cdvordm.status }} </strong>
+                </div>
+                  <hr>   
+      <!--  <input type=text  name="serverAorB" placeholder="{{ datisdw.serveraorb }}"/><br>
+        <input type=text  name="UPS_ip" placeholder="{{ datisdw.ups_ip }}"/><br>
+        <input type=text  name="UPS_op" placeholder="{{ datisdw.ups_op }}"/><br>
+        <input type=text  name="Dust_free" placeholder="{{ datisdw.dust_free }}"/><br>
+        <input type=text  name="LAN_status" placeholder="{{ datisdw.lan_status }}"/><br>
+        <h4>Remarks to be given to the supervisor</h4>
+        <input type=text required name="remarks" /><br>
+        <input type="submit">
+                         
+    </form>-->
+     <div class="form-group row has-warning">
+                <label for="measured_bearing_1" class="col-sm-6 col-form-label">Measured bearing 1</label>
+                <div>
+                  <input type="text" class="form-control form-control-sm" id="measured_bearing_1" name="Measured bearing 1" readonly="true" value="{{ cdvordm.measured_bearing_1 }}">
+                </div>
+              </div>
+
+              <hr>
+              <div class="form-group row has-warning">
+              <label for="bearing_deviation_1" class="col-sm-6 col-form-label">Bearing deviation 1</label>
+                <div>
+                  <input type="text" class="form-control form-control-sm" id="bearing_deviation_1" name="Bearing deviation 1" readonly="true" value="{{ cdvordm.bearing_deviation_1 }}">
+                </div>
+              </div>
+              <hr>
+              <div class="form-group row has-warning">
+                <label for="measured_bearing_2" class="col-sm-6 col-form-label">Measured bearing 2</label>
+                <div>
+                   <input type="text" class="form-control form-control-sm" id="measured_bearing_2" name="Measured bearing 2" readonly="true" value="{{ cdvordm.measured_bearing_2 }}">
+                </div>
+              </div>
+
+              <hr>
+              <div class="form-group row has-warning">
+                <label for="bearing_deviation_2" class="col-sm-6 col-form-label">Bearing deviation 2 </label>
+                <div>
+                   <input type="text" class="form-control form-control-sm" id="bearing_deviation_2" name="Bearing deviation 2" readonly="true" value="{{ cdvordm.bearing_deviation_2 }}">
+                </div>
+              </div>
+
+                <hr>  
+                <div class="form-group row has-warning">
+                  <label for="measured_bearing_3" class="col-sm-6 col-form-label">Measured bearing 3</label>
+                  <div>
+                    
+                    <input type="text" class="form-control form-control-sm" id="measured_bearing_3" name="Measured bearing 3" readonly="true" value="{{ cdvordm.measured_bearing_3 }}">
+                  </div>
+                </div>
+
+                <hr>  
+                <div class="form-group row has-warning">
+                  <label for="bearing_deviation_3" class="col-sm-6 col-form-label">Bearing deviation 3</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="bearing_deviation_3" name="Bearing deviation 3" readonly="true" value="{{ cdvordm.bearing_deviation_3 }}">
+                  </div>
+                </div>
+                
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="measured_bearing_4" class="col-sm-6 col-form-label">Measured bearing 4</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="measured_bearing_4" name="Measured bearing 4" readonly="true" value="{{ cdvordm.measured_bearing_4}}">
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="bearing_deviation_4" class="col-sm-6 col-form-label">Bearing deviation 4</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="bearing_deviation_4" name="Bearing deviation 4" readonly="true" value="{{ cdvordm.bearing_deviation_4 }}">
+                  </div>
+                </div>
+
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="measured_bearing_5" class="col-sm-6 col-form-label">Measured bearing 5</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="measured_bearing_5" name="Measured bearing 5" readonly="true" value="{{ cdvordm.measured_bearing_5 }}">
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group row has-warning">
+                  <label for="bearing_deviation_5" class="col-sm-6 col-form-label">Bearing deviation 5</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="bearing_deviation_5" name="Bearing deviation 5" readonly="true" value="{{ cdvordm.bearing_deviation_5 }}">
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row has-warning">
+                  <label for="error_spread" class="col-sm-6 col-form-label">Error Spread</label>
+                  <div>
+                    <input type="text" class="form-control form-control-sm" id="error_spread" name="Error spread" readonly="true" value="{{ cdvordm.error_spread}}">
+                  </div>
+                </div>
+
+                 <div class="alert" style="background-color: #DBDBDB;">
+                        <strong>Remarks</strong>(Final submission)</div>
+    
+            <!-- <div class="col-sm-1"></div> -->
+                                
+                
+                <div class="form-group row has-warning"style="padding-left:0" >
+                  <textarea class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief" name='remarks' required="required"></textarea>
+                  <!--<input type="textarea" class="form-control " id="room_temp" name="Maintenance Procedure"  style="height:200px;" required>-->
+                 
+              </div>
+                <!--<div class="form-group row has-warning" >
+                    <input required type="text" name="remarks" class="form-control form-control-sm" rows="5" id="procedure" placeholder="Please specify the reason why error prevails in brief.">-->
+                    <hr>
+                    <button class="btn submitbut">FINAL SUBMIT</button>
+                  </div>
+                    {% endfor %}
+              </div>
+          </div>
+            </form>
+
+    </div>
+<script>
+$(function(){
+       $('#measured_bearing_1').css('border-color', '#CED4DA');
+     $('#measured_bearing_2').css('border-color', '#CED4DA');
+     $('#measured_bearing_3').css('border-color', '#CED4DA');
+     $('#measured_bearing_4').css('border-color', '#CED4DA');
+     $('#measured_bearing_5').css('border-color', '#CED4DA');
+     $('#procedure').css('border-color', '#CED4DA');
+    });
+$("#measured_bearing_1").on("keyup",function(){
+    if($("#measured_bearing_1").val()==""){
+        $('#measured_bearing_1').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_1').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_2").on("keyup",function(){
+    if($("#measured_bearing_2").val()==""){
+        $('#measured_bearing_2').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_2').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_3").on("keyup",function(){
+    if($("#measured_bearing_3").val()==""){
+        $('#measured_bearing_3').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_3').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_4").on("keyup",function(){
+    if($("#measured_bearing_4").val()==""){
+        $('#measured_bearing_4').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_4').css('border-color', '#ced4da');
+    }
+});
+$("#measured_bearing_5").on("keyup",function(){
+    if($("#measured_bearing_5").val()==""){
+        $('#measured_bearing_5').css('border-color', 'red');
+            return false;
+    }else{
+        $('#measured_bearing_5').css('border-color', '#ced4da');
+    }
+});
+
+$("#procedure").on("keyup",function(){
+            if($("#procedure").val()==""){
+               $('#procedure').css('border-color', 'red');
+                return false;
+            }else{
+               $('#procedure').css('border-color', '#CED4DA');
+            }
+        });
+</script>
+</body>        
+   
+    
+</html>
+
+
