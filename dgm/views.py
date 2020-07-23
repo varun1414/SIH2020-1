@@ -349,32 +349,9 @@ def surv(request):
     return render(request,'dgm/dashboards.html',{'supdetails':supdetails})
 
 def nav(request):
-    supdetails = models.Supervisor.objects.all().filter(dept='N')
-    eng=models.Engineer.objects.values('emp_id','name')
-    eng=list(eng)
-    print(eng)
-    for i in eng:
-        i['submitted']=models.Cdvordaily.objects.filter(emp_id=i['emp_id']).count()+models.Cdvormonthly.objects.filter(emp_id=i['emp_id']).count()+models.Cdvorweekly.objects.filter(emp_id=i['emp_id']).count()
-        i['accepted']=models.Cdvordaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
-        i['reject']=models.Cdvordaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
-        i['pending']=models.Cdvordaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
-    # conc=list(chain(cdvordaily,cdvormonthly, cdvorweekly))
-    # for i in conc:
-    #     if i['unit_incharge_approval'] !=None:
-    #         i['submitted']=1
-    #     if i['unit_incharge_approval']=='YES':
-    #             i['accepted']=1
-    #     elif i['unit_incharge_approval']=='NO':
-    #             i['reject']=1
-    #     else:
-    #         i['pending']=1
-    # for i in conc:
-    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
-
-    # conc=collections.Counter('emp_id')
-        
-    print("here",eng)
-    return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng})
+    supdetails,eng=navdet()
+   
+    return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng,'searched':None})
 
 def homev(request,uid):
     labels = []
@@ -1135,8 +1112,37 @@ def searchn(request):
     exec(que,globals())
     
     
-
+    supdetails,eng=navdet()
     # print(facility)
+    print(temp)
+    return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
     
-    return HttpResponse("yes")
-    
+
+
+def navdet():
+    supdetails = models.Supervisor.objects.all().filter(dept='N')
+    eng=models.Engineer.objects.values('emp_id','name')
+    eng=list(eng)
+    print(eng)
+    for i in eng:
+        i['submitted']=models.Cdvordaily.objects.filter(emp_id=i['emp_id']).count()+models.Cdvormonthly.objects.filter(emp_id=i['emp_id']).count()+models.Cdvorweekly.objects.filter(emp_id=i['emp_id']).count()
+        i['accepted']=models.Cdvordaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
+        i['reject']=models.Cdvordaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
+        i['pending']=models.Cdvordaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
+    # conc=list(chain(cdvordaily,cdvormonthly, cdvorweekly))
+    # for i in conc:
+    #     if i['unit_incharge_approval'] !=None:
+    #         i['submitted']=1
+    #     if i['unit_incharge_approval']=='YES':
+    #             i['accepted']=1
+    #     elif i['unit_incharge_approval']=='NO':
+    #             i['reject']=1
+    #     else:
+    #         i['pending']=1
+    # for i in conc:
+    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
+
+    # conc=collections.Counter('emp_id')
+        
+    print("here",eng)
+    return supdetails,eng
