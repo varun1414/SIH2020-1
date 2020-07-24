@@ -10,7 +10,9 @@ urlpatterns = [
     path('navigation/', views.navigation,name='navigation'),
     # path('surveillance/', views.navigation,name='sur')
     path('<str:id>/<str:name>', views.details,name='details'),
-    path('formsentn/', views.searchn,name='formsent'),
+    path('formsentn/', views.searchn,name='formsentn'),
+    path('formsentc/', views.searchc,name='formsentc'),
+    path('formsents/', views.searchs,name='formsents'),
     path('communication/',views.communication),
     path('surv/',views.surv),
     path('nav/',views.nav),

@@ -30,7 +30,7 @@ def calendar(request):
             y = temp.year
             m = temp.month
             d = temp.day
-            item.update( {"type":"DatD"})
+            item.update({"type":"DatD"})
             item.update({"y":y})
             item.update({"m":m})
             item.update({"d":d})
@@ -341,12 +341,13 @@ def calendars(request):
     return render(request,'dgm/calendar.html',{'com':com})
 
 def communication(request):
-    supdetails = models.Supervisor.objects.all().filter(dept='C')
-    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails})
+    # supdetails = models.Supervisor.objects.all().filter(dept='C')
+    supdetails,eng=comdet()
+    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails,'eng':eng,'searched':None})
     
 def surv(request):
-    supdetails = models.Supervisor.objects.all().filter(dept='S')
-    return render(request,'dgm/dashboards.html',{'supdetails':supdetails})
+    supdetails,eng=surdet()
+    return render(request,'dgm/dashboards.html',{'supdetails':supdetails,'eng':eng,'searched':None})
 
 def nav(request):
     supdetails,eng=navdet()
@@ -1116,12 +1117,125 @@ def searchn(request):
     # print(facility)
     print(temp)
     return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
-    
 
+
+
+def searchc(request):
+    fromdate=request.POST['date']
+    # fromdate = datetime.strptime(fromdate, '%Y-%m-%d').date
+    todate=request.POST['date1']
+    # todate = datetime.strptime(todate, '%Y-%m-%d')
+    # print(todate)
+    facility=request.POST['select']
+    # frdate=datetime.strptime(fromdate,'%Y-%m-%d').date()
+    facility=str(facility)
+    facility=facility.lower()
+    facility=facility.capitalize()
+    facility=facility.split(" ")
+    facility=''.join(facility)
+    year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    print(month,"  ",day)
+    # fromdate= datetime(int(year),int(month),int(day)).date()
+    # year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    fromdate=str(year)+","+str(month)+","+str(day)
+    
+    
+    year,month,day = todate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    todate=str(year)+","+str(month)+","+str(day)
+    # todate= datetime(int(year),int(month),int(day)).date()
+    
+    str1='temp=models.'
+    str2='.objects'
+    str4='.filter( Q(date__gte='
+    str5=str(fromdate)
+    # str5=re.sub('-0','-',str(fromdate))
+    str5='date('+fromdate+')'
+    str6= ') &  Q(date__lte=' 
+    str7=str(todate)
+    str7=re.sub('-0','-',str(todate))
+    str7='date('+todate+')'
+    str8='))'
+    str3='.values()'
+    # str4='.objects.all()'
+
+   
+        
+    que=str1+facility+str2+str4+str5+str6+str7+str8+str3
+    print(que)
+    exec(que,globals())
+    
+    
+    supdetails,eng=comdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
+    
+def searchs(request):
+    fromdate=request.POST['date']
+    # fromdate = datetime.strptime(fromdate, '%Y-%m-%d').date
+    todate=request.POST['date1']
+    # todate = datetime.strptime(todate, '%Y-%m-%d')
+    # print(todate)
+    facility=request.POST['select']
+    # frdate=datetime.strptime(fromdate,'%Y-%m-%d').date()
+    facility=str(facility)
+    facility=facility.lower()
+    facility=facility.capitalize()
+    facility=facility.split(" ")
+    facility=''.join(facility)
+    year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    print(month,"  ",day)
+    # fromdate= datetime(int(year),int(month),int(day)).date()
+    # year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    fromdate=str(year)+","+str(month)+","+str(day)
+    
+    
+    year,month,day = todate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    todate=str(year)+","+str(month)+","+str(day)
+    # todate= datetime(int(year),int(month),int(day)).date()
+    
+    str1='temp=models.'
+    str2='.objects'
+    str4='.filter( Q(date__gte='
+    str5=str(fromdate)
+    # str5=re.sub('-0','-',str(fromdate))
+    str5='date('+fromdate+')'
+    str6= ') &  Q(date__lte=' 
+    str7=str(todate)
+    str7=re.sub('-0','-',str(todate))
+    str7='date('+todate+')'
+    str8='))'
+    str3='.values()'
+    # str4='.objects.all()'
+
+   
+        
+    que=str1+facility+str2+str4+str5+str6+str7+str8+str3
+    print(que)
+    exec(que,globals())
+    
+    
+    supdetails,eng=surdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/dashboards.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
+    
 
 def navdet():
     supdetails = models.Supervisor.objects.all().filter(dept='N')
-    eng=models.Engineer.objects.values('emp_id','name')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='N')
     eng=list(eng)
     print(eng)
     for i in eng:
@@ -1130,6 +1244,63 @@ def navdet():
         i['reject']=models.Cdvordaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
         i['pending']=models.Cdvordaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvormonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Cdvorweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
     # conc=list(chain(cdvordaily,cdvormonthly, cdvorweekly))
+    # for i in conc:
+    #     if i['unit_incharge_approval'] !=None:
+    #         i['submitted']=1
+    #     if i['unit_incharge_approval']=='YES':
+    #             i['accepted']=1
+    #     elif i['unit_incharge_approval']=='NO':
+    #             i['reject']=1
+    #     else:
+    #         i['pending']=1
+    # for i in conc:
+    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
+
+    # conc=collections.Counter('emp_id')
+        
+    print("here",eng)
+    return supdetails,eng
+
+
+
+def comdet():
+    supdetails = models.Supervisor.objects.all().filter(dept='C')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='C')
+    eng=list(eng)
+    print(eng)
+    for i in eng:
+        i['submitted']=models.Dscndaily.objects.filter(emp_id=i['emp_id']).count()+models.Dscnmonthly.objects.filter(emp_id=i['emp_id']).count()+models.Dscnweekly.objects.filter(emp_id=i['emp_id']).count()+models.Datisdaily.objects.filter(emp_id=i['emp_id']).count()+models.Datisweekly.objects.filter(emp_id=i['emp_id']).count()
+        i['accepted']=models.Dscndaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Datisdaily.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
+        i['reject']=models.Dscndaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Datisdaily.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
+        i['pending']=models.Dscndaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()++models.Datisdaily.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
+    # conc=list(chain(cdvordaily,cdvormonthly, cdvorweekly))
+    # for i in conc:
+    #     if i['unit_incharge_approval'] !=None:
+    #         i['submitted']=1
+    #     if i['unit_incharge_approval']=='YES':
+    #             i['accepted']=1
+    #     elif i['unit_incharge_approval']=='NO':
+    #             i['reject']=1
+    #     else:
+    #         i['pending']=1
+    # for i in conc:
+    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
+
+    # conc=collections.Counter('emp_id')
+        
+    print("here",eng)
+    return supdetails,eng
+
+def surdet():
+    supdetails = models.Supervisor.objects.all().filter(dept='S')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='S')
+    eng=list(eng)
+    print(eng)
+    for i in eng:
+        i['submitted']=models.Scctvdaily.objects.filter(emp_id=i['emp_id']).count()+models.Scctvmonthly.objects.filter(emp_id=i['emp_id']).count()+models.Scctvweekly.objects.filter(emp_id=i['emp_id']).count()
+        i['accepted']=models.Scctvdaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
+        i['reject']=models.Scctvdaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
+        i['pending']=models.Scctvdaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
     # for i in conc:
     #     if i['unit_incharge_approval'] !=None:
     #         i['submitted']=1

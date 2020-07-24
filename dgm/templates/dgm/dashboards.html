@@ -44,8 +44,9 @@
 						        </div>
 						        <div class="modal-body" >
 									<div class="bootstrap-iso">
-									    <form method="post" action='/formsent/'> <!--backend action for movement-->
-									    	<div class="form-group  has-warning">
+									    <form method="post" action='/dgm/formsents/'> <!--backend action for movement-->
+											{% csrf_token %} 
+											<div class="form-group  has-warning">
 									      		<label class="control-label " for="select">
 											    	CATEGORY
 											    </label>
@@ -174,7 +175,16 @@
 				        			<th>Reports Declined</th>
 				        			<th class="specrh">Reports Pending</th>
 				        		</tr>
-				        		<tr>
+								{% for i in eng %}
+								<tr>
+								<td class="speclh">{{i.name}}</td>
+								<td>{{i.submitted}}</td>
+								<td>{{i.accepted}}</td>
+								<td>{{i.reject}}</td>
+								<td class="specrh">{{i.pending}}</td>
+								</tr>
+								{% endfor %}
+				        		<!-- <tr>
 				        			<td class="specl">Kumar Sanu</td>
 				        			<td>54</td>
 				        			<td>53</td>
@@ -208,14 +218,7 @@
 				        			<td>53</td>
 				        			<td>34</td>
 				        			<td class="specr">100</td>
-				        		</tr>
-				        		<tr>
-				        			<td class="specl">Kumar Sanu</td>
-				        			<td>54</td>
-				        			<td>53</td>
-				        			<td>34</td>
-				        			<td class="specr">100</td>
-				        		</tr>
+				        		</tr> -->
 				        	</table> <!--till here-->
 				        </div>
 				        
