@@ -20,7 +20,7 @@ from dgm.views import homev as homev
 from django.http import HttpResponse
 from . import models
 from django.db import connection
-
+from head.views import headv as headv
 # Create your views here.
 def login(request):
     if request.session.has_key('uid') and request.session.get('type')=='e':
@@ -78,10 +78,13 @@ def validate(request):
                # print(y[0])
                # return render(request,'./dgm/dgm.html',{'name':y[0]})
     elif b=='11' :
+        request.session['key']=frt.generate_key().decode('utf-8')
+        # x=models.Dgm.objects.all()
         x=models.Head.objects.all()
         for i in x:
             if (uid == str(i.head_id)) & (check_password(passw,i.password)) :
                 flag=0
+                request.session['type']='h'
                 airInfo=models.Airport.objects.all().values()
                 return dispMap(request,airInfo)
     elif b=='31' :

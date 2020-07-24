@@ -7,6 +7,24 @@ import os
 import json
 from login import models as models
 # Create your views here.
+from django.shortcuts import render
+import collections
+import re
+from datetime import date,datetime,timedelta
+from django.db import connection
+from cryptography.fernet import Fernet as frt
+from django.db.models import Count
+from supervisor.views import main
+from operator import itemgetter
+from django.db.models import Q
+from itertools import groupby,chain
+# Create your views here.
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
+from login import models
+from django.db import connection
+from django.db.models import Q
+
 def dispMap(request,airInfo):
 
 
@@ -41,7 +59,7 @@ def dispMap(request,airInfo):
         dgm=models.Dgm.objects.filter(a_id=i['a_id']).values()
         folium.Marker([i['longitude'], i['latitude']],
                 popup=folium.Popup(
-                ('<table border=1><h5><a href="/" target="_blank"><h5 style="text-align: center;">{tooltip}</a></h5><tr><th style="text-align: center;">ID</th><th style="text-align: center;">{did}</th></tr><tr><th style="text-align: center;">NAME</th><th style="text-align: center;">{dname}</th></tr><tr><th style="text-align: center;">CONTACT</th><th style="text-align: center;">{dcontact}</th></tr><tr><th style="text-align: center;">EMAIL</th><th style="text-align: center;">{demail}</th></tr></table>').format(tooltip=tooltip,did=dgm[0]['dgm_id'],dname=dgm[0]['name'],name=i['name'],dcontact=dgm[0]['contact'],demail=dgm[0]['email']),max_width=250,min_width=150),
+                ('<table border=1><h5><a href="/head/headv" target="_blank"><h5 style="text-align: center;">{tooltip}</a></h5><tr><th style="text-align: center;">ID</th><th style="text-align: center;">{did}</th></tr><tr><th style="text-align: center;">NAME</th><th style="text-align: center;">{dname}</th></tr><tr><th style="text-align: center;">CONTACT</th><th style="text-align: center;">{dcontact}</th></tr><tr><th style="text-align: center;">EMAIL</th><th style="text-align: center;">{demail}</th></tr></table>').format(tooltip=tooltip,did=dgm[0]['dgm_id'],dname=dgm[0]['name'],name=i['name'],dcontact=dgm[0]['contact'],demail=dgm[0]['email']),max_width=250,min_width=150),
                 tooltip=tooltip,
                 icon=folium.Icon(color='red')).add_to(m)
     # folium.Marker([42.333600, -71.109500],
@@ -81,13 +99,13 @@ def dispMap(request,airInfo):
 
 
 
-def homev(request,uid):
+def headv(request,uid=1101):
     labels = []
     data = []
     
     request.session['type']='h'
     request.session['uid']=uid
-    dgm= models.Dgm.objects.all().filter(dgm_id=uid).values()
+    # dgm= models.Dgm.objects.all().filter(dgm_id=uid).values()
     emp_id = uid
     head= models.Head.objects.all()
 
@@ -517,15 +535,25 @@ def homev(request,uid):
 
 
 
+    # totsubmit=submit+scctvsubmit+comsubmit
+    # totapprove=approve+scctvapprove+comapprove
+    # totnapprove=
 
 
-
-    return render(request, 'dgm/dgm.html', {
-        'dgmdet':dgm,
+    return render(request, './head/head.html', {
+        # 'dgmdet':dgm,
         'navsubmit':submit,
         'navapprove':approve,
         'navnapprove':napprove,
         'navpend':nsubmit,
+        
+        
+        'totsubmit':submit+scctvsubmit+comsubmit,
+        'totapprove':approve+scctvapprove+comapprove,
+        'totnapprove':napprove+nscctvapprove+ncomapprove,
+        'totpen':nsubmit+nscctvsubmit+ncomsubmit,
+        
+        
         
         'navmaintain_per':maintain_per,
         'navfirst':firsttime_per,

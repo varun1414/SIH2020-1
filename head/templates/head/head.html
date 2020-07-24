@@ -1,3 +1,1060 @@
-<html>
-    head
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" type="text/css" href="{% static 'dgm/home.css' %}">
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+		<style>
+		.jumbotron {
+		  background-image: url("{% static '/images/sky1.jpg' %}"); 
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+		  background-size: cover;
+		}
+		</style>
+</head>
+<body> 
+	<div class="container" >
+		<div class="title-header"><img src="{% static '/images/aai.jpg' %}">PREVENTIVE MAINTENANCE LOG</div>
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="card cardlogo" style="word-wrap: break-word;" >
+						<img class="card-img-top" src="{% static '/images/man1.jpg' %}" alt="FACE">
+						<div class="card-body">
+						  	<br> <!-- check all here-->
+						  	{% for empdets in dgmdet %}
+						    <h5 class="card-title">{{empdets.name }}</h5>
+							<div class="data-emp">
+								<h6 class="card-subsubtitle">{{ empdets.designation }}</h6>
+								{% endfor %}  
+	    						 {% csrf_token %}
+								<br>
+								{% for name1 in name %}
+								<h6 class="card-subsubtitle">{{ name1.name }} Airport</h6>
+								{% endfor %}							
+								<br>
+							</div><!--till here-->
+					   </div>
+					</div>
+					<div class="card cardcontact">	
+						<div class="card-body headcard">
+							<!--check here-->
+							{% for supdetails1 in headdet %}
+							<b>Sup: {{ supdetails1.name }}</b>
+						  
+						    {% endfor %}
+							<br>
+							<button class="btn btn-primary contactbut" data-toggle="modal" data-target="#contactsuper" href='#'>Contact</button><!--till here-->
+							<br>
+						</div>
+					</div>
+					<div class="modal fade" id="contactsuper">
+					    <div class="modal-dialog">
+					      	<div class="modal-content">
+						        <div class="modal-header">
+						          <h3 class="modal-title">SUPERVISOR</h3>
+						        </div>
+						        <div class="modal-body" ><!--check here-->
+					        	{% for supdetails1 in headdet %}
+					          <h4>Name:{{supdetails1.name}}</h4>
+					          <h5>Email: <a data-toggle="modal" data-target="#report" href='#'>{{ supdetails1.email }}</a></h5>
+					          <h5>Phone: {{ supdetails1.contact }}</h5>
+								{% endfor %}<!--till here-->
+					        </div>
+					        
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						    	</div>  
+					     	</div>
+					    </div>
+					</div>
+
+					<div class="modal fade" id="report">
+						<div class="modal-dialog">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h4 class="modal-title">SEND REPORT TO SUPERVISOR<button type="button" class="close" data-dismiss="modal">&times;</button></h4>
+							</div>
+							<div class="modal-body" style="margin-left:30px; margin-right:30px">
+							 	<div class="helloform" style="padding:0">
+									<form method='post' action="/sent/" ><!--check here-->
+										{% csrf_token %}
+										{% for sup in headdet %}
+						         		<br>
+										<div class="form-group row has-warning">
+											<label for="to" class="col-sm-6 col-form-label">TO: {{ sup.name }}</label>
+										</div>
+										<div class="form-group row has-warning">
+											<label for="Subject" class="col-sm-6 col-form-label">SUBJECT:</label>
+											<div>
+											  <input  type='text' required></input>
+											</div> 
+										</div>
+										<hr>
+										<div class="form-group row has-warning">
+											<label for="body" class="col-sm-6 col-form-label">BODY:</label>
+											<div>
+											  <textarea rows="5" placeholder="Enter message" size="100" name='feedback' value="Hello {{ sup.name }}, this is regarding the issue." required style="width:16rem;"></textarea> 
+											</div>
+										</div>
+										<hr>                                                  
+										<input type="submit" value="SEND">
+										{% endfor %} <!--till here-->
+									</form>
+					  		 	</div>
+							</div>
+					      </div>
+					    </div>
+				    </div>      
+				</div>	
+	
+				<div class="col-md-2">
+				</div>
+
+				<div class="data-table">
+					<div class="col-md-3" >
+						<div class="card tabcard">
+							<ul class="nav nav-pills nav-stacked">
+							    <li class="active"><a class="todays" data-toggle="pill" href="#today" >Communication</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#facilities" >Navigation</a></li>
+								<li><a class="faculty" data-toggle="pill" href="#verific" >Surveillance</a></li>
+								
+							 </ul>
+						 	<button class="btn btn-primary logout" onclick="window.location.href='/logout/{{ id }}'"> Logout</button>
+		   				</div>
+					</div>
+				</div>
+				<div class="col-md-4 card tabcol">
+					<div class="tab-content" style="align-items: center">
+			    		<div id="today" class="tab-pane fade in active fac"><!--check here-->
+			    			<h3 class="card" style="margin-left:25%; width:auto!important; height: auto;  background-color: #1e72fa; border-radius: 20px; width: 26rem!important; color:white">&nbsp Quarterly Overview</h3>
+							{% block content %}
+						    	<div style="margin-left:4%; width:23%; float:left; text-align:center;">
+						    		<b style="color:black; font-size:25px; line-height:25px">{{comsubmit}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Submitted</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#B80808; font-size:25px; line-height:25px">{{compend}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Pending Submissions</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#05713D; font-size:25px; line-height:25px">{{comapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Approved</b>
+						    	</div>
+						    	<div style="width:23%; float:left;text-align:center;">
+						    		<b style="color:#11036A; font-size:25px; line-height:25px">{{comnapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Declined</b>
+						    	</div>
+						    	<br><br><br><br>
+						    	<div style="margin-left:15%; width:35%; float:left; text-align:center;  border-right: 6px dashed #1e72fa;">
+							    	<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto; ">
+											<canvas id="creq"></canvas>
+									</div>
+									<b style="font-size: 10px">Maintenance Performed</b><br>
+									{{commaintain_per}}%
+								</div>
+								<div style="margin-right: 15% width:35%; float:left; text-align:center">
+									<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto;">
+											<canvas id="cnotreq"></canvas>
+									</div>
+									<b style="font-size: 10px">Equipments In Order</b><br>
+									{{comfirst}}
+								</div>
+								<br><br>
+						 	<!-- <button class="btn-primary"  style="float: right; font-size:12px!important; padding:5px 15px!important; background-color: #1e72fa; border-radius: 20px; border:#1e72fa" onclick='windows.location.href="dgm/communication"'>MORE DETAILS</button> -->
+					    
+						 	<button class="btn-primary" style="float: right;" onclick='window.location.href="/dgm/communication"'>MORE DETAILS</button>
+					
+						</div>
+					    <div id="facilities" class="tab-pane fade fac">
+					    	<h3 class="card" style="margin-left:25%; width:auto!important; height: auto;  background-color: #1e72fa; border-radius: 20px; width: 26rem!important; color:white">&nbsp Quarterly Overview</h3>
+						    	<div style="margin-left:4%; width:23%; float:left; text-align:center;">
+						    		<b style="color:black; font-size:25px; line-height:25px">{{navsubmit}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Submitted</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#B80808; font-size:25px; line-height:25px">{{navpend}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Pending Submissions</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#05713D; font-size:25px; line-height:25px">{{navapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Approved</b>
+						    	</div>
+						    	<div style="width:23%; float:left;text-align:center;">
+						    		<b style="color:#11036A; font-size:25px; line-height:25px">{{navnapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Declined</b>
+						    	</div>
+						    	<br><br><br><br>
+						    	<div style="margin-left:15%; width:35%; float:left; text-align:center;  border-right: 6px dashed #1e72fa;">
+							    	<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto; ">
+											<canvas id="nreq"></canvas>
+									</div>
+									<b style="font-size: 10px">Maintenance Performed</b><br>
+									{{navmaintain_per}}%
+								</div>
+								<div style="margin-right: 15% width:35%; float:left; text-align:center">
+									<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto;">
+											<canvas id="nnotreq"></canvas>
+									</div>
+									<b style="font-size: 10px">Equipments In Order</b><br>
+									{{navfirst}}%
+								</div>
+								<br><br>
+				<!--		 	<button class="btn-primary"  style="font-size:12px!important; padding:5px 15px!important; float: right; background-color: #1e72fa; border-radius: 20px; border:#1e72fa" onclick='windows.location.href="dgm/nav"'>MORE DETAILS</button>
+            -->   <button class="btn-primary" style="float: right;" onclick='window.location.href="/dgm/nav"'>MORE DETAILS</button>
+				
+            </div>
+							
+						<div id="verific" class="tab-pane fade fac">
+							<h3 class="card" style="margin-left:25%; width:auto!important; height: auto;  background-color: #1e72fa; border-radius: 20px; width: 26rem!important; color:white">&nbsp Quarterly Overview</h3>
+								<div  style="margin-left:4%; width:23%; float:left; text-align:center;">
+						    		<b style="color:black; font-size:25px; line-height:25px">{{scctvsubmit}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Submitted</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#B80808; font-size:25px; line-height:25px">{{scctvpend}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Pending Submissions</b>
+						    	</div>
+						    	<div style="width:23%; float:left; text-align:center;">
+						    		<b style="color:#05713D; font-size:25px; line-height:25px">{{scctvapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Approved</b>
+						    	</div>
+						    	<div style="width:23%; float:left;text-align:center;">
+						    		<b style="color:#11036A; font-size:25px; line-height:25px">{{scctvnapprove}}</b><br>
+						    		<b style="font-size: 10px; opacity:80%">Reports Declined</b>
+						    	</div>
+						    	<br><br><br><br>
+						    	<div style="margin-left:15%; width:35%; float:left; text-align:center;  border-right: 6px dashed #1e72fa;">
+							    	<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto; ">
+											<canvas id="sreq"></canvas>
+									</div>
+									<b style="font-size: 10px">Maintenance Performed</b><br>
+									{{scctvmaintain_per}}%
+								</div>
+								<div class="tab-part"  style="margin-right: 15% width:35%; float:left; text-align:center">
+									<div class="chart" style="position: relative; height:12vh; width:12vw; display: block; margin-left: auto;   margin-right: auto;">
+											<canvas id="snotreq"></canvas>
+									</div>
+									<b style="font-size: 10px">Equipments In Order</b><br>
+									{{scctvfirst}}%
+								</div>
+								<br><br>
+						 	<!--<button class="btn-primary"  style="font-size:12px!important; padding:5px 15px!important;float: right; background-color: #1e72fa; border-radius: 20px; border:#1e72fa" onclick='windows.location.href="dgm/surv"'>MORE DETAILS</button>
+               --> <button class="btn-primary" style="float: right;" onclick='window.location.href="/dgm/surv"'>MORE DETAILS</button>
+				
+               {% endblock %}<!--till here-->
+						</div>
+					</div>		
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ 
+<script>
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Maintenance Performed",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{ commaintain }}, {{comlog}} + {{comrep}}],  /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+    elements: {
+      center: {
+        text:'🧰',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("creq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+<script>
+	Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Equipment fine",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{ncomlog}},{{ commaintain }} + {{ comrep }}],   /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+
+    elements: {
+      center: {
+        text:'👍',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("cnotreq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+
+<script>
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Maintenance Performed",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{ navmaintain }}, {{navlog}} + {{navrep}}],    /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+    elements: {
+      center: {
+        text:'🧰',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("nreq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+<script>
+	Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Equipment fine",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{navlog}},{{ navmaintain }} + {{ navrep }}],    /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+
+    elements: {
+      center: {
+        text:'👍',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("nnotreq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+
+<script>
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Maintenance Performed",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{ scctvmaintain }}, {{scctvlog}} + {{scctvrep}}],    /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+    elements: {
+      center: {
+        text:'🧰',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("sreq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+<script>
+	Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 10;
+
+    Chart.pluginService.register({
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements.center) {
+          // Get ctx from string
+          var ctx = chart.chart.ctx;
+
+          // Get options from the center object in options
+          var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+          var txt = centerConfig.text;
+          var color = centerConfig.color || '#000';
+          var maxFontSize = centerConfig.maxFontSize || 75;
+          var sidePadding = centerConfig.sidePadding || 20;
+          var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+          // Start with a base font of 30px
+          ctx.font = "30px " + fontStyle;
+
+          // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+          var stringWidth = ctx.measureText(txt).width;
+          var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+          // Find out how much the font can grow in width.
+          var widthRatio = elementWidth / stringWidth;
+          var newFontSize = Math.floor(30 * widthRatio);
+          var elementHeight = (chart.innerRadius * 2);
+
+          // Pick a new font size so it will not be larger than the height of label.
+          var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+          var minFontSize = centerConfig.minFontSize;
+          var lineHeight = centerConfig.lineHeight || 25;
+          var wrapText = false;
+
+          if (minFontSize === undefined) {
+            minFontSize = 20;
+          }
+
+          if (minFontSize && fontSizeToUse < minFontSize) {
+            fontSizeToUse = minFontSize;
+            wrapText = true;
+          }
+
+          // Set font settings to draw it correctly.
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = fontSizeToUse + "px " + fontStyle;
+          ctx.fillStyle = color;
+
+          if (!wrapText) {
+            ctx.fillText(txt, centerX, centerY);
+            return;
+          }
+
+          var words = txt.split(' ');
+          var line = '';
+          var lines = [];
+
+          // Break words up into multiple lines if necessary
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > elementWidth && n > 0) {
+              lines.push(line);
+              line = words[n] + ' ';
+            } else {
+              line = testLine;
+            }
+          }
+
+          // Move the center up depending on line height and number of lines
+          centerY -= (lines.length / 2) * lineHeight;
+
+          for (var n = 0; n < lines.length; n++) {
+            ctx.fillText(lines[n], centerX, centerY);
+            centerY += lineHeight;
+          }
+          //Draw text in center
+          ctx.fillText(line, centerX, centerY);
+        }
+      }
+    });
+
+
+var config = {
+  type: 'doughnut',
+  data: {
+    labels: [
+      "Equipment fine",
+      "Others"
+    ],
+    datasets: [{
+      data: [{{scctvlog}},{{ scctvmaintain }} + {{ scctvrep }}],   /*check here*/
+      backgroundColor: [
+        "#10E980",
+        "#DBDBDB"
+      ],
+      
+       borderColor: "white",
+            borderWidth: 2
+    }]
+  },
+  
+  options: {
+    legend:{
+      display:false
+    },
+    cutoutPercentage:70,
+
+    elements: {
+      center: {
+        text:'👍',
+        color: '#1e27fa', // Default is #000000
+        fontStyle: 'Arial', // Default is Arial
+        sidePadding: 20, // Default is 20 (as a percentage)
+        minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+        lineHeight: 25 // Default is 25 (in px), used for when text wraps
+      }
+    }
+  }
+};
+
+var ctx = document.getElementById("snotreq").getContext("2d");
+var myChart = new Chart(ctx, config);
+
+</script>
+
+</body>
 </html>
