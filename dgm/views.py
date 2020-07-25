@@ -928,42 +928,42 @@ def details(request,id,name):
         # print(i)
         # redir='dgm:'+name
         if name =='datisdaily':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})
+            redir='dgm:'+"datisdailylist"
+            return render(request,'dgm/datis_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})
         
         elif name == 'datisweekly':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"datisweeklylist"
+            return render(request,'dgm/dscn_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         
         elif name == 'dscndaily':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/dscn_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"dscndailylist"
+            return render(request,'dgm/dscn_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'dscnmonthly':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/dscn_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"dscnmonthlylist"
+            return render(request,'dgm/dscn_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         
         elif name == 'cdvordaily':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"cdvordailylist"
+            return render(request,'dgm/cdvor_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'cdvormonthly':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
+            redir='dgm:'+'cdvormonthlylist'
+            return render(request,'dgm/cdvor_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
         
         # return render(request,'dgm/imp_details.html',{'temp':i,'names':name})
         elif name == 'cdvorweekly':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+'cdvorweeklylist'
+            return render(request,'dgm/cdvor_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'scctvdaily':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"scctvdailylist"
+            return render(request,'dgm/scctv_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'scctvmonthly':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
+            redir='dgm:'+"scctvmonthlylist"
+            return render(request,'dgm/scctv_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
         
         # return render(request,'dgm/imp_details.html',{'temp':i,'names':name})
         elif name == 'scctvweekly':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec}) 
+            redir='dgm:'+"scctvweeklylist"
+            return render(request,'dgm/scctv_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec}) 
 
 def encode(request,s):
 
@@ -1317,3 +1317,84 @@ def surdet():
         
     print("here",eng)
     return supdetails,eng
+
+
+def cdvordaily(request):
+    cdvordaily=[entry for entry in models.Cdvordaily.objects.all().values().order_by('-date')]
+    for i in cdvordaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+
+    return render(request,'dgm/list_details.html',{'context':cdvordaily,'name':'Cdvordaily'}) 
+
+def cdvorweekly(request):
+    cdvorweekly=[entry for entry in models.Cdvorweekly.objects.all().values().order_by('-date')]
+    for i in cdvorweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+
+    return render(request,'dgm/list_details.html',{'context':cdvorweekly,'name':'Cdvorweekly'})         
+
+def cdvormonthly(request):
+    cdvormonthly=[entry for entry in models.Cdvormonthly.objects.all().values().order_by('-date')]
+    for i in cdvormonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':cdvormonthly,'name':'Cdvormonthly'})
+
+
+
+def scctvdaily(request):
+    scctvdaily=[entry for entry in models.Scctvdaily.objects.all().values().order_by('-date')]
+    for i in scctvdaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    return render(request,'dgm/list_details.html',{'context':scctvdaily,'name':'Scctvdaily'})
+
+
+def scctvmonthly(request):
+    scctvmonthly=[entry for entry in models.Scctvmonthly.objects.all().values().order_by('-date')]
+    for i in scctvmonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':scctvmonthly,'name':'Scctvmonthly'})
+
+def scctvweekly(request):
+    scctvweekly=[entry for entry in models.Scctvweekly.objects.all().values().order_by('-date')]
+    for i in scctvweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':scctvweekly,'name':'Scctvweekly'})
