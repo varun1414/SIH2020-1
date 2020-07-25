@@ -933,7 +933,7 @@ def details(request,id,name):
         
         elif name == 'datisweekly':
             redir='dgm:'+"datisweeklylist"
-            return render(request,'dgm/dscn_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            return render(request,'dgm/datis_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         
         elif name == 'dscndaily':
             redir='dgm:'+"dscndailylist"
@@ -1398,3 +1398,73 @@ def scctvweekly(request):
            i['flag']=9
     
     return render(request,'dgm/list_details.html',{'context':scctvweekly,'name':'Scctvweekly'})
+
+def datisdaily(request):
+    datisdaily=[entry for entry in models.Datisdaily.objects.all().values().order_by('-date')]
+   #  sorted(datisdaily,key=itemgetter('date'),reverse=True)
+    for i in datisdaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    return render(request,'dgm/list_details.html',{'context':datisdaily,'name':'Datisdaily'})
+
+
+# def monthly(request):
+#     Datismonthly=[entry for entry in models.Datismonthly.objects.all().values()order_by('-date')]
+#     return render(request,'supervisor/monthly_details.html',{'context':Datismonthly,'name':'Datismonthly'}) 
+def datisweekly(request):
+    Datisweekly=[entry for entry in models.Datisweekly.objects.all().values().order_by('-date')]
+    for i in Datisweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':Datisweekly,'name':'Datisweekly'})
+
+
+def dscndaily(request):
+    dscndaily=[entry for entry in models.Dscndaily.objects.all().values().order_by('-date')]
+    for i in dscndaily:
+       i['token']=main.encode(request,str(i['p_id']))
+       if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+       elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+       else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':dscndaily,'name':'Dscndaily'})
+
+def dscnmonthly(request):
+    dscnmonthly=[entry for entry in models.Dscnmonthly.objects.all().values().order_by('-date')]
+    for i in dscnmonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':dscnmonthly,'name':'Dscnmonthly'})
+
+# def dscnweekly(request):
+#     dscnweekly=[entry for entry in models.Dscnweekly.objects.all().values().order_by('-date')]
+#     for i in dscnweekly:
+#         i['token']=main.encode(request,str(i['p_id']))
+#         if i['unit_incharge_approval']=="YES":
+#            i['flag']=1
+#         elif['unit_incharge_approval']=="NO":
+#            i['flag']=0
+#         else:
+#            i['flag']=9
+    
+#     return render(request,'supervisor/list_details.html',{'context':dscnweekly,'name':'Dscnweekly'})

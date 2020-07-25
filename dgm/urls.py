@@ -25,9 +25,9 @@ urlpatterns = [
     path('scctvdailylist/',views.scctvdaily,name='scctvdailylist'),
     path('scctvmonthlylist/',views.scctvmonthly,name='scctvmonthlylist'),
     path('scctvweeklylist/',views.scctvweekly,name='scctvweeklylist'),
-    # path('dscndailylist/',views.dscndaily,name='dscndailylist'),
-    # path('dscnmonthlylist/',views.dscndaily,name='dscnmonthlylist'),
-    # path('datisdailylist/',views.datisdaily,name='datisdailylist'),
+    path('dscndailylist/',views.dscndaily,name='dscndailylist'),
+    path('dscnmonthlylist/',views.dscnmonthly,name='dscnmonthlylist'),
+    path('datisdailylist/',views.datisdaily,name='datisdailylist'),
     
-    # path('datisweeklylist/',views.datisdaily,name='datisweeklylist'),
+    path('datisweeklylist/',views.datisweekly,name='datisweeklylist'),
 ]
