@@ -33,7 +33,7 @@ urlpatterns = [
     path('vhfmonthly/',views.vhf.monthly,name='vhfmonthly'),
     path('scctvmonthly/',views.scctv.monthly,name='scctvmonthly'),
     path('verify/<str:names>/<str:id>',views.main.verify,name='verify'),
-    
+    #path('report/',views.report)
    
     # path('employee/',views.employee)
     # path('officer/',views.officer)

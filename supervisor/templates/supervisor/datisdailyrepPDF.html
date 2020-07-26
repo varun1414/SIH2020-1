@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily DATIS Maintenance Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+	<div class="container">
+			<div style=" width: 60%; margin-left: auto; margin-right: auto;">
+					{% for datisd in datis_d %}
+					{% if f != 1 %}
+					{% if datisd.room_temp < 25 and datisd.status_of_servera == "MAINS" and datisd.status_of_serverb == "STANDBY" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" or datisd.room_temp < 25 and datisd.status_of_servera == "STANDBY" and datisd.status_of_serverb == "MAINS" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" %}
+					<div class="alert alert-success">
+						<strong>Maintenance succesful!</strong> 
+							All entries matched with standard values.
+										
+					{% else %}					
+					<div class="alert alert-danger">
+						<strong>Maintenance failed!!!</strong> 
+							Please try again.
+					
+					{% endif %}
+					{% endif %}
+					{% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong> 
+					
+				   {% endif %}
+					<div class="card" style="text-align: center;">				    
+						<form id="form-v">					   
+					      <div class="card-body">
+					        <h2 class="card-title">DATIS-TERMA DAILY MAINTENANCE ENTRY</h2>
+					      
+					      	
+							 	<div class="alert alert-light" style="height: 40px; padding-top: 0px">
+								    Recorded on:  DATE: {{ datisd.date }}  |  TIME: {{ datisd.time }}<br>
+                                    <strong>STATUS: {{ datisd.status }} </strong>
+								</div>
+						
+	     					 <hr>
+							<div class="form-group row has-warning">
+							  <label for="room_temp" class="col-sm-6 col-form-label">Room Temperature*</label>
+							  <div>
+							   	<input type="text" class="form-control form-control-sm" id="room_temp" name="Room Temperature" readonly="true" value="{{ datisd.room_temp }}">
+							  </div>
+							</div>
+
+
+							  <hr>
+							<div class="form-group row has-warning">
+							  <label for="status_of_AC" class="col-sm-6 col-form-label">Status of AC*</label>
+							  <div>
+							     <input type="text" class="form-control form-control-sm" id="status_of_AC" name="Room Temperature" readonly="true" value="{{ datisd.status_of_ac }}">
+							  </div>
+							</div>
+							
+							  <hr>  
+							<div class="form-group row has-warning">
+							  <label for="status_of_UPS" class="col-sm-6 col-form-label">Status of UPS*</label>
+							  <div>
+							    <input type="text" class="form-control form-control-sm" id="status_of_UPS" name="Status of UPS" readonly="true" value="{{ datisd.status_of_ups }}"/><br>
+							  </div>
+							</div>
+
+
+							  <hr>
+							  <div class="form-group row has-warning">
+							    <label for="status_of_server A" class="col-sm-6 col-form-label">Status of Server A*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="status_of_serverA" name="Status of Server A" readonly="true" value="{{ datisd.status_of_servera }}"/><br>
+							    </div>
+							  </div>
+
+							  
+							  	<hr>  
+							  <div class="form-group row has-warning">
+							    <label for="status_of_serverB" class="col-sm-6 col-form-label">Status of Server B*</label>
+							    <div>
+							    	<input type="text" class="form-control form-control-sm" id="status_of_serverB" name="Status of Server B" readonly="true" value="{{ datisd.status_of_serverb }}">
+							    </div>
+							  </div>
+
+							    
+							  	<hr>
+						 
+				      		</div>				      
+				  		</form>
+					  	<div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
+					  		
+					  	</div>
+				  		
+					</div>				  		
+				</div>
+				  {% endfor %}
+			</div>
+	</div>
+<script>
+	$(function(){
+            if($("#room_temp").val()>="25"){
+               $('#room_temp').css('border-color', 'red');
+            }
+
+            if($("#status_of_AC").val()!="SVCBL"){
+               $('#status_of_AC').css('border-color', 'red');
+            }
+
+            if($("#status_of_UPS").val()!="NORMAL"){
+               $('#status_of_UPS').css('border-color', 'red');
+            }
+
+            if($("#status_of_serverB").val()=="MAINS" && $("#status_of_serverA").val()=="STANDBY" ){
+            	 
+            }
+            else if($("#status_of_serverA").val()=="MAINS" && $("#status_of_serverB").val()=="STANDBY" ){
+            	
+            }else{
+               $('#status_of_serverA').css('border-color', 'red');
+               $('#status_of_serverB').css('border-color', 'red');
+            }
+           
+        });
+		
+
+
+	</script>
+</body>
+
+</html>

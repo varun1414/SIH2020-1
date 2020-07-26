@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from http.client import responses
 from django.db import connection
 from datetime import date,datetime,timedelta
 from login import models as models
@@ -6,8 +7,68 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from login import views 
 from operator import itemgetter
+import pdfkit 
+from django.template.loader import get_template 
+from django.template import Context
+import os
+from io import BytesIO
+from xhtml2pdf import pisa
+from django.http import HttpResponse
 
 # Create your views here.
+def render_to_pdf(template_src, context_dict={}):
+	template = get_template(template_src)
+	html  = template.render(context_dict)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None
+
+def report(request,p_id,id):
+ if request.session.has_key('uid'):
+   uid=request.session['uid'] 
+   if int(uid) == int(id):
+    cursor = connection.cursor() 
+    currdate = date.today()
+    datis_d = models.Datisdaily.objects.all()
+    datis_d = datis_d.values('p_id','date','status','time','room_temp','status_of_ac','status_of_ups','status_of_servera','status_of_serverb','remarks')
+    datis_d = datis_d.filter(emp_id=id)
+    datisd = datis_d.order_by('-p_id')
+    datis_d = datis_d.filter(date=currdate)
+    data = {'datis_d':datis_d,'id':id}
+    pdf = render_to_pdf('engineer/datis/datisdailyrepPDFBasic.html', data)
+    response = HttpResponse(pdf,content_type='application/pdf')
+    
+    response['Content-Disposition'] = 'attachment; filename=Report.pdf'
+    return response
+    '''
+     template = get_template('engineer/datis/datisdailyrepPDF.html')
+     html = template.render({'datis_d':datis_d,'id':id})
+     result = BytesIO()
+     pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)   
+     pdf = HttpResponse(result.getvalue(), content_type='application/pdf')
+     return HttpResponse(pdf, content_type='application/pdf') ''' 
+    '''
+     template = get_template('engineer/datis/datisdailyrepPDF.html')
+     html = template.render({'datis_d':datis_d,'id':id}) 
+     html = html.encode("utf-8")
+     pdfkit.from_string(html,'Report.pdf')
+     pdf = open("Report.pdf",encoding="utf-8")
+     response = HttpResponse(pdf.read(),content_type='application/pdf') 
+     response['Content-Disposition'] = 'attachment; filename=Report.pdf'
+     return response
+     
+     template = get_template('engineer/datis/datisdailyrepPDF.html')
+	 html = template.render({'datis_d':datis_d,'id':id})
+	 result = BytesIO()
+	 pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	 if not pdf.err:
+		pdf = HttpResponse(result.getvalue(), content_type='application/pdf')
+     return HttpResponse(pdf, content_type='application/pdf')'''
+     
+     
+
 def sent(request):
     if request.session.has_key('uid'):
         id = request.session['uid']

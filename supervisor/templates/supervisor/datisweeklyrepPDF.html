@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Weekly DATIS Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'engineer/datisstyle.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Gotu&family=Righteous&display=swap" rel="stylesheet">
+</head>
+<body> 
+  <div class="container">
+    <div style=" width: 60%; margin-left: auto; margin-right: auto;">
+        {% for datisw in datis_w %}
+          {% if f != 1 %}
+            {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+              {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                  <div class="alert alert-success">
+                    <strong>Maintenance succesful!</strong> 
+                    All entries matched with standard values.
+                    {% else %}
+                    <div class="alert alert-danger">
+                    <strong>Maintenance failed!!!</strong> 
+                    Please try again.
+                {% endif %}
+                {% else %}
+                <div class="alert alert-danger">
+                  <strong>Maintenance failed!!!</strong> 
+                  Please try again.
+              {% endif %}
+              {% else %}
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Please try again.
+            {% endif %}
+          {% endif %}       
+          {% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong>
+				  {% endif %}
+			
+
+          <div class="card" style="text-align: center;">
+            <form id="form-v">             
+                <div class="card-body">
+                  <h2 class="card-title">DATIS-TERMA WEEKLY MAINTENANCE ENTRY</h2>
+                  <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+                      Recorded on: DATE:{{ datisw.date }}  |  TIME:{{ datisw.time }}<br><strong>STATUS: {{ datisw.status }}</strong> 
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="serverAorB" class="col-sm-6 col-form-label">Server A / B</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="serverAorB" name="Server A / B" readonly="true" value="{{ datisw.serveraorb }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="UPS_ip" class="col-sm-6 col-form-label">UPS Input</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="UPS_ip" name="UPS Input" readonly="true" value="{{ datisw.ups_ip }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group row has-warning">
+                    <label for="UPS_op" class="col-sm-6 col-form-label">UPS Output</label>
+                    <div>
+                       <input type="text" class="form-control form-control-sm" id="UPS_op" name="UPS Output" readonly="true" value="{{ datisw.ups_op }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="Dust_free" class="col-sm-6 col-form-label">Dust Free</label>
+                    <div>
+                    	
+                      <input type="text" class="form-control form-control-sm" id="Dust_free" name="Dust Free" readonly="true" value="{{ datisw.dust_free }}">
+                    </div>
+                  </div>
+
+                  <hr>  
+                  <div class="form-group row has-warning">
+                    <label for="LAN_status" class="col-sm-6 col-form-label">LAN Status</label>
+                    <div>
+                      <input type="text" class="form-control form-control-sm" id="LAN_status" name="LAN Status" readonly="true" value="{{ datisw.lan_status }}">
+                    </div>
+                  </div>
+
+                  <hr>
+              </div>
+            </form>
+
+            <div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
+            </div>
+          </div>
+
+        </div>
+          {% endfor %}
+   </div>
+</div>
+
+              
+<script>
+$(function(){
+    $('#serverAorB').css('border-color', 'pale-green');
+
+    if($("#UPS_ip").val()<"200" || $("#UPS_ip").val()>"230"){
+        $('#UPS_ip').css('border-color', 'red');
+	}
+  
+    if($("#UPS_op").val()!="230"){
+        $('#UPS_op').css('border-color', 'red');
+    }
+
+    if($("#Dust_free").val()!="OK"){
+        $('#Dust_free').css('border-color', 'red');
+    }
+
+    if($("#LAN_status").val()!="OK"){
+        $('#LAN_status').css('border-color', 'red');
+    }
+
+});
+	</script>	
+          <!--  <button onclick="window.location.href='/routebackdd/{{ id }}'">Back</button>-->
+           
+</body>
+</html>
+
