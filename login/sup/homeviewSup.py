@@ -6,13 +6,14 @@ from cryptography.fernet import Fernet as frt
 from supervisor.views import main
 from operator import itemgetter
 
-# Create your views here.
-
+# Create your views here
+from datetime import datetime
 from django.http import HttpResponse
 from .. import models
 from django.db import connection
 from django.db.models import Q
 def run_sup(request,uid):
+    alert=0
     today = datetime.now().strftime('%d/%m/%Y')
     request.session['type']='s'
     request.session['uid']=uid
@@ -20,9 +21,10 @@ def run_sup(request,uid):
     # print(request.session['uid'])
     supInfo=models.Supervisor.objects.filter(supervisor_id=uid).values()
     airInfo=models.Airport.objects.filter(a_id=supInfo[0]['a_id']).values('name')
-    print(airInfo)
+#     print(airInfo)
     dgm=models.Dgm.objects.filter(a_id=supInfo[0]['a_id']).values()
     id=uid
+    
     # datisdaily=[entry for entry in models.Datisdaily.objects.filter(unit_incharge_approval=None).values()]
     
     # datisweekly=[entry for entry in models.Datisweekly.objects.filter(unit_incharge_approval=None).values()]
@@ -160,6 +162,42 @@ def run_sup(request,uid):
     
     context.update({'sup':supInfo[0],'dgm':dgm[0],'datis':com,'eng':eng,'air':airInfo[0]})
     # print(context['datisd_deadline'])
+    x=1
+    if x==1:
+        print("here")
+        today = date.today()
+        week_ago = today - timedelta(days=7)
+        info=models.Datisdlogs.objects.values().filter(date__gte = week_ago).order_by('-date')
+        k=None
+        for q,i in enumerate(info):
+          if  (str(i['remarks'])=='status of ups not normal' or str(i['remarks'])=='status of ups not normal(update)'):
+                k=q
+                break
+        count=0  
+        
+        wdate=today
+        rdate=week_ago
+        print(info[k:])
+        if k != None:              
+           for j in info[k:]:
+                if str(j['remarks'])=='status of ups not normal' or str(j['remarks'])=='status of ups not normal(update)':
+                                count=count+1
+                                wdate=j['date']
+                if str(j['value'])=='All parameters NORMAL':
+                                rdate=j['date']
+        print("wdate",wdate,"rdate",rdate)
+        print('count ',count)
+        print(wdate <= rdate)
+        if count>=3 and wdate>=rdate:
+                print("in al")
+                alert=1 
+        context.update({'alert':alert})
+
+        print('alert= ',str(alert))
+
+
+
+   
     return render(request,'./supervisor/home.html',context)
 
 

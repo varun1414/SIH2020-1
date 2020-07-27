@@ -309,6 +309,9 @@ def updatisweekly(request, id) :
     supdetails = supdetails.values('name','contact','email').filter(dept='C')
     datiswlogs = models.Datiswlogs.objects.all()
     datiswlogs = datiswlogs.filter(date=date.today()).order_by('-log_id')    
+    mail='sent'
+    send_mail('reported submited by id:'+str(id),mail,'aai.urgent@gmail.com',['naikvarun99@gmail.com'],fail_silently=False)
+    
     return render(request,'engineer/datis/datisweeklyrep.html',{'datiswlogs':datiswlogs,'datis_w':datis_w,'id':emp_id,'datisw':datisw,'supdetails':supdetails})      
 
 def repsubwerrors(request,p_id,id):
@@ -353,6 +356,8 @@ def finalwrepsub(request,p_id,id):
         supdetails = supdetails.values('name','contact','email').filter(dept='C')
         datiswlogs = models.Datiswlogs.objects.all()
         datiswlogs = datiswlogs.filter(date=date.today()).order_by('-log_id')    
+        mail='sent'
+        send_mail('reported submited by id:'+str(id),mail,'aai.urgent@gmail.com',['naikvarun99@gmail.com'],fail_silently=False)
     
         return render(request,'engineer/datis/datisweeklyrep.html',{'datiswlogs':datiswlogs,'datis_w':datis_w,'id':id,'f':f,'datisw':datisw,'supdetails':supdetails})      
     else : 

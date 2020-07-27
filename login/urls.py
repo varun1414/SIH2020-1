@@ -37,8 +37,9 @@ urlpatterns = [
     re_path(r'^calendars/',viewsdgm.calendars, name='calendars'),
     re_path(r'^maps/',viewshead.maps, name='maps'),
     
-    
-
+    #routeback for head from charts to map
+    path('routebackhome/',viewshead.routebackhome,name='routebackhome'),
+    path('logout/',viewshead.logout,name='logout'),
     #vhf 
     #daily
     #path('vhfdaily/<int:id>',vhfviewsd.vhfd),

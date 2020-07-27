@@ -25,8 +25,20 @@ from login import models
 from django.db import connection
 from django.db.models import Q
 
+def logout(request):
+   try:
+      del request.session['uid']
+      request.session.flush()
+   except:
+      pass
+   return render(request,'login/login.html')
+
 def maps(request):
     return render(request,'head/mapframe.html')
+
+def routebackhome(request) :
+    airInfo=models.Airport.objects.all().values()
+    return dispMap(request,airInfo)
 
 def dispMap(request,airInfo):
 

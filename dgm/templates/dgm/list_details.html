@@ -116,7 +116,7 @@
 				            	<h1> Unverified </h1>
 				                {% for i in context %}
 				                {% if i.unit_incharge_approval == None and i.status != "PENDING"  %}
-				                <tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+				                <tr data-href="/dgm/{{i.token}}/{{name}} ">
 				                	<td>{{i.date}}</td>
 				                	<td>{{i.time}}</td>
 				                	<td>{{i.emp_id}}</td>
@@ -141,7 +141,7 @@
 				            </thead>
 							{% for i in context %}
 							{% if i.unit_incharge_approval == "YES" %}
-							<tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+							<tr data-href="/dgm/{{i.token}}/{{name}} ">
 			                	<td>{{i.date}}</td>
 			                	<td>{{i.time}}</td>
 			                	<td >{{i.emp_id}}</td>
@@ -164,7 +164,7 @@
 				            </thead>
 							{% for i in context %}
 							{% if i.unit_incharge_approval == "NO" %}
-							<tr data-href="/dgm/{{i.token}}/{{i.type}} ">
+							<tr data-href="/dgm/{{i.token}}/{{name}} ">
 			                	<td>{{i.date}}</td>
 			                	<td>{{i.time}}</td>
 			                	<td >{{i.emp_id}}</td>
