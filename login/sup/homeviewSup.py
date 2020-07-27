@@ -6,9 +6,8 @@ from cryptography.fernet import Fernet as frt
 from supervisor.views import main
 from operator import itemgetter
 
-# Create your views here.
+# Create your views here
 from datetime import datetime
-
 from django.http import HttpResponse
 from .. import models
 from django.db import connection
