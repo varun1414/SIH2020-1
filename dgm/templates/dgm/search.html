@@ -20,7 +20,7 @@
 		<nav class="navbar sticky-top">
 			<ul class="navbar-nav">
 	    		<li class="nav-item">
-	      			<a href='#' onclick="window.location.href='/routebackdd/{{ id }}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		
+	      			<a href='#' onclick="window.location.href='/dgm/{{name}}'" class="taskbut"><img src="{% static '/images/task.png' %}"></a>		
 	    		</li>
 	    	</ul>
 			<div class="title-header">SEARCH RESULTS<img src="{% static '/images/aai.jpg' %}"></div>
@@ -31,7 +31,7 @@
 				<div class="col-sm-7">
 					    <div class="card" style="text-align: center;">
 					      <div class="card-body">
-					        <h2 class="card-title">SEARCH RESULTS - {{ CDVOR DAILY  }}</h2><!--fill in the searched subject here-->
+					        <h2 class="card-title">SEARCH RESULTS }</h2><!--fill in the searched subject here-->
 					      
 
 	     					 <hr>
@@ -48,7 +48,7 @@
 							    	<td>{{ sub.date }}<br>{{ sub.time }}</td>
 							    	<td>{{ sub.emp_id }}</td>
 							    	<td>{{ sub.status }}</td>
-							    	<td><button class="" >REPORTS</button></td><!--report route-->
+							    	<td><a href='/dgm/{{sub.token}}/{{sub.name}}' >REPORTS</button></td><!--report route-->
 							    </tr>
 								{% endfor %}
 							</table>  

@@ -20,7 +20,7 @@ from dgm.views import homev as homev
 from django.http import HttpResponse
 from . import models
 from django.db import connection
-
+from head.views import headv as headv
 # Create your views here.
 def login(request):
     if request.session.has_key('uid') and request.session.get('type')=='e':
