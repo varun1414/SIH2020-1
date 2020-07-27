@@ -7,23 +7,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body> 
-	<div class="container" style="margin: auto;">
+	<div class="container" style="margin: auto; margin-top: 50px;">
 			<div style=" width: 60%; margin-left: auto; margin-right: auto;">
 					{% for datisd in datis_d %}
 					{% if f != 1 %}
 					{% if datisd.room_temp < 25 and datisd.status_of_servera == "MAINS" and datisd.status_of_serverb == "STANDBY" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" or datisd.room_temp < 25 and datisd.status_of_servera == "STANDBY" and datisd.status_of_serverb == "MAINS" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" %}
 					<div class="alert alert-success">
-						<strong>Maintenance succesful!</strong> 
+						<strong style="text-align: center;">Maintenance succesful!</strong> 
 										
 					{% else %}					
 					<div class="alert alert-danger">
-						<strong>Maintenance failed!!!</strong> 
+						<strong style="text-align: center;">Maintenance failed!!!</strong> 
 					
 					{% endif %}
 					{% endif %}
 					{% if f == 1 %}
 					<div class="alert alert-danger">
-						<strong>Report Submitted to the supervisor with Errors</strong> 
+						<strong style="text-align: center;">Report Submitted to the supervisor with Errors</strong> 
 					
 				   {% endif %}
 					<div class="card" style="text-align: center;">				    
@@ -37,29 +37,29 @@
 								</div>
 						
 							  <hr>
-							  <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-								  <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Room Temperature</td>
-								  <td style="border: 1px solid black; text-align: center;">{{ datisd.room_temp }}</td>
+							  <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+								  <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Room Temperature</td>
+								  <td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisd.room_temp }}</td>
 							  </tr>
 
-							  <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-								<td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Status of AC</td>
-								<td style="border: 1px solid black; text-align: center;">{{ datisd.status_of_ac }}</td>
+							  <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+								<td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Status of AC</td>
+								<td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisd.status_of_ac }}</td>
 							</tr>
 
-							<tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-								<td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Status of UPS</td>
-								<td style="border: 1px solid black; text-align: center;">{{ datisd.status_of_ups }}</td>
+							<tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+								<td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Status of UPS</td>
+								<td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisd.status_of_ups }}</td>
 							</tr>
 
-							<tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-								<td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Status of Server A</td>
-								<td style="border: 1px solid black; text-align: center;">{{ datisd.status_of_servera }}</td>
+							<tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+								<td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Status of Server A</td>
+								<td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisd.status_of_servera }}</td>
 							</tr>
 
-							<tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-								<td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Status of Server B</td>
-								<td style="border: 1px solid black; text-align: center;">{{ datisd.status_of_serverb }}</td>
+							<tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+								<td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Status of Server B</td>
+								<td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisd.status_of_serverb }}</td>
 							</tr>
 						 			      
 				  		</table>
