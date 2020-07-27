@@ -30,7 +30,7 @@ def calendar(request):
             y = temp.year
             m = temp.month
             d = temp.day
-            item.update( {"type":"DatD"})
+            item.update({"type":"DatD"})
             item.update({"y":y})
             item.update({"m":m})
             item.update({"d":d})
@@ -341,12 +341,13 @@ def calendars(request):
     return render(request,'dgm/calendar.html',{'com':com})
 
 def communication(request):
-    supdetails = models.Supervisor.objects.all().filter(dept='C')
-    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails})
+    # supdetails = models.Supervisor.objects.all().filter(dept='C')
+    supdetails,eng=comdet()
+    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails,'eng':eng,'searched':None})
     
 def surv(request):
-    supdetails = models.Supervisor.objects.all().filter(dept='S')
-    return render(request,'dgm/dashboards.html',{'supdetails':supdetails})
+    supdetails,eng=surdet()
+    return render(request,'dgm/dashboards.html',{'supdetails':supdetails,'eng':eng,'searched':None})
 
 def nav(request):
     supdetails,eng=navdet()
@@ -927,42 +928,42 @@ def details(request,id,name):
         # print(i)
         # redir='dgm:'+name
         if name =='datisdaily':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})
+            redir='dgm:'+"datisdailylist"
+            return render(request,'dgm/datis_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})
         
         elif name == 'datisweekly':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"datisweeklylist"
+            return render(request,'dgm/datis_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         
         elif name == 'dscndaily':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/dscn_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"dscndailylist"
+            return render(request,'dgm/dscn_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'dscnmonthly':
-            redir='dgm:'+"communication"
-            return render(request,'dgm/dscn_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"dscnmonthlylist"
+            return render(request,'dgm/dscn_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         
         elif name == 'cdvordaily':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"cdvordailylist"
+            return render(request,'dgm/cdvor_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'cdvormonthly':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
+            redir='dgm:'+'cdvormonthlylist'
+            return render(request,'dgm/cdvor_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
         
         # return render(request,'dgm/imp_details.html',{'temp':i,'names':name})
         elif name == 'cdvorweekly':
-            redir='dgm:'+"navigation"
-            return render(request,'dgm/cdvor_impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+'cdvorweeklylist'
+            return render(request,'dgm/cdvor_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'scctvdaily':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_imp_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
+            redir='dgm:'+"scctvdailylist"
+            return render(request,'dgm/scctv_dgm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})    
         elif name == 'scctvmonthly':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_impm_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
+            redir='dgm:'+"scctvmonthlylist"
+            return render(request,'dgm/scctv_dgm_mdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec})        
         
         # return render(request,'dgm/imp_details.html',{'temp':i,'names':name})
         elif name == 'scctvweekly':
-            redir='dgm:'+"surveillance"
-            return render(request,'dgm/scctv_impw_details.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec}) 
+            redir='dgm:'+"scctvweeklylist"
+            return render(request,'dgm/scctv_dgm_wdetails.html',{'eng':eng[0],'temp':i,'names':name,'redir':redir,'logs':logs,'mrec':mrec}) 
 
 def encode(request,s):
 
@@ -1110,18 +1111,149 @@ def searchn(request):
     que=str1+facility+str2+str4+str5+str6+str7+str8+str3
     print(que)
     exec(que,globals())
-    
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
     
     supdetails,eng=navdet()
     # print(facility)
     print(temp)
-    return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
-    
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'nav'})
 
+
+
+def searchc(request):
+    fromdate=request.POST['date']
+    # fromdate = datetime.strptime(fromdate, '%Y-%m-%d').date
+    todate=request.POST['date1']
+    # todate = datetime.strptime(todate, '%Y-%m-%d')
+    # print(todate)
+    facility=request.POST['select']
+    # frdate=datetime.strptime(fromdate,'%Y-%m-%d').date()
+    facility=str(facility)
+    facility=facility.lower()
+    facility=facility.capitalize()
+    facility=facility.split(" ")
+    facility=''.join(facility)
+    year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    print(month,"  ",day)
+    # fromdate= datetime(int(year),int(month),int(day)).date()
+    # year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    fromdate=str(year)+","+str(month)+","+str(day)
+    
+    
+    year,month,day = todate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    todate=str(year)+","+str(month)+","+str(day)
+    # todate= datetime(int(year),int(month),int(day)).date()
+    
+    str1='temp=models.'
+    str2='.objects'
+    str4='.filter( Q(date__gte='
+    str5=str(fromdate)
+    # str5=re.sub('-0','-',str(fromdate))
+    str5='date('+fromdate+')'
+    str6= ') &  Q(date__lte=' 
+    str7=str(todate)
+    str7=re.sub('-0','-',str(todate))
+    str7='date('+todate+')'
+    str8='))'
+    str3='.values()'
+    # str4='.objects.all()'
+
+   
+        
+    que=str1+facility+str2+str4+str5+str6+str7+str8+str3
+    print(que)
+    exec(que,globals())
+    
+    
+    supdetails,eng=comdet()
+    # print(facility)
+    print(temp)
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
+    
+    supdetails,eng=navdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'communication'})
+
+    
+def searchs(request):
+    fromdate=request.POST['date']
+    # fromdate = datetime.strptime(fromdate, '%Y-%m-%d').date
+    todate=request.POST['date1']
+    # todate = datetime.strptime(todate, '%Y-%m-%d')
+    # print(todate)
+    facility=request.POST['select']
+    # frdate=datetime.strptime(fromdate,'%Y-%m-%d').date()
+    facility=str(facility)
+    facility=facility.lower()
+    facility=facility.capitalize()
+    facility=facility.split(" ")
+    facility=''.join(facility)
+    year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    print(month,"  ",day)
+    # fromdate= datetime(int(year),int(month),int(day)).date()
+    # year,month,day = fromdate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    fromdate=str(year)+","+str(month)+","+str(day)
+    
+    
+    year,month,day = todate.split('-')
+    month=re.sub("^0",'',month)
+    day=re.sub("^0",'',day)
+    todate=str(year)+","+str(month)+","+str(day)
+    # todate= datetime(int(year),int(month),int(day)).date()
+    
+    str1='temp=models.'
+    str2='.objects'
+    str4='.filter( Q(date__gte='
+    str5=str(fromdate)
+    # str5=re.sub('-0','-',str(fromdate))
+    str5='date('+fromdate+')'
+    str6= ') &  Q(date__lte=' 
+    str7=str(todate)
+    str7=re.sub('-0','-',str(todate))
+    str7='date('+todate+')'
+    str8='))'
+    str3='.values()'
+    # str4='.objects.all()'
+
+   
+        
+    que=str1+facility+str2+str4+str5+str6+str7+str8+str3
+    print(que)
+    exec(que,globals())
+    
+    
+    supdetails,eng=surdet()
+    # print(facility)
+    print(temp)
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
+    
+    supdetails,eng=navdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'surv'})
+
+    
 
 def navdet():
     supdetails = models.Supervisor.objects.all().filter(dept='N')
-    eng=models.Engineer.objects.values('emp_id','name')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='N')
     eng=list(eng)
     print(eng)
     for i in eng:
@@ -1146,3 +1278,211 @@ def navdet():
         
     print("here",eng)
     return supdetails,eng
+
+
+
+def comdet():
+    supdetails = models.Supervisor.objects.all().filter(dept='C')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='C')
+    eng=list(eng)
+    print(eng)
+    for i in eng:
+        i['submitted']=models.Dscndaily.objects.filter(emp_id=i['emp_id']).count()+models.Dscnmonthly.objects.filter(emp_id=i['emp_id']).count()+models.Dscnweekly.objects.filter(emp_id=i['emp_id']).count()+models.Datisdaily.objects.filter(emp_id=i['emp_id']).count()+models.Datisweekly.objects.filter(emp_id=i['emp_id']).count()
+        i['accepted']=models.Dscndaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Datisdaily.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
+        i['reject']=models.Dscndaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Datisdaily.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
+        i['pending']=models.Dscndaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Dscnmonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Dscnweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()++models.Datisdaily.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Datisweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
+    # conc=list(chain(cdvordaily,cdvormonthly, cdvorweekly))
+    # for i in conc:
+    #     if i['unit_incharge_approval'] !=None:
+    #         i['submitted']=1
+    #     if i['unit_incharge_approval']=='YES':
+    #             i['accepted']=1
+    #     elif i['unit_incharge_approval']=='NO':
+    #             i['reject']=1
+    #     else:
+    #         i['pending']=1
+    # for i in conc:
+    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
+
+    # conc=collections.Counter('emp_id')
+        
+    print("here",eng)
+    return supdetails,eng
+
+def surdet():
+    supdetails = models.Supervisor.objects.all().filter(dept='S')
+    eng=models.Engineer.objects.values('emp_id','name').filter(dept='S')
+    eng=list(eng)
+    print(eng)
+    for i in eng:
+        i['submitted']=models.Scctvdaily.objects.filter(emp_id=i['emp_id']).count()+models.Scctvmonthly.objects.filter(emp_id=i['emp_id']).count()+models.Scctvweekly.objects.filter(emp_id=i['emp_id']).count()
+        i['accepted']=models.Scctvdaily.objects.all().filter( Q (unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter( Q(unit_incharge_approval='YES') & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval ='YES') & Q(emp_id=i['emp_id'])).count()
+        i['reject']=models.Scctvdaily.objects.filter(Q( unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter(Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval='NO') & Q(emp_id=i['emp_id'])).count()
+        i['pending']=models.Scctvdaily.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Scctvmonthly.objects.filter(Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()+models.Scctvweekly.objects.filter( Q(unit_incharge_approval=None) & Q(emp_id=i['emp_id'])).count()
+    # for i in conc:
+    #     if i['unit_incharge_approval'] !=None:
+    #         i['submitted']=1
+    #     if i['unit_incharge_approval']=='YES':
+    #             i['accepted']=1
+    #     elif i['unit_incharge_approval']=='NO':
+    #             i['reject']=1
+    #     else:
+    #         i['pending']=1
+    # for i in conc:
+    #     i['name']=models.Engineer.objects.values('name').filter(emp_id=i['emp_id'])[0]['name']
+
+    # conc=collections.Counter('emp_id')
+        
+    print("here",eng)
+    return supdetails,eng
+
+
+def cdvordaily(request):
+    cdvordaily=[entry for entry in models.Cdvordaily.objects.all().values().order_by('-date')]
+    for i in cdvordaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+
+    return render(request,'dgm/list_details.html',{'context':cdvordaily,'name':'Cdvordaily'}) 
+
+def cdvorweekly(request):
+    cdvorweekly=[entry for entry in models.Cdvorweekly.objects.all().values().order_by('-date')]
+    for i in cdvorweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+
+    return render(request,'dgm/list_details.html',{'context':cdvorweekly,'name':'Cdvorweekly'})         
+
+def cdvormonthly(request):
+    cdvormonthly=[entry for entry in models.Cdvormonthly.objects.all().values().order_by('-date')]
+    for i in cdvormonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':cdvormonthly,'name':'Cdvormonthly'})
+
+
+
+def scctvdaily(request):
+    scctvdaily=[entry for entry in models.Scctvdaily.objects.all().values().order_by('-date')]
+    for i in scctvdaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    return render(request,'dgm/list_details.html',{'context':scctvdaily,'name':'Scctvdaily'})
+
+
+def scctvmonthly(request):
+    scctvmonthly=[entry for entry in models.Scctvmonthly.objects.all().values().order_by('-date')]
+    for i in scctvmonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':scctvmonthly,'name':'Scctvmonthly'})
+
+def scctvweekly(request):
+    scctvweekly=[entry for entry in models.Scctvweekly.objects.all().values().order_by('-date')]
+    for i in scctvweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':scctvweekly,'name':'Scctvweekly'})
+
+def datisdaily(request):
+    datisdaily=[entry for entry in models.Datisdaily.objects.all().values().order_by('-date')]
+   #  sorted(datisdaily,key=itemgetter('date'),reverse=True)
+    for i in datisdaily:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    return render(request,'dgm/list_details.html',{'context':datisdaily,'name':'Datisdaily'})
+
+
+# def monthly(request):
+#     Datismonthly=[entry for entry in models.Datismonthly.objects.all().values()order_by('-date')]
+#     return render(request,'supervisor/monthly_details.html',{'context':Datismonthly,'name':'Datismonthly'}) 
+def datisweekly(request):
+    Datisweekly=[entry for entry in models.Datisweekly.objects.all().values().order_by('-date')]
+    for i in Datisweekly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':Datisweekly,'name':'Datisweekly'})
+
+
+def dscndaily(request):
+    dscndaily=[entry for entry in models.Dscndaily.objects.all().values().order_by('-date')]
+    for i in dscndaily:
+       i['token']=main.encode(request,str(i['p_id']))
+       if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+       elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+       else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':dscndaily,'name':'Dscndaily'})
+
+def dscnmonthly(request):
+    dscnmonthly=[entry for entry in models.Dscnmonthly.objects.all().values().order_by('-date')]
+    for i in dscnmonthly:
+        i['token']=main.encode(request,str(i['p_id']))
+        if i['unit_incharge_approval']=="YES":
+           i['flag']=1
+        elif['unit_incharge_approval']=="NO":
+           i['flag']=0
+        else:
+           i['flag']=9
+    
+    return render(request,'dgm/list_details.html',{'context':dscnmonthly,'name':'Dscnmonthly'})
+
+# def dscnweekly(request):
+#     dscnweekly=[entry for entry in models.Dscnweekly.objects.all().values().order_by('-date')]
+#     for i in dscnweekly:
+#         i['token']=main.encode(request,str(i['p_id']))
+#         if i['unit_incharge_approval']=="YES":
+#            i['flag']=1
+#         elif['unit_incharge_approval']=="NO":
+#            i['flag']=0
+#         else:
+#            i['flag']=9
+    
+#     return render(request,'supervisor/list_details.html',{'context':dscnweekly,'name':'Dscnweekly'})

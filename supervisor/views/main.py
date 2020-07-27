@@ -59,6 +59,35 @@ def choice(request):
         # print(defect)
         # print(context['cdvorweekly'])     
         return render(request,'supervisor/weekly.html',context)
+        
+    x=1
+    if x==1:
+        # if request.session.get('dept')=='C':
+           print("here")
+           today = date.today()
+           week_ago = today - timedelta(days=7)
+           info=models.Datisdlogs.objects.values().filter(date__gte = week_ago).order(-date)
+           k=None
+           for q,i in enumerate(info):
+                   if  (str(i['remarks'])=='status of ups not normal' or str(i['remarks'])=='status of ups not normal(update)'):
+                        k=q
+                        break
+           count=0  
+           alert=0
+           wdate=today
+           rdate=week_ago
+           if k != None:              
+                for j in info[k:]:
+                        if str(j['remarks'])=='status of ups not normal' or str(j['remarks'])=='status of ups not normal(update)':
+                                        count=count+1
+                                        wdate=j['date']
+                        if str(j['value'])=='All parameters NORMAL':
+                                        rdate=j['date']
+           if count>=3 & (wdate<rdate):
+                   alert=1 
+           context.update({'alert':alert})
+
+           print('alert= ',str(alert))
     
     return render(request,'supervisor/home.html')
 

@@ -266,7 +266,7 @@ class Datisdlogs(models.Model):
     p = models.ForeignKey(Datisdaily, models.DO_NOTHING)
     value = models.CharField(max_length=30)
     remarks = models.CharField(db_column='Remarks', max_length=100)  # Field name made lowercase.
-    date = models.DateField(db_column='Date')  # Field name made lowercase.
+    date = models.DateField()  # Field name made lowercase.
     time = models.TimeField()
 
     class Meta:
