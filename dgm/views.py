@@ -1111,12 +1111,14 @@ def searchn(request):
     que=str1+facility+str2+str4+str5+str6+str7+str8+str3
     print(que)
     exec(que,globals())
-    
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
     
     supdetails,eng=navdet()
     # print(facility)
     print(temp)
-    return render(request,'dgm/dashboardn.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'nav'})
 
 
 
@@ -1174,7 +1176,15 @@ def searchc(request):
     supdetails,eng=comdet()
     # print(facility)
     print(temp)
-    return render(request,'dgm/dashboardc.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
+    
+    supdetails,eng=navdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'communication'})
+
     
 def searchs(request):
     fromdate=request.POST['date']
@@ -1230,7 +1240,15 @@ def searchs(request):
     supdetails,eng=surdet()
     # print(facility)
     print(temp)
-    return render(request,'dgm/dashboards.html',{'supdetails':supdetails,'eng':eng,'searched':temp})
+    for i in temp:
+        i['token']=main.encode(request,str(i['p_id']))
+        i['name']=facility
+    
+    supdetails,eng=navdet()
+    # print(facility)
+    print(temp)
+    return render(request,'dgm/search.html',{'supdetails':supdetails,'eng':eng,'searched':temp,'name':'surv'})
+
     
 
 def navdet():
