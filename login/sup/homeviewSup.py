@@ -163,7 +163,7 @@ def run_sup(request,uid):
     context.update({'sup':supInfo[0],'dgm':dgm[0],'datis':com,'eng':eng,'air':airInfo[0]})
     # print(context['datisd_deadline'])
     x=1
-    if x==1:
+    if request.session.get('dept')=='C':
         print("here")
         today = date.today()
         week_ago = today - timedelta(days=7)
