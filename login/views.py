@@ -78,10 +78,13 @@ def validate(request):
                # print(y[0])
                # return render(request,'./dgm/dgm.html',{'name':y[0]})
     elif b=='11' :
+        request.session['key']=frt.generate_key().decode('utf-8')
+        # x=models.Dgm.objects.all()
         x=models.Head.objects.all()
         for i in x:
             if (uid == str(i.head_id)) & (check_password(passw,i.password)) :
                 flag=0
+                request.session['type']='h'
                 airInfo=models.Airport.objects.all().values()
                 return dispMap(request,airInfo)
     elif b=='31' :
