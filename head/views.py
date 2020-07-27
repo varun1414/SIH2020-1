@@ -25,9 +25,13 @@ from login import models
 from django.db import connection
 from django.db.models import Q
 
+def maps(request):
+    return render(request,'head/mapframe.html')
+
 def dispMap(request,airInfo):
 
-
+    empdetails = models.Head.objects.all()
+    empdetails = empdetails.values('name','contact','designation')
     # Create map object
     m = folium.Map(location=[21.1458, 79.0882],zoom_start=5)
     
@@ -94,8 +98,8 @@ def dispMap(request,airInfo):
     # Geojson overlay
     # folium.GeoJson(overlay, name='cambridge').add_to(m)
 
-    m.save('./head/templates/head/map.html')
-    return render(request,"./head/map.html")
+    #m.save('./head/templates/head/map.html')
+    return render(request,"./head/map.html",{'empdetails':empdetails})
 
 
 

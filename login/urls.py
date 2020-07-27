@@ -18,6 +18,7 @@ from engineer.views.scctv import viewsw as scctvviewsw
 from engineer.views.scctv import viewsm as scctvviewsm
 from supervisor.views.main import verify as verify
 from dgm import views as viewsdgm
+from head import views as viewshead
 from django.urls import include, re_path
 #from django.views.generic import TemplateView
 
@@ -34,6 +35,7 @@ urlpatterns = [
     re_path(r'^calendar/',viewsdgm.calendar, name='calendar'),
     re_path(r'^calendarn/',viewsdgm.calendarn, name='calendarn'),
     re_path(r'^calendars/',viewsdgm.calendars, name='calendars'),
+    re_path(r'^maps/',viewshead.maps, name='maps'),
     
     
 
