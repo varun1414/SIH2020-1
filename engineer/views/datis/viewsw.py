@@ -4,7 +4,7 @@ from datetime import date,datetime,timedelta
 from engineer.views.datis.viewsd import routebackdatisd
 from login import models as models
 from django.contrib import messages
-
+from django.core.mail import send_mail
 def datisweeklyrec(request, id):
  if request.session.has_key('uid'):
   uid=request.session['uid'] 
