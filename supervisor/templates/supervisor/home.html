@@ -25,7 +25,16 @@
 	<div class="container" >
 		<div class="title-header"><img src="{% static '/images/aai.jpg' %}">PREVENTIVE MAINTENANCE LOG</div>
 	<div class="jumbotron">
+		<div class="alert" style="background-color: #1e27fa; color: white; float:right; ">
+			  <span class="closebtn" style="margin-left: 15px; color: white; font-weight: bold; font-size: 18px; float:right; cursor: pointer; transition: 0.3s;" onclick="this.parentElement.style.display='none';">&times;</span>
+			 {% if alert == 1 %} 
+			  URGENT! check status of ups in datis
+			  {% else %}
+			  no notification
+			  {% endif %}
+		</div>
 		<div class="row">
+
 			<div class="col-md-3">
 				<div class="card cardlogo" >
 					  <img class="card-img-top" src="{% static '/images/man1.jpg' %}" alt="FACE">

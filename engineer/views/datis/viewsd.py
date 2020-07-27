@@ -545,6 +545,7 @@ def updatisdaily(request, id) :
           val = (emp_id,p_id,"Procedure Followed",remarks,currdate,currtime)
           sql = "INSERT INTO datisdlogs (emp_id,p_id,remarks,value,date,time) values (%s ,%s,%s, %s , %s,%s)"
           cursor.execute(sql,val)  
+
           
     #cursor.execute("update datisdaily set remarks = %s where p_id = %s",[remarks1,id])
     datis_d = models.Datisdaily.objects.all()    
@@ -556,6 +557,9 @@ def updatisdaily(request, id) :
     datisdlogs = datisdlogs.filter(date=date.today()).order_by('-log_id')    
     supdetails = models.Supervisor.objects.all()
     supdetails = supdetails.values('name','contact','email').filter(dept='C')
+    mail='sent'
+    send_mail('reported submited by id:'+str(id),mail,'aai.urgent@gmail.com',['naikvarun99@gmail.com'],fail_silently=False)
+    
     return render(request,'engineer/datis/datisdailyrep.html',{'datisdlogs':datisdlogs,'supdetails':supdetails,'datis_d':datis_d,'id':emp_id,'datisd':datisd}) 
    else :
      return routebackdatisd(request, uid)  
@@ -600,7 +604,7 @@ def datisdrepsubm(request, id) :
           cursor.execute(sql,val)
           cursor.execute("update datisdaily set unit_incharge_approval = %s where p_id = %s",[None,p_id])
           cursor.execute("update dgmreports set r_count = r_count + 1 where r_id = %s",['2'])
-  
+          
     elif rint <= 24 and statusofac == 'SVCBL' and statusofups == 'NORMAL' and statusofservera == 'STANDBY' and statusofserverb == 'MAINS' :
           f=1
           status = "COMPLETED"
@@ -666,11 +670,12 @@ def datisdrepsubm(request, id) :
     datisdlogs = datisdlogs.filter(date=date.today()).order_by('-log_id')    
     supdetails = models.Supervisor.objects.all()
     supdetails = supdetails.values('name','contact','email').filter(dept='C')
-     
+    mail='sent'
      #'datetime_of_servers_wrt_gps_clk','status_of_disk_array','vhftx_atis_status','vhfrx_atis_status','datis_update','audio_quality','remarks','unit_incharge_approval')
+    send_mail('reported submited by id:'+str(id),mail,'aai.urgent@gmail.com',['naik.varun99@gmail.com'],fail_silently=False)
     return render(request,'engineer/datis/datisdailyrep.html',{'supdetails':supdetails,'datis_d':datis_d,'id':id,'datisd':datisd,'datisdlogs':datisdlogs})
- else : 
-     return render(request,'login/login.html')
+ 
+ return render(request,'login/login.html')
  
 def repsuberrors(request,p_id, id):
  if request.session.has_key('uid'): 
@@ -681,6 +686,8 @@ def repsuberrors(request,p_id, id):
     datisd = datisd.values('p_id','emp_id','date','time','room_temp','status','status_of_ac','status_of_ups','status_of_servera','status_of_serverb','remarks')
     datisd = datisd.filter(p_id=p_id)
     return render(request,'engineer/datis/datisfinalrep.html',{'datisd':datisd,'p_id':p_id,'id':id}) 
+   
+   
    else :
     return routebackdatisd(request, uid)  
  else : 
@@ -713,6 +720,8 @@ def finalrepsub(request,p_id, id):
         datisdlogs = datisdlogs.filter(date=date.today()).order_by('-log_id')    
         supdetails = models.Supervisor.objects.all()
         supdetails = supdetails.values('name','contact','email').filter(dept='C')
+        mail='sent'
+        send_mail('reported submited by id:'+str(id),mail,'aai.urgent@gmail.com',['naikvarun99@gmail.com'],fail_silently=False)
         return render(request,'engineer/datis/datisdailyrep.html',{'supdetails':supdetails,'datis_d':datis_d,'id':id,'f':f,'datisd':datisd,'datisdlogs':datisdlogs}) 
     else : 
         return render(request,'login/login.html')
