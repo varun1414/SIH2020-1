@@ -7,7 +7,7 @@
    
 </head>
 <body> 
-  <div class="container">
+  <div class="container  style="margin: auto; margin-top: 50px;"">
     <div style=" width: 60%; margin-left: auto; margin-right: auto;">
         {% for datisw in datis_w %}
           {% if f != 1 %}
@@ -15,27 +15,27 @@
               {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
                 {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
                   <div class="alert alert-success">
-                    <strong>Maintenance succesful!</strong> 
+                    <strong style="text-align: center;">Maintenance succesful!</strong> 
                     All entries matched with standard values.
                     {% else %}
                     <div class="alert alert-danger">
-                    <strong>Maintenance failed!!!</strong> 
+                    <strong style="text-align: center;">Maintenance failed!!!</strong> 
                     Please try again.
                 {% endif %}
                 {% else %}
                 <div class="alert alert-danger">
-                  <strong>Maintenance failed!!!</strong> 
+                  <strong style="text-align: center;">Maintenance failed!!!</strong> 
                   Please try again.
               {% endif %}
               {% else %}
               <div class="alert alert-danger">
-                <strong>Maintenance failed!!!</strong> 
+                <strong style="text-align: center;">Maintenance failed!!!</strong> 
                 Please try again.
             {% endif %}
           {% endif %}       
           {% if f == 1 %}
 					<div class="alert alert-danger">
-						<strong>Report Submitted to the supervisor!</strong>
+						<strong style="text-align: center;">Report Submitted to the supervisor!</strong>
 				  {% endif %}
 			
 
@@ -49,29 +49,29 @@
             </div>
         
             <hr>
-            <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-              <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Server A / B</td>
-              <td style="border: 1px solid black; text-align: center;"> {{ datisw.serveraorb}}</td>
+            <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+              <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Server A / B</td>
+              <td style="border: 1px solid black; padding-top: 10px; text-align: center;"> {{ datisw.serveraorb}}</td>
             </tr>
 
-            <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">UPS Input</td>
-            <td style="border: 1px solid black; text-align: center;">{{ datisw.ups_ip }}</td>
+            <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">UPS Input</td>
+            <td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisw.ups_ip }}</td>
           </tr>
 
-          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">UPS Output</td>
-            <td style="border: 1px solid black; text-align: center;">{{ datisw.ups_op }}</td>
+          <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">UPS Output</td>
+            <td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisw.ups_op }}</td>
           </tr>
 
-          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Dust Free</td>
-            <td style="border: 1px solid black; text-align: center;">{{ datisw.dust_free }}</td>
+          <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">Dust Free</td>
+            <td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisw.dust_free }}</td>
           </tr>
 
-          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
-            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">LAN Status</td>
-            <td style="border: 1px solid black; text-align: center;">{{ datisw.lan_status}}</td>
+          <tr style="border: 1px solid black; line-height: 30px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-top: 10px; padding-left:10px; padding-right:10px;">LAN Status</td>
+            <td style="border: 1px solid black; padding-top: 10px; text-align: center;">{{ datisw.lan_status}}</td>
           </tr>
                      
           </table>
