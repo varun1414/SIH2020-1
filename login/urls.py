@@ -109,7 +109,8 @@ urlpatterns = [
     path('sent/',datviewsd.sent),
     #added new route
     path('homed/<int:id>/<int:p_id>',datviewsd.homed),
-    
+    path('report/<int:p_id>/<int:id>',datviewsd.report),
+   
     #weekly
     path('datisweekly/<int:id>',datviewsw.datisw),
     path('datisweeklyrep/<int:id>',datviewsw.datiswrep),

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Weekly DATIS Maintenance Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+</head>
+<body> 
+  <div class="container">
+    <div style=" width: 60%; margin-left: auto; margin-right: auto;">
+        {% for datisw in datis_w %}
+          {% if f != 1 %}
+            {% if datisw.serveraorb == "A" or datisw.serveraorb == "B" %}  
+              {% if datisw.ups_ip < 231 and datisw.ups_ip > 199 %}
+                {% if datisw.ups_op == 230 and datisw.dust_free == "OK" and datisw.lan_status == "OK" %}
+                  <div class="alert alert-success">
+                    <strong>Maintenance succesful!</strong> 
+                    All entries matched with standard values.
+                    {% else %}
+                    <div class="alert alert-danger">
+                    <strong>Maintenance failed!!!</strong> 
+                    Please try again.
+                {% endif %}
+                {% else %}
+                <div class="alert alert-danger">
+                  <strong>Maintenance failed!!!</strong> 
+                  Please try again.
+              {% endif %}
+              {% else %}
+              <div class="alert alert-danger">
+                <strong>Maintenance failed!!!</strong> 
+                Please try again.
+            {% endif %}
+          {% endif %}       
+          {% if f == 1 %}
+					<div class="alert alert-danger">
+						<strong>Report Submitted to the supervisor!</strong>
+				  {% endif %}
+			
+
+          <div class="card" style="text-align: center;">
+            <table style="margin: auto; border: 1px solid black; border-collapse: collapse; margin-top: 30px;">					   
+              <h2>DATIS-TERMA DAILY MAINTENANCE ENTRY</h2>
+            
+              
+             <div class="alert alert-light" style="height: 40px; padding-top: 0px">
+              Recorded on: DATE:{{ datisw.date }}  |  TIME:{{ datisw.time }}<br><strong>STATUS: {{ datisw.status }}</strong> 
+            </div>
+        
+            <hr>
+            <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
+              <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Server A / B</td>
+              <td style="border: 1px solid black; text-align: center;"> {{ datisw.serveraorb}}</td>
+            </tr>
+
+            <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">UPS Input</td>
+            <td style="border: 1px solid black; text-align: center;">{{ datisw.ups_ip }}</td>
+          </tr>
+
+          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">UPS Output</td>
+            <td style="border: 1px solid black; text-align: center;">{{ datisw.ups_op }}</td>
+          </tr>
+
+          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">Dust Free</td>
+            <td style="border: 1px solid black; text-align: center;">{{ datisw.dust_free }}</td>
+          </tr>
+
+          <tr style="border: 1px solid black; line-height: 45px; font-size: 20px;">
+            <td style="border: 1px solid black; padding-left:10px; padding-right:10px;">LAN Status</td>
+            <td style="border: 1px solid black; text-align: center;">{{ datisw.lan_status}}</td>
+          </tr>
+                     
+          </table>
+
+            
+
+          </div>
+
+        </div>
+          {% endfor %}
+   </div>
+</div>
+
+           
+</body>
+</html>
+

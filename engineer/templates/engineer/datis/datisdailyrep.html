@@ -180,13 +180,15 @@
 				  		</form>
 					  	<div class="row row1" style="align-items: right; padding-left: 27%; padding-bottom: 1%">
 					  		{% if datisd.room_temp < 25 and datisd.status_of_servera == "MAINS" and datisd.status_of_serverb == "STANDBY" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" or datisd.room_temp < 25 and datisd.status_of_servera == "STANDBY" and datisd.status_of_serverb == "MAINS" and datisd.status_of_ups == "NORMAL" and datisd.status_of_ac == "SVCBL" %}
-	                  				<p></p>
+							  <button class="btn submitbut" target="_blank" onclick="window.location.href='/report/{{ datisd.p_id }}/{{ id }}'">DOWNLOAD REPORT</button>
 								{% elif f != 1  %}
 								   
 								    <button style="width: 100px; margin-right: 10%;"class="btn submitbut" onclick="window.location.href='/editdatisd/{{ datisd.p_id }}'">EDIT</button>
 
 								   <button class="btn submitbut" onclick="window.location.href='/repsuberrors/{{ datisd.p_id }}/{{ id }}'">SUBMIT WITH ERRORS</button>						
-							{% endif %}
+								   <button class="btn submitbut" onclick="window.open('/report/{{ datisd.p_id }}/{{ id }}')">DOWNLOAD REPORT</button>
+						
+								   {% endif %}
 					  	</div>
 				  		
 					</div>				  		

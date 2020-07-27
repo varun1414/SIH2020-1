@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 22, 2020 at 07:52 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.28
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jul 26, 2020 at 03:58 PM
+-- Server version: 5.7.26
+-- PHP Version: 7.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `airport`
 --
 
-CREATE TABLE `airport` (
+DROP TABLE IF EXISTS `airport`;
+CREATE TABLE IF NOT EXISTS `airport` (
   `a_id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `altitude` int(6) DEFAULT NULL,
@@ -36,7 +37,9 @@ CREATE TABLE `airport` (
   `dgm_id` int(5) DEFAULT NULL,
   `longitude` varchar(10) DEFAULT NULL,
   `latitude` varchar(10) DEFAULT NULL,
-  `code` varchar(3) DEFAULT NULL
+  `code` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`a_id`),
+  UNIQUE KEY `dm_id` (`dgm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -55,9 +58,12 @@ INSERT INTO `airport` (`a_id`, `name`, `altitude`, `area`, `dgm_id`, `longitude`
 -- Table structure for table `auth_group`
 --
 
-CREATE TABLE `auth_group` (
-  `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL
+DROP TABLE IF EXISTS `auth_group`;
+CREATE TABLE IF NOT EXISTS `auth_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -66,10 +72,15 @@ CREATE TABLE `auth_group` (
 -- Table structure for table `auth_group_permissions`
 --
 
-CREATE TABLE `auth_group_permissions` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `auth_group_permissions`;
+CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
+  KEY `auth_group_permissions_group_id_b120cbf9` (`group_id`),
+  KEY `auth_group_permissions_permission_id_84c5c92e` (`permission_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -78,12 +89,16 @@ CREATE TABLE `auth_group_permissions` (
 -- Table structure for table `auth_permission`
 --
 
-CREATE TABLE `auth_permission` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `auth_permission`;
+CREATE TABLE IF NOT EXISTS `auth_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `content_type_id` int(11) NOT NULL,
-  `codename` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
+  KEY `auth_permission_content_type_id_2f476e4b` (`content_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=249 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `auth_permission`
@@ -345,7 +360,8 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 -- Table structure for table `auth_user`
 --
 
-CREATE TABLE `auth_user` (
+DROP TABLE IF EXISTS `auth_user`;
+CREATE TABLE IF NOT EXISTS `auth_user` (
   `id` int(11) NOT NULL,
   `password` varchar(128) NOT NULL,
   `last_login` datetime(6) DEFAULT NULL,
@@ -356,7 +372,8 @@ CREATE TABLE `auth_user` (
   `email` varchar(254) NOT NULL,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
-  `date_joined` datetime(6) NOT NULL
+  `date_joined` datetime(6) NOT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -365,10 +382,15 @@ CREATE TABLE `auth_user` (
 -- Table structure for table `auth_user_groups`
 --
 
-CREATE TABLE `auth_user_groups` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `auth_user_groups`;
+CREATE TABLE IF NOT EXISTS `auth_user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
+  KEY `auth_user_groups_user_id_6a12ed8b` (`user_id`),
+  KEY `auth_user_groups_group_id_97559544` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -377,10 +399,15 @@ CREATE TABLE `auth_user_groups` (
 -- Table structure for table `auth_user_user_permissions`
 --
 
-CREATE TABLE `auth_user_user_permissions` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
+CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `permission_id` int(11) NOT NULL
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_user_user_permissions_user_id_permission_id_14a6b632_uniq` (`user_id`,`permission_id`),
+  KEY `auth_user_user_permissions_user_id_a95ead1b` (`user_id`),
+  KEY `auth_user_user_permissions_permission_id_1fbb5f2c` (`permission_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -389,8 +416,9 @@ CREATE TABLE `auth_user_user_permissions` (
 -- Table structure for table `cdvordaily`
 --
 
-CREATE TABLE `cdvordaily` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cdvordaily`;
+CREATE TABLE IF NOT EXISTS `cdvordaily` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time DEFAULT NULL,
   `status` varchar(30) NOT NULL DEFAULT 'PENDING',
@@ -403,11 +431,15 @@ CREATE TABLE `cdvordaily` (
   `9960Hz_deviation` int(11) DEFAULT NULL,
   `field_intensity` int(11) DEFAULT NULL,
   `ident_modulation` int(11) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `CDVORDaily_ibfk_1` (`a_id`),
+  KEY `cdvordaily_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cdvordaily`
@@ -505,15 +537,19 @@ INSERT INTO `cdvordaily` (`p_id`, `date`, `time`, `status`, `a_id`, `emp_id`, `f
 -- Table structure for table `cdvordlogs`
 --
 
-CREATE TABLE `cdvordlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cdvordlogs`;
+CREATE TABLE IF NOT EXISTS `cdvordlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(30) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cdvordlogs`
@@ -555,15 +591,19 @@ INSERT INTO `cdvordlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `cdvormlogs`
 --
 
-CREATE TABLE `cdvormlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cdvormlogs`;
+CREATE TABLE IF NOT EXISTS `cdvormlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(40) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cdvormlogs`
@@ -595,13 +635,14 @@ INSERT INTO `cdvormlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `cdvormonthly`
 --
 
-CREATE TABLE `cdvormonthly` (
+DROP TABLE IF EXISTS `cdvormonthly`;
+CREATE TABLE IF NOT EXISTS `cdvormonthly` (
   `date` date NOT NULL,
   `time` time NOT NULL,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` int(11) NOT NULL,
-  `p_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(30) NOT NULL,
   `measured_bearing_1` float DEFAULT NULL,
   `bearing_deviation_1` float DEFAULT NULL,
@@ -614,11 +655,15 @@ CREATE TABLE `cdvormonthly` (
   `measured_bearing_5` float DEFAULT NULL,
   `bearing_deviation_5` float DEFAULT NULL,
   `error_spread` float DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `VHFMaily_ibfk_1` (`a_id`),
+  KEY `cdvormonthly_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cdvormonthly`
@@ -637,8 +682,9 @@ INSERT INTO `cdvormonthly` (`date`, `time`, `a_id`, `emp_id`, `f_id`, `p_id`, `s
 -- Table structure for table `cdvorweekly`
 --
 
-CREATE TABLE `cdvorweekly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cdvorweekly`;
+CREATE TABLE IF NOT EXISTS `cdvorweekly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `a_id` int(11) NOT NULL,
@@ -657,11 +703,16 @@ CREATE TABLE `cdvorweekly` (
   `AM` int(11) DEFAULT NULL,
   `FM` int(11) DEFAULT NULL,
   `sideband_frequency` int(11) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `cdvorweekly_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cdvorweekly`
@@ -681,15 +732,19 @@ INSERT INTO `cdvorweekly` (`p_id`, `date`, `time`, `a_id`, `emp_id`, `f_id`, `st
 -- Table structure for table `cdvorwlogs`
 --
 
-CREATE TABLE `cdvorwlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `cdvorwlogs`;
+CREATE TABLE IF NOT EXISTS `cdvorwlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(30) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cdvorwlogs`
@@ -733,7 +788,8 @@ INSERT INTO `cdvorwlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `communication`
 --
 
-CREATE TABLE `communication` (
+DROP TABLE IF EXISTS `communication`;
+CREATE TABLE IF NOT EXISTS `communication` (
   `f_id` int(11) NOT NULL,
   `a_id` int(11) NOT NULL,
   `facility` varchar(20) DEFAULT NULL,
@@ -743,7 +799,11 @@ CREATE TABLE `communication` (
   `DOI` date DEFAULT NULL,
   `DOC` date DEFAULT NULL,
   `location` varchar(20) DEFAULT NULL,
-  `supervisor_id` int(11) DEFAULT 3193
+  `supervisor_id` int(11) DEFAULT '3193',
+  PRIMARY KEY (`f_id`,`a_id`),
+  UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`supervisor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -761,8 +821,9 @@ INSERT INTO `communication` (`f_id`, `a_id`, `facility`, `make`, `model`, `power
 -- Table structure for table `datisdaily`
 --
 
-CREATE TABLE `datisdaily` (
-  `p_id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `datisdaily`;
+CREATE TABLE IF NOT EXISTS `datisdaily` (
+  `p_id` int(10) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time DEFAULT NULL,
   `a_id` int(11) DEFAULT NULL,
@@ -780,11 +841,16 @@ CREATE TABLE `datisdaily` (
   `VHFRX_ATIS_status` varchar(10) DEFAULT NULL,
   `DATIS_update` varchar(10) DEFAULT NULL,
   `Audio_quality` varchar(10) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `datisdaily`
@@ -886,7 +952,17 @@ INSERT INTO `datisdaily` (`p_id`, `date`, `time`, `a_id`, `emp_id`, `Status`, `f
 (148, '2020-07-13', '12:20:59', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
 (149, '2020-07-14', '12:20:59', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
 (150, '2020-07-15', '12:20:59', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
-(151, '2020-07-16', '12:21:26', 1, 4156, 'COMPLETED WITH ERRORS', 2, 235, 'SVCBL', 'NORMAL', 'MAINS', 'MAINS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(151, '2020-07-16', '12:21:26', 1, 4156, 'COMPLETED WITH ERRORS', 2, 235, 'SVCBL', 'NORMAL', 'MAINS', 'MAINS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(152, '2020-07-17', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(153, '2020-07-18', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(154, '2020-07-19', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(155, '2020-07-20', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(156, '2020-07-21', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(157, '2020-07-22', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(158, '2020-07-23', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(159, '2020-07-24', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(160, '2020-07-25', '15:33:33', 1, 4156, 'PENDING', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(161, '2020-07-26', '15:42:26', 1, 4156, 'PENDING', 2, 25, 'SVCBL', 'NORMAL', 'MAINS', 'STANDBY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -894,15 +970,19 @@ INSERT INTO `datisdaily` (`p_id`, `date`, `time`, `a_id`, `emp_id`, `Status`, `f
 -- Table structure for table `datisdlogs`
 --
 
-CREATE TABLE `datisdlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `datisdlogs`;
+CREATE TABLE IF NOT EXISTS `datisdlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(30) NOT NULL,
   `Remarks` varchar(100) NOT NULL,
   `Date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `datisdlogs`
@@ -940,7 +1020,10 @@ INSERT INTO `datisdlogs` (`log_id`, `emp_id`, `p_id`, `value`, `Remarks`, `Date`
 (129, 4156, 78, 'NON SVCBL', 'Status of ac not correct', '2020-05-04', '00:38:42'),
 (130, 4156, 78, 'ok', 'All parameters NORMAL', '2020-05-04', '00:39:04'),
 (131, 4156, 151, 'MAINS', 'Status of ServerA and serverB is on MAINS', '2020-07-16', '12:21:26'),
-(132, 4156, 151, 'bruh idk\r\n\r\n', 'Final submit with errors', '2020-07-16', '12:21:40');
+(132, 4156, 151, 'bruh idk\r\n\r\n', 'Final submit with errors', '2020-07-16', '12:21:40'),
+(133, 4156, 161, '25', 'Temperature exceeds 24 degrees', '2020-07-26', '15:42:26'),
+(134, 4156, 161, 'Done', 'All parameters NORMAL', '2020-07-26', '15:42:36'),
+(135, 4156, 161, 'Done', 'All parameters NORMAL', '2020-07-26', '15:44:15');
 
 -- --------------------------------------------------------
 
@@ -948,8 +1031,9 @@ INSERT INTO `datisdlogs` (`log_id`, `emp_id`, `p_id`, `value`, `Remarks`, `Date`
 -- Table structure for table `datisweekly`
 --
 
-CREATE TABLE `datisweekly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `datisweekly`;
+CREATE TABLE IF NOT EXISTS `datisweekly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time DEFAULT NULL,
   `a_id` int(11) DEFAULT NULL,
@@ -966,11 +1050,16 @@ CREATE TABLE `datisweekly` (
   `ptt_off_interval_seconds` int(11) DEFAULT NULL,
   `main_to_standby_changeover` varchar(5) DEFAULT NULL,
   `status_of_ROP` varchar(5) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `datisweekly`
@@ -994,15 +1083,19 @@ INSERT INTO `datisweekly` (`p_id`, `date`, `time`, `a_id`, `f_id`, `emp_id`, `St
 -- Table structure for table `datiswlogs`
 --
 
-CREATE TABLE `datiswlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `datiswlogs`;
+CREATE TABLE IF NOT EXISTS `datiswlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `Remarks` varchar(100) NOT NULL,
   `value` varchar(30) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `datiswlogs`
@@ -1101,7 +1194,10 @@ INSERT INTO `datiswlogs` (`log_id`, `emp_id`, `p_id`, `Remarks`, `value`, `date`
 (235, 4156, 39, 'Report not submitted', 'No Entry', '2020-07-15', '12:20:59'),
 (236, 4144, 40, 'UPS_ip not in corrent range', '-1', '2020-07-16', '12:29:58'),
 (237, 4144, 40, 'UPS_op value not normal', '-1', '2020-07-16', '12:29:58'),
-(238, 4144, 40, 'Final submit with errors', 'um\r\n', '2020-07-16', '12:30:08');
+(238, 4144, 40, 'Final submit with errors', 'um\r\n', '2020-07-16', '12:30:08'),
+(239, 4156, 40, 'Report not submitted', 'No Entry', '2020-07-23', '15:33:33'),
+(240, 4156, 40, 'Report not submitted', 'No Entry', '2020-07-24', '15:33:33'),
+(241, 4156, 40, 'Report not submitted', 'No Entry', '2020-07-25', '15:33:33');
 
 -- --------------------------------------------------------
 
@@ -1109,7 +1205,8 @@ INSERT INTO `datiswlogs` (`log_id`, `emp_id`, `p_id`, `Remarks`, `value`, `date`
 -- Table structure for table `dgm`
 --
 
-CREATE TABLE `dgm` (
+DROP TABLE IF EXISTS `dgm`;
+CREATE TABLE IF NOT EXISTS `dgm` (
   `dgm_id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `designation` varchar(10) DEFAULT NULL,
@@ -1117,7 +1214,10 @@ CREATE TABLE `dgm` (
   `contact` int(11) DEFAULT NULL,
   `password` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `head_id` int(11) DEFAULT NULL,
-  `email` varchar(30) NOT NULL
+  `email` varchar(30) NOT NULL,
+  PRIMARY KEY (`dgm_id`),
+  KEY `a_id` (`a_id`),
+  KEY `head_id` (`head_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1136,20 +1236,22 @@ INSERT INTO `dgm` (`dgm_id`, `name`, `designation`, `a_id`, `contact`, `password
 -- Table structure for table `dgmreports`
 --
 
-CREATE TABLE `dgmreports` (
-  `r_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dgmreports`;
+CREATE TABLE IF NOT EXISTS `dgmreports` (
+  `r_id` int(11) NOT NULL AUTO_INCREMENT,
   `r_type` varchar(30) NOT NULL,
   `r_status` varchar(30) NOT NULL,
-  `r_count` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `r_count` int(11) NOT NULL,
+  PRIMARY KEY (`r_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dgmreports`
 --
 
 INSERT INTO `dgmreports` (`r_id`, `r_type`, `r_status`, `r_count`) VALUES
-(1, 'datisd', 'PENDING', 84),
-(2, 'datisd', 'COMPLETED', 18),
+(1, 'datisd', 'PENDING', 83),
+(2, 'datisd', 'COMPLETED', 20),
 (3, 'datisd', 'COMPLETED WITH ERRORS', 8),
 (4, 'dscnd', 'PENDING', 0),
 (5, 'dscnd', 'COMPLETED', 0),
@@ -1185,15 +1287,19 @@ INSERT INTO `dgmreports` (`r_id`, `r_type`, `r_status`, `r_count`) VALUES
 -- Table structure for table `django_admin_log`
 --
 
-CREATE TABLE `django_admin_log` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `django_admin_log`;
+CREATE TABLE IF NOT EXISTS `django_admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_time` datetime(6) NOT NULL,
-  `object_id` longtext DEFAULT NULL,
+  `object_id` longtext,
   `object_repr` varchar(200) NOT NULL,
   `action_flag` smallint(5) UNSIGNED NOT NULL,
   `change_message` longtext NOT NULL,
   `content_type_id` int(11) DEFAULT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_content_type_id_c4bce8eb` (`content_type_id`),
+  KEY `django_admin_log_user_id_c564eba6` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1202,11 +1308,14 @@ CREATE TABLE `django_admin_log` (
 -- Table structure for table `django_content_type`
 --
 
-CREATE TABLE `django_content_type` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `django_content_type`;
+CREATE TABLE IF NOT EXISTS `django_content_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `app_label` varchar(100) NOT NULL,
-  `model` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
+) ENGINE=MyISAM AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `django_content_type`
@@ -1282,12 +1391,14 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 -- Table structure for table `django_migrations`
 --
 
-CREATE TABLE `django_migrations` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `django_migrations`;
+CREATE TABLE IF NOT EXISTS `django_migrations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `applied` datetime(6) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `applied` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `django_migrations`
@@ -1328,10 +1439,13 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 -- Table structure for table `django_session`
 --
 
-CREATE TABLE `django_session` (
+DROP TABLE IF EXISTS `django_session`;
+CREATE TABLE IF NOT EXISTS `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
-  `expire_date` datetime(6) NOT NULL
+  `expire_date` datetime(6) NOT NULL,
+  PRIMARY KEY (`session_key`),
+  KEY `django_session_expire_date_a5c62663` (`expire_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -1357,7 +1471,12 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('zrhp46xayz3tuvpphkk8u3c3treiw4m2', 'Yjk3ZjlkNWU5YTNiM2U2NDYyYTA0ZjY1YjViODc5ODRhN2IxYTkzYTp7ImtleSI6IlZKVVBGZEhoT1pwMzAxWUxWa1o3d1F5V0k2NHVjT1czYWZaMEdXUGtlcXc9IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-05-28 14:01:45.799160'),
 ('bdgtzh9q38fymr2aj8ojvdeq5o0hiigl', 'Njc5Y2E0OWNhYjAzOGEzNDI0N2MxNGEyYzY3M2UwYmE0ZDAyOGQyZDp7ImtleSI6IjhZMjRZMWdFOFhjNkk4QkU2OGVmR09TT05jZGhFZFZKY0Z2RVNtRFRuOWs9IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-07-30 13:49:35.732314'),
 ('qinum45pdk96mgkho0yjo19ix8wwic4n', 'MjdjMzFiMzI0NzgzZTcwYjU2MjdjNDBjY2UxMjcyZTljZGI2ZDkyZjp7ImtleSI6InQ5dW1JUThzLWgzbHJzS1JoNkVrUTZzSmlqWXZjNGxvTTBmQy1qQWx1bE09IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-07-30 16:53:12.246584'),
-('4rp2y2z4575bxqq27y4q6nz4h2332p0q', 'YzJiNDQ2NTY1ZjMxMjU5YzY5YzIxMzRmMzQyZmU3NTcwOTBiMzI0ODp7ImtleSI6Im5DR0pPbldDelNYZmhmbUh0cmVyODZlcUI2d3ZWYmFmT0dRVkJPa3FtY1U9IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-07-31 18:26:40.473706');
+('4rp2y2z4575bxqq27y4q6nz4h2332p0q', 'YzJiNDQ2NTY1ZjMxMjU5YzY5YzIxMzRmMzQyZmU3NTcwOTBiMzI0ODp7ImtleSI6Im5DR0pPbldDelNYZmhmbUh0cmVyODZlcUI2d3ZWYmFmT0dRVkJPa3FtY1U9IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-07-31 18:26:40.473706'),
+('zi2ktxqmhf914ajg3ua7gpwr3vjb10g7', 'ODAyZmRhZmI5ODJiYTFlMzVhOWFiNTVhNjMyNDgyYmZmODg2OTY5NTp7ImtleSI6IlU0M1ZsanRCRTFXNndmZkh2NHBBeF9Kc3lLR21QNDlRelMwUHNhSGxrZE09IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-08-05 19:53:56.234765'),
+('jtaea0tkwia0dp20296geka9udetoc9r', 'M2NjMjdhN2JlZmQ5MjU3NDdiY2E4ZTA3ODliMTRiNTVhMGNjZjg3ODp7ImtleSI6IjlRTFdod1ZoSVp1SUc4S0FXUENETE81YldLa2pvR0hyZVI3d1VQeDBxcHc9IiwidHlwZSI6ImQiLCJ1aWQiOiIyMTAyIn0=', '2020-08-06 19:08:00.068553'),
+('q7ihrhu9cjltoztbh76s69kir96lnvn8', 'ZjFhNjFkMjEwNGZkMTA4OWIwMTAyZTU3ZjEzYWRhYTIxYWNlMzJjMjp7ImtleSI6InVfMTF1dkVBMmc1MS1JNDRwVXA3S1Z3QnlyNXVIeExKcHRXb3g1ZHVhcm89IiwiZGVwdCI6Ik4iLCJ0eXBlIjoicyIsInVpZCI6IjMxMTIiLCJwaWQiOiI5IiwibmFtZSI6ImNkdm9yZGFpbHkifQ==', '2020-08-09 06:16:11.277897'),
+('2kb1zzx6smfvptyeeoxicpjq72gkphas', 'NmE1ZGM2NDBiNTc1MGEwNzJlZTA1MzMwNTU1MTdiMTU0ZTE5NmZjZTp7InR5cGUiOiJlIiwidWlkIjoiNDE1NiJ9', '2020-08-09 10:03:35.233576'),
+('l6ffggkxkiqw68yxg6jgibt5qsyzmt5z', 'NmE1ZGM2NDBiNTc1MGEwNzJlZTA1MzMwNTU1MTdiMTU0ZTE5NmZjZTp7InR5cGUiOiJlIiwidWlkIjoiNDE1NiJ9', '2020-08-09 13:26:34.131217');
 
 -- --------------------------------------------------------
 
@@ -1365,8 +1484,9 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 -- Table structure for table `dmedaily`
 --
 
-CREATE TABLE `dmedaily` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `dmedaily`;
+CREATE TABLE IF NOT EXISTS `dmedaily` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
@@ -1379,13 +1499,17 @@ CREATE TABLE `dmedaily` (
   `batterybank_voltage` int(11) DEFAULT NULL,
   `status_of_monitor` varchar(10) DEFAULT NULL,
   `unusual_noise` varchar(10) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `p_id` int(30) NOT NULL,
   `s_verify` varchar(11) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
-  `status` varchar(30) NOT NULL DEFAULT 'PENDING'
+  `status` varchar(30) NOT NULL DEFAULT 'PENDING',
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1402,8 +1526,9 @@ INSERT INTO `dmedaily` (`date`, `a_id`, `emp_id`, `f_id`, `eqpt_shelter_cleanlin
 -- Table structure for table `dmemonthly`
 --
 
-CREATE TABLE `dmemonthly` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `dmemonthly`;
+CREATE TABLE IF NOT EXISTS `dmemonthly` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
@@ -1411,13 +1536,17 @@ CREATE TABLE `dmemonthly` (
   `SGDNF_amplitude` float DEFAULT NULL,
   `Squitter_rate_of_inhibit_interrogation` float DEFAULT NULL,
   `max_reply_rate_KHz` float DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `p_id` int(30) NOT NULL,
   `s_verify` int(11) DEFAULT NULL,
   `status` varchar(30) NOT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1433,8 +1562,9 @@ INSERT INTO `dmemonthly` (`date`, `a_id`, `emp_id`, `f_id`, `SGDNF_pulse_width`,
 -- Table structure for table `dmeweekly`
 --
 
-CREATE TABLE `dmeweekly` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `dmeweekly`;
+CREATE TABLE IF NOT EXISTS `dmeweekly` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
@@ -1447,14 +1577,18 @@ CREATE TABLE `dmeweekly` (
   `system_delay` float DEFAULT NULL,
   `pulse_pair_spacing_SEPN` float DEFAULT NULL,
   `reply_efficiency_percent` float DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
-  `p_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `s_verify` int(30) DEFAULT NULL,
   `status` varchar(30) NOT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dmeweekly`
@@ -1470,13 +1604,14 @@ INSERT INTO `dmeweekly` (`date`, `a_id`, `emp_id`, `f_id`, `test_interrogation_m
 -- Table structure for table `dscndaily`
 --
 
-CREATE TABLE `dscndaily` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscndaily`;
+CREATE TABLE IF NOT EXISTS `dscndaily` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(30) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `a_id` int(11) NOT NULL,
-  `f_id` int(11) NOT NULL DEFAULT 3,
+  `f_id` int(11) NOT NULL DEFAULT '3',
   `emp_id` int(11) DEFAULT NULL,
   `SAT_LED` varchar(30) DEFAULT NULL,
   `ODU_LED` varchar(30) DEFAULT NULL,
@@ -1488,11 +1623,16 @@ CREATE TABLE `dscndaily` (
   `OP_voltage` int(11) DEFAULT NULL,
   `Battery_Voltage` int(11) DEFAULT NULL,
   `CorO_function` varchar(20) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `dscndaily_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dscndaily`
@@ -1586,7 +1726,16 @@ INSERT INTO `dscndaily` (`p_id`, `status`, `date`, `time`, `a_id`, `f_id`, `emp_
 (94, 'PENDING', '2020-07-13', '12:21:06', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
 (95, 'PENDING', '2020-07-14', '12:21:06', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
 (96, 'PENDING', '2020-07-15', '12:21:06', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
-(97, 'COMPLETED WITH ERRORS', '2020-07-16', '12:22:02', 1, 3, 4156, 'NOT STEADY ON', 'STEADY ON', 'STEADY ON', 'ON', 'STEADY ON', 'RX/TX BLINKING', -1, 23, -1, 'OK', NULL, NULL, NULL, NULL);
+(97, 'COMPLETED WITH ERRORS', '2020-07-16', '12:22:02', 1, 3, 4156, 'NOT STEADY ON', 'STEADY ON', 'STEADY ON', 'ON', 'STEADY ON', 'RX/TX BLINKING', -1, 23, -1, 'OK', NULL, NULL, NULL, NULL),
+(98, 'PENDING', '2020-07-17', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(99, 'PENDING', '2020-07-18', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(100, 'PENDING', '2020-07-19', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(101, 'PENDING', '2020-07-20', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(102, 'PENDING', '2020-07-21', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(103, 'PENDING', '2020-07-22', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(104, 'PENDING', '2020-07-23', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(105, 'PENDING', '2020-07-24', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL),
+(106, 'PENDING', '2020-07-25', '15:33:33', 1, 3, 4156, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '---Report not submitted---', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1594,15 +1743,19 @@ INSERT INTO `dscndaily` (`p_id`, `status`, `date`, `time`, `a_id`, `f_id`, `emp_
 -- Table structure for table `dscndlogs`
 --
 
-CREATE TABLE `dscndlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscndlogs`;
+CREATE TABLE IF NOT EXISTS `dscndlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `value` varchar(30) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
-  `p_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `p_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `dscndlogs_ibfk_2` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dscndlogs`
@@ -1656,15 +1809,19 @@ INSERT INTO `dscndlogs` (`log_id`, `emp_id`, `remarks`, `value`, `date`, `time`,
 -- Table structure for table `dscnmlogs`
 --
 
-CREATE TABLE `dscnmlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscnmlogs`;
+CREATE TABLE IF NOT EXISTS `dscnmlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(50) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `dscnmlogs_ibfk_1` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dscnmlogs`
@@ -1761,7 +1918,115 @@ INSERT INTO `dscnmlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`,
 (89, 4144, 7, 'No Entry', 'Report not submitted', '2020-07-12', '12:29:21'),
 (90, 4144, 7, 'No Entry', 'Report not submitted', '2020-07-13', '12:29:21'),
 (91, 4144, 7, 'No Entry', 'Report not submitted', '2020-07-14', '12:29:21'),
-(92, 4144, 7, 'No Entry', 'Report not submitted', '2020-07-15', '12:29:21');
+(92, 4144, 7, 'No Entry', 'Report not submitted', '2020-07-15', '12:29:21'),
+(93, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-02', '15:33:33'),
+(94, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-03', '15:33:33'),
+(95, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-04', '15:33:33'),
+(96, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-05', '15:33:33'),
+(97, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-06', '15:33:33'),
+(98, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-07', '15:33:33'),
+(99, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-08', '15:33:33'),
+(100, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-09', '15:33:33'),
+(101, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-10', '15:33:33'),
+(102, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-11', '15:33:33'),
+(103, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-12', '15:33:33'),
+(104, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-13', '15:33:33'),
+(105, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-14', '15:33:33'),
+(106, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-15', '15:33:33'),
+(107, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-16', '15:33:33'),
+(108, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-17', '15:33:33'),
+(109, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-18', '15:33:33'),
+(110, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-19', '15:33:33'),
+(111, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-20', '15:33:33'),
+(112, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-21', '15:33:33'),
+(113, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-22', '15:33:33'),
+(114, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-23', '15:33:33'),
+(115, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-24', '15:33:33'),
+(116, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-25', '15:33:33'),
+(117, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-26', '15:33:33'),
+(118, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-27', '15:33:33'),
+(119, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-28', '15:33:33'),
+(120, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-29', '15:33:33'),
+(121, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-30', '15:33:33'),
+(122, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-01', '15:33:33'),
+(123, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-02', '15:33:33'),
+(124, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-03', '15:33:33'),
+(125, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-04', '15:33:33'),
+(126, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-05', '15:33:33'),
+(127, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-06', '15:33:33'),
+(128, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-07', '15:33:33'),
+(129, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-08', '15:33:33'),
+(130, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-09', '15:33:33'),
+(131, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-10', '15:33:33'),
+(132, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-11', '15:33:33'),
+(133, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-12', '15:33:33'),
+(134, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-13', '15:33:33'),
+(135, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-14', '15:33:33'),
+(136, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-15', '15:33:33'),
+(137, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-16', '15:33:33'),
+(138, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-17', '15:33:33'),
+(139, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-18', '15:33:33'),
+(140, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-19', '15:33:33'),
+(141, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-20', '15:33:33'),
+(142, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-21', '15:33:33'),
+(143, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-22', '15:33:33'),
+(144, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-23', '15:33:33'),
+(145, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-24', '15:33:33'),
+(146, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-25', '15:33:33'),
+(147, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-02', '18:56:32'),
+(148, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-03', '18:56:32'),
+(149, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-04', '18:56:32'),
+(150, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-05', '18:56:32'),
+(151, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-06', '18:56:32'),
+(152, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-07', '18:56:32'),
+(153, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-08', '18:56:32'),
+(154, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-09', '18:56:32'),
+(155, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-10', '18:56:32'),
+(156, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-11', '18:56:32'),
+(157, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-12', '18:56:32'),
+(158, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-13', '18:56:32'),
+(159, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-14', '18:56:32'),
+(160, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-15', '18:56:32'),
+(161, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-16', '18:56:32'),
+(162, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-17', '18:56:32'),
+(163, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-18', '18:56:32'),
+(164, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-19', '18:56:32'),
+(165, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-20', '18:56:32'),
+(166, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-21', '18:56:32'),
+(167, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-22', '18:56:32'),
+(168, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-23', '18:56:32'),
+(169, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-24', '18:56:32'),
+(170, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-25', '18:56:32'),
+(171, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-26', '18:56:32'),
+(172, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-27', '18:56:32'),
+(173, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-28', '18:56:32'),
+(174, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-29', '18:56:32'),
+(175, 4156, 7, 'No Entry', 'Report not submitted', '2020-06-30', '18:56:32'),
+(176, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-01', '18:56:32'),
+(177, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-02', '18:56:32'),
+(178, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-03', '18:56:32'),
+(179, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-04', '18:56:32'),
+(180, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-05', '18:56:32'),
+(181, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-06', '18:56:32'),
+(182, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-07', '18:56:32'),
+(183, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-08', '18:56:32'),
+(184, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-09', '18:56:32'),
+(185, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-10', '18:56:32'),
+(186, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-11', '18:56:32'),
+(187, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-12', '18:56:32'),
+(188, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-13', '18:56:32'),
+(189, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-14', '18:56:32'),
+(190, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-15', '18:56:32'),
+(191, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-16', '18:56:32'),
+(192, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-17', '18:56:32'),
+(193, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-18', '18:56:32'),
+(194, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-19', '18:56:32'),
+(195, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-20', '18:56:32'),
+(196, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-21', '18:56:32'),
+(197, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-22', '18:56:32'),
+(198, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-23', '18:56:32'),
+(199, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-24', '18:56:32'),
+(200, 4156, 7, 'No Entry', 'Report not submitted', '2020-07-25', '18:56:32');
 
 -- --------------------------------------------------------
 
@@ -1769,26 +2034,32 @@ INSERT INTO `dscnmlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`,
 -- Table structure for table `dscnmonthly`
 --
 
-CREATE TABLE `dscnmonthly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscnmonthly`;
+CREATE TABLE IF NOT EXISTS `dscnmonthly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `status` varchar(40) NOT NULL,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` int(11) DEFAULT NULL,
-  `Cleaning_DSCN_associated_eqpt` tinytext DEFAULT NULL,
-  `Battery_backup_time_of_UPS1nUPS2` tinytext DEFAULT NULL,
-  `UPS_battery_voltage_on_load` tinytext DEFAULT NULL,
-  `Antenna_n_cable_check` tinytext DEFAULT NULL,
-  `Earth_resistance` tinytext DEFAULT NULL,
+  `Cleaning_DSCN_associated_eqpt` tinytext,
+  `Battery_backup_time_of_UPS1nUPS2` tinytext,
+  `UPS_battery_voltage_on_load` tinytext,
+  `Antenna_n_cable_check` tinytext,
+  `Earth_resistance` tinytext,
   `EorN_voltage` int(11) DEFAULT NULL,
   `eqpt_status_after_check` varchar(5) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `dscnmonthly_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dscnmonthly`
@@ -1806,24 +2077,30 @@ INSERT INTO `dscnmonthly` (`p_id`, `date`, `time`, `status`, `a_id`, `emp_id`, `
 -- Table structure for table `dscnweekly`
 --
 
-CREATE TABLE `dscnweekly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscnweekly`;
+CREATE TABLE IF NOT EXISTS `dscnweekly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `status` varchar(30) NOT NULL,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` int(11) NOT NULL,
-  `Air_conditioning_check` tinytext DEFAULT NULL,
-  `Cleaning_DSCN_associated_eqpt` tinytext DEFAULT NULL,
-  `UPS1_UPS2_battery_backup` tinytext DEFAULT NULL,
-  `UPS_battery_voltage_on_load` tinytext DEFAULT NULL,
-  `Antenna_n_Cable_check` tinytext DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `Air_conditioning_check` tinytext,
+  `Cleaning_DSCN_associated_eqpt` tinytext,
+  `UPS1_UPS2_battery_backup` tinytext,
+  `UPS_battery_voltage_on_load` tinytext,
+  `Antenna_n_Cable_check` tinytext,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dscnweekly`
@@ -1839,14 +2116,18 @@ INSERT INTO `dscnweekly` (`p_id`, `date`, `time`, `status`, `a_id`, `emp_id`, `f
 -- Table structure for table `dscnwlogs`
 --
 
-CREATE TABLE `dscnwlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dscnwlogs`;
+CREATE TABLE IF NOT EXISTS `dscnwlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(30) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1855,11 +2136,14 @@ CREATE TABLE `dscnwlogs` (
 -- Table structure for table `employee`
 --
 
-CREATE TABLE `employee` (
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE IF NOT EXISTS `employee` (
   `emp_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `designation` varchar(10) NOT NULL,
-  `a_id` int(11) NOT NULL
+  `a_id` int(11) NOT NULL,
+  PRIMARY KEY (`emp_id`) USING BTREE,
+  KEY `a_id` (`a_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1888,7 +2172,8 @@ INSERT INTO `employee` (`emp_id`, `name`, `designation`, `a_id`) VALUES
 -- Table structure for table `engineer`
 --
 
-CREATE TABLE `engineer` (
+DROP TABLE IF EXISTS `engineer`;
+CREATE TABLE IF NOT EXISTS `engineer` (
   `emp_id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `designation` varchar(10) DEFAULT NULL,
@@ -1897,7 +2182,10 @@ CREATE TABLE `engineer` (
   `contact` int(11) DEFAULT NULL,
   `password` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `supervisor_id` int(11) DEFAULT NULL,
-  `email` varchar(30) NOT NULL DEFAULT 'bro@gmail.com'
+  `email` varchar(30) NOT NULL DEFAULT 'bro@gmail.com',
+  PRIMARY KEY (`emp_id`),
+  KEY `a_id` (`a_id`),
+  KEY `supervisor_id` (`supervisor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1921,12 +2209,14 @@ INSERT INTO `engineer` (`emp_id`, `name`, `designation`, `a_id`, `dept`, `contac
 -- Table structure for table `head`
 --
 
-CREATE TABLE `head` (
+DROP TABLE IF EXISTS `head`;
+CREATE TABLE IF NOT EXISTS `head` (
   `head_id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `designation` varchar(10) DEFAULT NULL,
   `contact` int(11) DEFAULT NULL,
-  `password` varchar(128) CHARACTER SET latin1 DEFAULT NULL
+  `password` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`head_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1942,18 +2232,24 @@ INSERT INTO `head` (`head_id`, `name`, `designation`, `contact`, `password`) VAL
 -- Table structure for table `issues`
 --
 
-CREATE TABLE `issues` (
+DROP TABLE IF EXISTS `issues`;
+CREATE TABLE IF NOT EXISTS `issues` (
   `issue_no` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `Topic` varchar(30) NOT NULL,
   `desgn` varchar(10) DEFAULT NULL,
   `dept` varchar(1) DEFAULT NULL,
   `facility_affected` varchar(20) DEFAULT NULL,
-  `observations` tinytext DEFAULT NULL,
-  `actions_taken` tinytext DEFAULT NULL,
-  `approved_by` int(11) DEFAULT NULL
+  `observations` tinytext,
+  `actions_taken` tinytext,
+  `approved_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`issue_no`,`date`,`a_id`),
+  UNIQUE KEY `issue_no` (`issue_no`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `approved_by` (`approved_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1975,14 +2271,18 @@ INSERT INTO `issues` (`issue_no`, `date`, `a_id`, `emp_id`, `Topic`, `desgn`, `d
 -- Table structure for table `mcdo`
 --
 
-CREATE TABLE `mcdo` (
+DROP TABLE IF EXISTS `mcdo`;
+CREATE TABLE IF NOT EXISTS `mcdo` (
   `emp_id` int(11) NOT NULL,
   `a_id` int(11) NOT NULL,
   `topic` varchar(50) NOT NULL,
-  `DOP` timestamp NOT NULL DEFAULT current_timestamp(),
+  `DOP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` tinytext NOT NULL,
   `DOA` timestamp NULL DEFAULT NULL,
-  `approved_by` int(11) DEFAULT NULL
+  `approved_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`emp_id`,`a_id`),
+  KEY `a_id` (`a_id`),
+  KEY `approved_by` (`approved_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1998,7 +2298,8 @@ INSERT INTO `mcdo` (`emp_id`, `a_id`, `topic`, `DOP`, `content`, `DOA`, `approve
 -- Table structure for table `navigation`
 --
 
-CREATE TABLE `navigation` (
+DROP TABLE IF EXISTS `navigation`;
+CREATE TABLE IF NOT EXISTS `navigation` (
   `f_id` int(11) NOT NULL,
   `a_id` int(11) NOT NULL,
   `facility` varchar(20) DEFAULT NULL,
@@ -2010,7 +2311,11 @@ CREATE TABLE `navigation` (
   `eqpt` varchar(20) DEFAULT NULL,
   `DOI` date DEFAULT NULL,
   `DOC` date DEFAULT NULL,
-  `supervisor_id` int(11) DEFAULT 3112
+  `supervisor_id` int(11) DEFAULT '3112',
+  PRIMARY KEY (`f_id`,`a_id`),
+  UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`supervisor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -2028,8 +2333,9 @@ INSERT INTO `navigation` (`f_id`, `a_id`, `facility`, `frequency`, `power`, `IDN
 -- Table structure for table `ndbdaily`
 --
 
-CREATE TABLE `ndbdaily` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `ndbdaily`;
+CREATE TABLE IF NOT EXISTS `ndbdaily` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
@@ -2043,14 +2349,18 @@ CREATE TABLE `ndbdaily` (
   `Primary_TX_LED` varchar(3) DEFAULT NULL,
   `TX_power_ON_LED` varchar(3) DEFAULT NULL,
   `remote_ctrl_link_LED` varchar(20) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
-  `p_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `s_verify` int(11) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(30) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ndbdaily`
@@ -2066,8 +2376,9 @@ INSERT INTO `ndbdaily` (`date`, `a_id`, `emp_id`, `f_id`, `room_temp`, `ac_mains
 -- Table structure for table `ndbmonthly`
 --
 
-CREATE TABLE `ndbmonthly` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `ndbmonthly`;
+CREATE TABLE IF NOT EXISTS `ndbmonthly` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
@@ -2077,14 +2388,18 @@ CREATE TABLE `ndbmonthly` (
   `ident_code_check` varchar(10) DEFAULT NULL,
   `antenna_n_ACU_check` varchar(20) DEFAULT NULL,
   `NDB_eqpt_n_ACU_cleaning` varchar(10) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
-  `p_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `s_verify` int(11) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(30) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ndbmonthly`
@@ -2100,24 +2415,29 @@ INSERT INTO `ndbmonthly` (`date`, `a_id`, `emp_id`, `f_id`, `frwd_power_modulati
 -- Table structure for table `ndbweekly`
 --
 
-CREATE TABLE `ndbweekly` (
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+DROP TABLE IF EXISTS `ndbweekly`;
+CREATE TABLE IF NOT EXISTS `ndbweekly` (
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `a_id` int(11) NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `f_id` varchar(10) NOT NULL,
-  `mains_pwr_supply_check` tinytext DEFAULT NULL,
-  `battery_terminals_check` tinytext DEFAULT NULL,
+  `mains_pwr_supply_check` tinytext,
+  `battery_terminals_check` tinytext,
   `battery_sealed` varchar(3) DEFAULT NULL,
   `specific_gravity` float DEFAULT NULL,
-  `antenna_site_condition` tinytext DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `antenna_site_condition` tinytext,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
-  `p_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `s_verify` int(11) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(30) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ndbweekly`
@@ -2133,8 +2453,9 @@ INSERT INTO `ndbweekly` (`date`, `a_id`, `emp_id`, `f_id`, `mains_pwr_supply_che
 -- Table structure for table `scctvdaily`
 --
 
-CREATE TABLE `scctvdaily` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvdaily`;
+CREATE TABLE IF NOT EXISTS `scctvdaily` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `status` varchar(30) NOT NULL,
@@ -2149,11 +2470,16 @@ CREATE TABLE `scctvdaily` (
   `database_status_VMS` varchar(10) DEFAULT NULL,
   `cameras_IVMS` varchar(10) DEFAULT NULL,
   `eqpt_cleaning` varchar(20) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `scctvdaily_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `scctvdaily`
@@ -2249,15 +2575,19 @@ INSERT INTO `scctvdaily` (`p_id`, `date`, `time`, `status`, `a_id`, `emp_id`, `f
 -- Table structure for table `scctvdlogs`
 --
 
-CREATE TABLE `scctvdlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvdlogs`;
+CREATE TABLE IF NOT EXISTS `scctvdlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(40) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scctvdlogs`
@@ -2295,15 +2625,19 @@ INSERT INTO `scctvdlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `scctvmlogs`
 --
 
-CREATE TABLE `scctvmlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvmlogs`;
+CREATE TABLE IF NOT EXISTS `scctvmlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(40) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `scctvmlogs_ibfk_1` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scctvmlogs`
@@ -2318,8 +2652,9 @@ INSERT INTO `scctvmlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `scctvmonthly`
 --
 
-CREATE TABLE `scctvmonthly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvmonthly`;
+CREATE TABLE IF NOT EXISTS `scctvmonthly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `a_id` int(11) NOT NULL,
@@ -2337,11 +2672,16 @@ CREATE TABLE `scctvmonthly` (
   `OFClinkto_L2L3_switches` varchar(20) DEFAULT NULL,
   `cleaning_camera_eqpt` varchar(20) DEFAULT NULL,
   `user_rights_check` varchar(10) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `scctvmonthly_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `scctvmonthly`
@@ -2358,8 +2698,9 @@ INSERT INTO `scctvmonthly` (`p_id`, `date`, `time`, `a_id`, `emp_id`, `f_id`, `s
 -- Table structure for table `scctvweekly`
 --
 
-CREATE TABLE `scctvweekly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvweekly`;
+CREATE TABLE IF NOT EXISTS `scctvweekly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `status` varchar(30) NOT NULL,
@@ -2374,11 +2715,15 @@ CREATE TABLE `scctvweekly` (
   `workstns_n_client_softw_check` varchar(10) DEFAULT NULL,
   `cameras_client_IVMS_softw` varchar(10) DEFAULT NULL,
   `NAS_free_capacity` float DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `SCCTVWeekly_ibfk_3` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `scctvweekly`
@@ -2396,15 +2741,19 @@ INSERT INTO `scctvweekly` (`p_id`, `date`, `time`, `status`, `a_id`, `emp_id`, `
 -- Table structure for table `scctvwlogs`
 --
 
-CREATE TABLE `scctvwlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `scctvwlogs`;
+CREATE TABLE IF NOT EXISTS `scctvwlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `p_id` int(11) NOT NULL,
   `value` varchar(40) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `scctvwlogs`
@@ -2498,7 +2847,8 @@ INSERT INTO `scctvwlogs` (`log_id`, `emp_id`, `p_id`, `value`, `remarks`, `date`
 -- Table structure for table `supervisor`
 --
 
-CREATE TABLE `supervisor` (
+DROP TABLE IF EXISTS `supervisor`;
+CREATE TABLE IF NOT EXISTS `supervisor` (
   `supervisor_id` int(11) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
   `designation` varchar(10) DEFAULT NULL,
@@ -2507,7 +2857,10 @@ CREATE TABLE `supervisor` (
   `contact` int(11) DEFAULT NULL,
   `password` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
   `dgm_id` int(11) DEFAULT NULL,
-  `email` varchar(30) NOT NULL DEFAULT 'hello@gmail.com'
+  `email` varchar(30) NOT NULL DEFAULT 'hello@gmail.com',
+  PRIMARY KEY (`supervisor_id`),
+  KEY `a_id` (`a_id`),
+  KEY `dgm_id` (`dgm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -2525,14 +2878,19 @@ INSERT INTO `supervisor` (`supervisor_id`, `name`, `designation`, `a_id`, `dept`
 -- Table structure for table `surveillance`
 --
 
-CREATE TABLE `surveillance` (
+DROP TABLE IF EXISTS `surveillance`;
+CREATE TABLE IF NOT EXISTS `surveillance` (
   `f_id` int(11) NOT NULL,
   `a_id` int(11) NOT NULL,
   `facility` varchar(20) DEFAULT NULL,
   `eqpt` varchar(20) DEFAULT NULL,
   `DOI` date DEFAULT NULL,
   `DOC` date DEFAULT NULL,
-  `supervisor_id` int(11) DEFAULT 3181
+  `supervisor_id` int(11) DEFAULT '3181',
+  PRIMARY KEY (`f_id`,`a_id`),
+  UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`supervisor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -2550,14 +2908,15 @@ INSERT INTO `surveillance` (`f_id`, `a_id`, `facility`, `eqpt`, `DOI`, `DOC`, `s
 -- Table structure for table `vhfdaily`
 --
 
-CREATE TABLE `vhfdaily` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfdaily`;
+CREATE TABLE IF NOT EXISTS `vhfdaily` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `s_verify` int(11) DEFAULT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
   `status` varchar(40) NOT NULL,
-  `f_id` int(11) NOT NULL DEFAULT 1,
+  `f_id` int(11) NOT NULL DEFAULT '1',
   `a_id` int(11) NOT NULL,
   `RX_no` int(11) DEFAULT NULL,
   `frequency_MHz` int(11) DEFAULT NULL,
@@ -2566,11 +2925,16 @@ CREATE TABLE `vhfdaily` (
   `RXN_check` varchar(10) DEFAULT NULL,
   `ACorDC_CorO` varchar(10) DEFAULT NULL,
   `SQ_threshold` int(11) DEFAULT NULL,
-  `Remarks` tinytext DEFAULT NULL,
+  `Remarks` tinytext,
   `Unit_Incharge_Approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
-  `approval_time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `approval_time` time DEFAULT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `vhfdaily`
@@ -2598,15 +2962,19 @@ INSERT INTO `vhfdaily` (`p_id`, `s_verify`, `date`, `time`, `emp_id`, `status`, 
 -- Table structure for table `vhfdlogs`
 --
 
-CREATE TABLE `vhfdlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfdlogs`;
+CREATE TABLE IF NOT EXISTS `vhfdlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `value` varchar(30) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
-  `p_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `p_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `p_id` (`p_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vhfdlogs`
@@ -2635,14 +3003,16 @@ INSERT INTO `vhfdlogs` (`log_id`, `emp_id`, `remarks`, `value`, `date`, `time`, 
 -- Table structure for table `vhfmlogs`
 --
 
-CREATE TABLE `vhfmlogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfmlogs`;
+CREATE TABLE IF NOT EXISTS `vhfmlogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `value` varchar(30) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vhfmlogs`
@@ -2662,12 +3032,13 @@ INSERT INTO `vhfmlogs` (`log_id`, `emp_id`, `value`, `remarks`, `date`, `time`) 
 -- Table structure for table `vhfmonthly`
 --
 
-CREATE TABLE `vhfmonthly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfmonthly`;
+CREATE TABLE IF NOT EXISTS `vhfmonthly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
-  `f_id` int(11) NOT NULL DEFAULT 1,
+  `f_id` int(11) NOT NULL DEFAULT '1',
   `a_id` int(11) NOT NULL,
   `modulation_mode` varchar(10) DEFAULT NULL,
   `line_op` int(11) DEFAULT NULL,
@@ -2682,13 +3053,19 @@ CREATE TABLE `vhfmonthly` (
   `Squelch_op_phantom` varchar(5) DEFAULT NULL,
   `Squelch_defeat_ip` varchar(5) DEFAULT NULL,
   `bit_test` varchar(10) DEFAULT NULL,
-  `REMARKS` tinytext DEFAULT NULL,
+  `REMARKS` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
   `s_verify` int(11) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(30) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  UNIQUE KEY `date_2` (`date`),
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `vhfmonthly`
@@ -2705,26 +3082,32 @@ INSERT INTO `vhfmonthly` (`p_id`, `date`, `time`, `emp_id`, `f_id`, `a_id`, `mod
 -- Table structure for table `vhfyearly`
 --
 
-CREATE TABLE `vhfyearly` (
-  `p_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfyearly`;
+CREATE TABLE IF NOT EXISTS `vhfyearly` (
+  `p_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `emp_id` int(11) DEFAULT NULL,
-  `f_id` int(11) NOT NULL DEFAULT 1,
+  `f_id` int(11) NOT NULL DEFAULT '1',
   `a_id` int(11) NOT NULL,
-  `RX_no` int(11) DEFAULT 1,
+  `RX_no` int(11) DEFAULT '1',
   `frequency_MHz` float DEFAULT NULL,
   `reference_freq` float DEFAULT NULL,
   `power` int(11) DEFAULT NULL,
   `bit_test` varchar(5) DEFAULT NULL,
   `AC_DC_changeover` varchar(20) DEFAULT NULL,
-  `Remarks` tinytext DEFAULT NULL,
+  `Remarks` tinytext,
   `Unit_incharge_approval` varchar(3) DEFAULT NULL,
   `approval_date` date DEFAULT NULL,
   `approval_time` time DEFAULT NULL,
   `s_verify` int(11) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` varchar(30) NOT NULL,
+  PRIMARY KEY (`p_id`),
+  UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
+  KEY `a_id` (`a_id`),
+  KEY `emp_id` (`emp_id`),
+  KEY `f_id` (`f_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `vhfyearly`
@@ -2741,14 +3124,17 @@ INSERT INTO `vhfyearly` (`p_id`, `date`, `time`, `emp_id`, `f_id`, `a_id`, `RX_n
 -- Table structure for table `vhfylogs`
 --
 
-CREATE TABLE `vhfylogs` (
-  `log_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `vhfylogs`;
+CREATE TABLE IF NOT EXISTS `vhfylogs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` int(11) NOT NULL,
   `remarks` varchar(100) NOT NULL,
   `value` varchar(30) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `time` time NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `emp_id` (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vhfylogs`
@@ -2758,732 +3144,6 @@ INSERT INTO `vhfylogs` (`log_id`, `emp_id`, `remarks`, `value`, `date`, `time`) 
 (1, 4144, 'Bit Test failed', 'FAIL', '2020-03-28', '13:56:08'),
 (2, 4144, 'Parameter/s fixed', 'All parameters NORMAL', '2020-03-28', '13:58:27'),
 (3, 4144, 'Parameter/s fixed', 'All parameters NORMAL', '2020-03-28', '13:59:04');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `airport`
---
-ALTER TABLE `airport`
-  ADD PRIMARY KEY (`a_id`),
-  ADD UNIQUE KEY `dm_id` (`dgm_id`);
-
---
--- Indexes for table `auth_group`
---
-ALTER TABLE `auth_group`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indexes for table `auth_group_permissions`
---
-ALTER TABLE `auth_group_permissions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
-  ADD KEY `auth_group_permissions_group_id_b120cbf9` (`group_id`),
-  ADD KEY `auth_group_permissions_permission_id_84c5c92e` (`permission_id`);
-
---
--- Indexes for table `auth_permission`
---
-ALTER TABLE `auth_permission`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
-  ADD KEY `auth_permission_content_type_id_2f476e4b` (`content_type_id`);
-
---
--- Indexes for table `auth_user`
---
-ALTER TABLE `auth_user`
-  ADD PRIMARY KEY (`username`);
-
---
--- Indexes for table `auth_user_groups`
---
-ALTER TABLE `auth_user_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
-  ADD KEY `auth_user_groups_user_id_6a12ed8b` (`user_id`),
-  ADD KEY `auth_user_groups_group_id_97559544` (`group_id`);
-
---
--- Indexes for table `auth_user_user_permissions`
---
-ALTER TABLE `auth_user_user_permissions`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `auth_user_user_permissions_user_id_permission_id_14a6b632_uniq` (`user_id`,`permission_id`),
-  ADD KEY `auth_user_user_permissions_user_id_a95ead1b` (`user_id`),
-  ADD KEY `auth_user_user_permissions_permission_id_1fbb5f2c` (`permission_id`);
-
---
--- Indexes for table `cdvordaily`
---
-ALTER TABLE `cdvordaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `CDVORDaily_ibfk_1` (`a_id`),
-  ADD KEY `cdvordaily_ibfk_3` (`f_id`);
-
---
--- Indexes for table `cdvordlogs`
---
-ALTER TABLE `cdvordlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `cdvormlogs`
---
-ALTER TABLE `cdvormlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `cdvormonthly`
---
-ALTER TABLE `cdvormonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `VHFMaily_ibfk_1` (`a_id`),
-  ADD KEY `cdvormonthly_ibfk_3` (`f_id`);
-
---
--- Indexes for table `cdvorweekly`
---
-ALTER TABLE `cdvorweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `cdvorweekly_ibfk_3` (`f_id`);
-
---
--- Indexes for table `cdvorwlogs`
---
-ALTER TABLE `cdvorwlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `communication`
---
-ALTER TABLE `communication`
-  ADD PRIMARY KEY (`f_id`,`a_id`),
-  ADD UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`supervisor_id`);
-
---
--- Indexes for table `datisdaily`
---
-ALTER TABLE `datisdaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `datisdlogs`
---
-ALTER TABLE `datisdlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `datisweekly`
---
-ALTER TABLE `datisweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `datiswlogs`
---
-ALTER TABLE `datiswlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `dgm`
---
-ALTER TABLE `dgm`
-  ADD PRIMARY KEY (`dgm_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `head_id` (`head_id`);
-
---
--- Indexes for table `dgmreports`
---
-ALTER TABLE `dgmreports`
-  ADD PRIMARY KEY (`r_id`);
-
---
--- Indexes for table `django_admin_log`
---
-ALTER TABLE `django_admin_log`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `django_admin_log_content_type_id_c4bce8eb` (`content_type_id`),
-  ADD KEY `django_admin_log_user_id_c564eba6` (`user_id`);
-
---
--- Indexes for table `django_content_type`
---
-ALTER TABLE `django_content_type`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`);
-
---
--- Indexes for table `django_migrations`
---
-ALTER TABLE `django_migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `django_session`
---
-ALTER TABLE `django_session`
-  ADD PRIMARY KEY (`session_key`),
-  ADD KEY `django_session_expire_date_a5c62663` (`expire_date`);
-
---
--- Indexes for table `dmedaily`
---
-ALTER TABLE `dmedaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `dmemonthly`
---
-ALTER TABLE `dmemonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `dmeweekly`
---
-ALTER TABLE `dmeweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `dscndaily`
---
-ALTER TABLE `dscndaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `dscndaily_ibfk_3` (`f_id`);
-
---
--- Indexes for table `dscndlogs`
---
-ALTER TABLE `dscndlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `dscndlogs_ibfk_2` (`p_id`);
-
---
--- Indexes for table `dscnmlogs`
---
-ALTER TABLE `dscnmlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `dscnmlogs_ibfk_1` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `dscnmonthly`
---
-ALTER TABLE `dscnmonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `dscnmonthly_ibfk_3` (`f_id`);
-
---
--- Indexes for table `dscnweekly`
---
-ALTER TABLE `dscnweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `dscnwlogs`
---
-ALTER TABLE `dscnwlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `employee`
---
-ALTER TABLE `employee`
-  ADD PRIMARY KEY (`emp_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`);
-
---
--- Indexes for table `engineer`
---
-ALTER TABLE `engineer`
-  ADD PRIMARY KEY (`emp_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
-
---
--- Indexes for table `head`
---
-ALTER TABLE `head`
-  ADD PRIMARY KEY (`head_id`);
-
---
--- Indexes for table `issues`
---
-ALTER TABLE `issues`
-  ADD PRIMARY KEY (`issue_no`,`date`,`a_id`),
-  ADD UNIQUE KEY `issue_no` (`issue_no`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `approved_by` (`approved_by`);
-
---
--- Indexes for table `mcdo`
---
-ALTER TABLE `mcdo`
-  ADD PRIMARY KEY (`emp_id`,`a_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `approved_by` (`approved_by`);
-
---
--- Indexes for table `navigation`
---
-ALTER TABLE `navigation`
-  ADD PRIMARY KEY (`f_id`,`a_id`),
-  ADD UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`supervisor_id`);
-
---
--- Indexes for table `ndbdaily`
---
-ALTER TABLE `ndbdaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `ndbmonthly`
---
-ALTER TABLE `ndbmonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `ndbweekly`
---
-ALTER TABLE `ndbweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- Indexes for table `scctvdaily`
---
-ALTER TABLE `scctvdaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `scctvdaily_ibfk_3` (`f_id`);
-
---
--- Indexes for table `scctvdlogs`
---
-ALTER TABLE `scctvdlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `scctvmlogs`
---
-ALTER TABLE `scctvmlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `scctvmlogs_ibfk_1` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `scctvmonthly`
---
-ALTER TABLE `scctvmonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `scctvmonthly_ibfk_3` (`f_id`);
-
---
--- Indexes for table `scctvweekly`
---
-ALTER TABLE `scctvweekly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `SCCTVWeekly_ibfk_3` (`f_id`);
-
---
--- Indexes for table `scctvwlogs`
---
-ALTER TABLE `scctvwlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `supervisor`
---
-ALTER TABLE `supervisor`
-  ADD PRIMARY KEY (`supervisor_id`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `dgm_id` (`dgm_id`);
-
---
--- Indexes for table `surveillance`
---
-ALTER TABLE `surveillance`
-  ADD PRIMARY KEY (`f_id`,`a_id`),
-  ADD UNIQUE KEY `f_id` (`f_id`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`supervisor_id`);
-
---
--- Indexes for table `vhfdaily`
---
-ALTER TABLE `vhfdaily`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `vhfdlogs`
---
-ALTER TABLE `vhfdlogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `p_id` (`p_id`);
-
---
--- Indexes for table `vhfmlogs`
---
-ALTER TABLE `vhfmlogs`
-  ADD PRIMARY KEY (`log_id`);
-
---
--- Indexes for table `vhfmonthly`
---
-ALTER TABLE `vhfmonthly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD UNIQUE KEY `date_2` (`date`),
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `vhfyearly`
---
-ALTER TABLE `vhfyearly`
-  ADD PRIMARY KEY (`p_id`),
-  ADD UNIQUE KEY `date` (`date`,`a_id`) USING BTREE,
-  ADD KEY `a_id` (`a_id`),
-  ADD KEY `emp_id` (`emp_id`),
-  ADD KEY `f_id` (`f_id`);
-
---
--- Indexes for table `vhfylogs`
---
-ALTER TABLE `vhfylogs`
-  ADD PRIMARY KEY (`log_id`),
-  ADD KEY `emp_id` (`emp_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `auth_group`
---
-ALTER TABLE `auth_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `auth_group_permissions`
---
-ALTER TABLE `auth_group_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `auth_permission`
---
-ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
-
---
--- AUTO_INCREMENT for table `auth_user_groups`
---
-ALTER TABLE `auth_user_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `auth_user_user_permissions`
---
-ALTER TABLE `auth_user_user_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `cdvordaily`
---
-ALTER TABLE `cdvordaily`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
-
---
--- AUTO_INCREMENT for table `cdvordlogs`
---
-ALTER TABLE `cdvordlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
-
---
--- AUTO_INCREMENT for table `cdvormlogs`
---
-ALTER TABLE `cdvormlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
---
--- AUTO_INCREMENT for table `cdvormonthly`
---
-ALTER TABLE `cdvormonthly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `cdvorweekly`
---
-ALTER TABLE `cdvorweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `cdvorwlogs`
---
-ALTER TABLE `cdvorwlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
-
---
--- AUTO_INCREMENT for table `datisdaily`
---
-ALTER TABLE `datisdaily`
-  MODIFY `p_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
-
---
--- AUTO_INCREMENT for table `datisdlogs`
---
-ALTER TABLE `datisdlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
-
---
--- AUTO_INCREMENT for table `datisweekly`
---
-ALTER TABLE `datisweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
---
--- AUTO_INCREMENT for table `datiswlogs`
---
-ALTER TABLE `datiswlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
-
---
--- AUTO_INCREMENT for table `dgmreports`
---
-ALTER TABLE `dgmreports`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `django_admin_log`
---
-ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `django_content_type`
---
-ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
-
---
--- AUTO_INCREMENT for table `django_migrations`
---
-ALTER TABLE `django_migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
---
--- AUTO_INCREMENT for table `dmeweekly`
---
-ALTER TABLE `dmeweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `dscndaily`
---
-ALTER TABLE `dscndaily`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
-
---
--- AUTO_INCREMENT for table `dscndlogs`
---
-ALTER TABLE `dscndlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
-
---
--- AUTO_INCREMENT for table `dscnmlogs`
---
-ALTER TABLE `dscnmlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
-
---
--- AUTO_INCREMENT for table `dscnmonthly`
---
-ALTER TABLE `dscnmonthly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `dscnweekly`
---
-ALTER TABLE `dscnweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `dscnwlogs`
---
-ALTER TABLE `dscnwlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ndbdaily`
---
-ALTER TABLE `ndbdaily`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `ndbmonthly`
---
-ALTER TABLE `ndbmonthly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `ndbweekly`
---
-ALTER TABLE `ndbweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `scctvdaily`
---
-ALTER TABLE `scctvdaily`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
-
---
--- AUTO_INCREMENT for table `scctvdlogs`
---
-ALTER TABLE `scctvdlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT for table `scctvmlogs`
---
-ALTER TABLE `scctvmlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
--- AUTO_INCREMENT for table `scctvmonthly`
---
-ALTER TABLE `scctvmonthly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `scctvweekly`
---
-ALTER TABLE `scctvweekly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `scctvwlogs`
---
-ALTER TABLE `scctvwlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
-
---
--- AUTO_INCREMENT for table `vhfdaily`
---
-ALTER TABLE `vhfdaily`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `vhfdlogs`
---
-ALTER TABLE `vhfdlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `vhfmlogs`
---
-ALTER TABLE `vhfmlogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `vhfmonthly`
---
-ALTER TABLE `vhfmonthly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `vhfyearly`
---
-ALTER TABLE `vhfyearly`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `vhfylogs`
---
-ALTER TABLE `vhfylogs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

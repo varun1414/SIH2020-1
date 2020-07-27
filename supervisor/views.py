@@ -8,3 +8,5 @@ def test(request):
     for i in x:
         print(i.emp_id)
     return render(request,'supervisor/supervisor.html')
+
+
