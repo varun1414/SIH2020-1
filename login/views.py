@@ -79,7 +79,6 @@ def validate(request):
                # return render(request,'./dgm/dgm.html',{'name':y[0]})
     elif b=='11' :
         request.session['key']=frt.generate_key().decode('utf-8')
-        # x=models.Dgm.objects.all()
         x=models.Head.objects.all()
         for i in x:
             if (uid == str(i.head_id)) & (check_password(passw,i.password)) :
